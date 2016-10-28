@@ -48,6 +48,10 @@
     <Compile Include="CPU\Register.cs" />
     <Compile Include="CPU\CPU.cs" />
     <Compile Include="CPU\Scheduler.cs" />
+    <Compile Include="Processes\Delegates.cs" />
+    <Compile Include="Processes\Managing.cs" />
+    <Compile Include="Processes\PCB.cs" />
+    <Compile Include="Processes\UserInterface.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

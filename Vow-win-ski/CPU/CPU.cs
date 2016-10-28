@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vow_win_ski.CPU
 {
-    public class CPU
+    public sealed class CPU
     {
         private static volatile CPU _instance;
         private static object syncRoot = new Object();
@@ -18,7 +18,7 @@ namespace Vow_win_ski.CPU
 
         public Register register;
 
-        public static CPU Instance
+        public static CPU GetInstance
         {
             get
             {
