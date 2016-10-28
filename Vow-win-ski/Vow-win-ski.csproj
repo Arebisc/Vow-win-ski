@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CPU\Delegates.cs" />
     <Compile Include="CPU\Register.cs" />
     <Compile Include="CPU\CPU.cs" />
     <Compile Include="CPU\Scheduler.cs" />

@@ -13,10 +13,11 @@ namespace Vow_win_ski.CPU
 
         private CPU()
         {
-            register = new Register();
+            this.Register = new Register();
         }
 
-        public Register register;
+
+        public Register Register;
 
         public static CPU GetInstance
         {

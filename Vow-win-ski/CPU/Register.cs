@@ -10,8 +10,9 @@ namespace Vow_win_ski.CPU
     {
         private int _A;
         private int _B;
-        private int _C;
-        private int _D;
+        private double _C;
+        private double _D;
+        private int _instructionPointer;
 
         public int A
         {
@@ -25,27 +26,44 @@ namespace Vow_win_ski.CPU
             set { _B = value; }
         }
 
-        public int C
+        public double C
         {
             get { return _C; }
             set { _C = value; }
         }
 
-        public int D
+        public double D
         {
             get { return _D; }
             set { _D = value; }
         }
 
+        public int InstructionPointer
+        {
+            get { return _instructionPointer; }
+            set { _instructionPointer = value; }
+        }
+
         public Register() { }
 
-        public Register(int a, int b, int c, int d)
+        public Register(int a, int b, double c, double d, int instructionPointer)
             : this()
         {
             A = a;
             B = b;
             C = c;
             D = d;
+            InstructionPointer = instructionPointer;
+        }
+
+        public Register(Register register)
+            : this()
+        {
+            A = register.A;
+            B = register.B;
+            C = register.C;
+            D = register.D;
+            InstructionPointer = register.InstructionPointer;
         }
     }
 }

@@ -10,12 +10,12 @@ namespace Vow_win_ski.CPU
     public sealed class Scheduler
     {
         private static volatile Scheduler _instance;
-        private static object syncRoot = new Object();
-        private static List<PCB> WaitingProcesses;
+        private static readonly object SyncRoot = new Object();
+        private static List<PCB> WaitingForProcessorAllocation;
 
         private Scheduler()
         {
-            WaitingProcesses = new List<PCB>();
+            WaitingForProcessorAllocation = new List<PCB>();
         }
 
         public static Scheduler GetInstance
@@ -24,7 +24,7 @@ namespace Vow_win_ski.CPU
             {
                 if (_instance == null)
                 {
-                    lock (syncRoot)
+                    lock (SyncRoot)
                     {
                         if (_instance == null)
                             _instance = new Scheduler();
@@ -34,10 +34,20 @@ namespace Vow_win_ski.CPU
                 return _instance;
             }
         }
-
-        public void AddProcessToList(PCB process)
+        
+        public void AddProcess(PCB process)
         {
-            WaitingProcesses.Add(process);
+            WaitingForProcessorAllocation.Add(process);
+        }
+        //TODO
+        public void RemoveProcess(PCB process)
+        {
+            throw new NotImplementedException();
+        }
+        //TODO
+        public void SearchForProcessInList()
+        {
+            throw new NotImplementedException();
         }
     }
 }
