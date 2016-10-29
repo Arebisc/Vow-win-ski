@@ -39,15 +39,31 @@ namespace Vow_win_ski.CPU
         {
             WaitingForProcessorAllocation.Add(process);
         }
-        //TODO
+
         public void RemoveProcess(PCB process)
         {
-            throw new NotImplementedException();
+            WaitingForProcessorAllocation.RemoveAll(element => element.PID == process.PID);
         }
         //TODO
-        public void SearchForProcessInList()
+        public PCB SearchForProcessInList(PCB process)
         {
-            throw new NotImplementedException();
+            return WaitingForProcessorAllocation.Find(element => element.PID == process.PID);
+        }
+
+        public void PrintList()
+        {
+            Console.WriteLine(ToString());
+        }
+        //TODO
+        public override string ToString()
+        {
+            string result = string.Empty;
+
+            foreach (var elem in WaitingForProcessorAllocation)
+            {
+                result += (elem.PID + " " + elem.Name);
+            }
+            return result;
         }
     }
 }
