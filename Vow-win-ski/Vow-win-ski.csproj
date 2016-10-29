@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="CPU\Delegates.cs" />
     <Compile Include="CPU\Interpreter.cs" />
     <Compile Include="CPU\Register.cs" />
@@ -55,11 +54,9 @@
     <Compile Include="Processes\Managing.cs" />
     <Compile Include="Processes\PCB.cs" />
     <Compile Include="Processes\UserInterface.cs" />
-=======
     <Compile Include="IPC\Message.cs" />
     <Compile Include="IPC\PipeClient.cs" />
     <Compile Include="IPC\PipeServer.cs" />
->>>>>>> thesensej
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
