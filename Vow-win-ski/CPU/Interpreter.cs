@@ -6,20 +6,14 @@ using System.Threading.Tasks;
 
 namespace Vow_win_ski.CPU
 {
-    public sealed class CPU
+    public sealed class Interpreter
     {
-        private static volatile CPU _instance;
         private static readonly object SyncRoot = new object();
+        private static volatile Interpreter _instance;
 
-        private CPU()
-        {
-            this.Register = new Register();
-        }
+        private Interpreter() { }
 
-
-        public Register Register;
-
-        public static CPU GetInstance
+        public static Interpreter GetInstance
         {
             get
             {
@@ -28,12 +22,18 @@ namespace Vow_win_ski.CPU
                     lock (SyncRoot)
                     {
                         if(_instance == null)
-                            _instance = new CPU();
+                            _instance = new Interpreter();
                     }
                 }
 
                 return _instance;
             }
         }
+        //TODO
+        private void InterpretOrder(string order)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

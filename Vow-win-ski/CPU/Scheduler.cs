@@ -10,7 +10,7 @@ namespace Vow_win_ski.CPU
     public sealed class Scheduler
     {
         private static volatile Scheduler _instance;
-        private static readonly object SyncRoot = new Object();
+        private static readonly object SyncRoot = new object();
         private static List<PCB> WaitingForProcessorAllocation;
 
         private Scheduler()
