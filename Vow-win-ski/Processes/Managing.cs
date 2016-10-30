@@ -8,10 +8,7 @@ using System.Threading.Tasks;
 namespace Vow_win_ski.Processes
 {
 
-    /// <summary>
-    /// Powód zamknięcia procesu
-    /// </summary>
-    public enum ReasonOfTerminating
+    public enum ReasonOfProcessTerminating
     {
         /// <summary>
         /// Skończył się normalnie
@@ -46,30 +43,16 @@ namespace Vow_win_ski.Processes
         /// <summary>
         /// System się zamyka
         /// </summary>
-        //ClosingSystem = 7
+        ClosingSystem = 7
     }
-
-
+    
 
     /// <summary>
     /// Umożliwia zarządzenie procesami na wyższym poziomie
     /// </summary>
     public static class Managing
     {
-
-        /// <summary>
-        /// Początek listy procesów
-        /// </summary>
-        //private static PCB _ListOfPCB = null;
-
-        /// <summary>
-        /// Lista wszystkich utworzonych procesów
-        /// </summary>
         private static LinkedList<PCB> _CreatedPCBs = new LinkedList<PCB>();
-
-        /// <summary>
-        /// Identyfikator, który otrzyma następny utworzony proces
-        /// </summary>
         private static int _NextPID = 1;
 
         /// <summary>
@@ -77,15 +60,14 @@ namespace Vow_win_ski.Processes
         /// </summary>
         /// <param name="Name">Nazwa procesu, nie musi być unikalna</param>
         /// <param name="ProgramFilePath">Ścieżka do pliku z programem (z której zostanie wczytany kod programu)</param>
-        /// <returns>Identyfikator procesu</returns>
         /// <remarks>Utworzenie procesu - XC</remarks>
-        public static int CreateProcess(string Name, string ProgramFilePath)
+        public static PCB CreateProcess(string Name, string ProgramFilePath)
         {
-            return 0;
+            throw new NotImplementedException();
         }
-
+        
         /// <summary>
-        /// Zamyka aktualnie wykonywany lub wskazany przez identyfikator proces (przejście na Terminated, przygotowanie do całkowitego usunięcia procesu)
+        /// Zamyka aktualnie wykonywany lub wskazany przez identyfikator proces (przejście na Terminated, przygotowanie do całkowitego usunięcia procesu) i usuwa go z listy planisty
         /// </summary>
         /// <param name="Reason">Przyczyna zamknięcia procesu</param>
         /// <param name="ExitCode">Opcjonalny; kod wyjścia zwracany przez proces</param>
@@ -95,53 +77,25 @@ namespace Vow_win_ski.Processes
         /// 0 - zamknięto proces
         /// </returns>
         /// <remarks>Zatrzymanie procesu i zawiadomienie nadzorcy - XH, nienormowalne zatrzymanie realizacji zlecenia - XQUE</remarks>
-        public static int TerminateProcess(ReasonOfTerminating Reason, int ExitCode = 0, int PID = 0)
+        public static int TerminateProcess(ReasonOfProcessTerminating Reason, int ExitCode = 0, int PID = 0)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Uruchamia proces po utworzeniu go metodą CreateProcess (przejście New -> Ready)
+        /// Uruchamia proces po utworzeniu go metodą CreateProcess (przejście New -> Ready) i dodaje go do listy planisty
         /// </summary>
-        /// <param name="PID">Identyfikator procesu</param>
         /// <remarks>Uruchomienie procesu - XY</remarks>        
-        public static void Run(int PID)
+        public static void Run(PCB Process)
         {
-
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Zawiesza aktualny proces, który będzie mogł być wykonywany dopiero po wywołaniu metody Resume
-        /// </summary>
-        /// <remarks>Zatrzymanie procesu - XZ</remarks>
-        //public static void Suspend()
-        //{
-
-        //}
-
-        /// <summary>
-        /// Przywraca proces, wyprowadzając go ze stanu zawieszenia
-        /// </summary>
-        /// <param name="PID">Identyfikator procesu do wznowienia</param>
-        /// <returns>
-        /// Kod odpowiedzi:
-        /// 0 - wznowiono proces
-        /// </returns>
-        /// <remarks>Uruchomienie procesu - XY</remarks>
-        //public static int Resume(int PID)
-        //{
-        //   return 0;
-        //}
-
-        /// <summary>
-        /// Zwraca blok kontrolny procesu
-        /// </summary>
-        /// <param name="PID">Identyfikator procesu</param>
-        /// <returns>Blok kontrolny wybranego procesu lub null, jeśli proces nie został znaleziony</returns>
+        /// <summary>Zwraca blok kontrolny procesu o podanym identyfikatorze</summary>
         /// <remarks>Znalezienie bloku PCB o danej nazwie - XN</remarks>
         public static PCB GetPCB(int PID)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -151,7 +105,7 @@ namespace Vow_win_ski.Processes
         /// <returns>Poziom zagnieżdżenia w sekcji SMC</returns>
         /// <remarks>Wejście do sekcji SMC - XEXC</remarks>
         public static int EnterSMC() {
-            return 0;
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -161,14 +115,13 @@ namespace Vow_win_ski.Processes
         /// <returns>Poziom zagnieżdżenia w sekcji SMC</returns>
         /// <remarks>Wyjście z sekcji SMC - XCOM</remarks>
         public static int LeaveSMC() {
-            return 0;
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Usuwa proces o podanym identyfikatorze. Proces musi najpierw zostać zatrzymany przez TerminateProcess
         /// (zwalnia pamięć, zamyka pliki, coś jak destruktor)
         /// </summary>
-        /// <param name="PID">Identyfikator procesu</param>
         /// <returns>
         /// Kod odpowiedzi:
         /// 0 - usunięto proces
@@ -176,29 +129,21 @@ namespace Vow_win_ski.Processes
         /// 2 - błąd: przed usunięciem procesu należy go zatrzymać
         /// </returns>
         /// <remarks>Usunięcie procesu - XD</remarks>
-        public static int RemoveProcess(int PID)
-        {   
-            return 0;
+        public static int RemoveProcess(PCB Process)
+        {
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Umieszcza proces na liście procesów
-        /// </summary>
-        /// <param name="Process">Proces do dodania</param>
         /// <remarks>Umieszczenie bloku PCB w łańcuchu - XI</remarks>
-        public static void InsertPCBIntoQueue(PCB Process)
+        private static void InsertPCBIntoList(PCB Process)
         {
-            
+            _CreatedPCBs.AddLast(Process);
         }
 
-        /// <summary>
-        /// Usuwa proces z listy procesów
-        /// </summary>
-        /// <param name="Process">Identyfikator procesu do usunięcia</param>
         /// <remarks>Usunięcie bloku PCB z łańcucha - XJ</remarks>
-        public static void RemovePCBFromQueue(PCB Process)
+        private static void RemovePCBFromList(PCB Process)
         {
-            
+            _CreatedPCBs.Remove(Process);
         }
 
     }

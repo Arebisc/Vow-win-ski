@@ -4,17 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vow_win_ski.CPU;
 
 namespace Vow_win_ski.Processes
 {
 
-    /// <summary>
-    /// Stan procesu
-    /// </summary>    
     public enum ProcessState
     {
         /// <summary>
-        /// Nowy proces
+        /// Nowy proces, niedodany do kolejki do wykonywania
         /// </summary>
         New,
 
@@ -34,36 +32,14 @@ namespace Vow_win_ski.Processes
         Waiting,
 
         /// <summary>
-        /// Proces zakończony, oczekuje na usunięcie
+        /// Proces zakończony, usunięty z kolejki, oczekuje na usunięcie z pamięci
         /// </summary>
         Terminated
     }
 
-    /// <summary>
-    /// Przykładowe rejestry
-    /// </summary>
-    public struct ProcessRegisters
-    {
-        public int A, B, C, D;   //Rejestry ogólne
-        public double F1, F2;  //Rejestry zmiennoprzecinkowe
-        public int IP, SP;             //Wskaźniki instrukcji i stosu
-        //Sibera: w IP najlepiej zapisz indeks obecnie przetwarzanego znaku z kodu programu, jak odczytasz intrukcję mającą np. 7 znaków to zwiększasz rejestr o 7 (a przynajmniej tak jest w prawdziwych procesorach), kod pobierasz z adresu BaseMemoryAddress + IP
-        //StackPointer się przyda, z doświadczenia wiem że nawet 6 rejestrów w x86 to trochę za mało i dobrze byłoby zrobić jakieś zmienne lokalne lub chociaż push/pop
-    }
 
-    /// <summary>
-    /// PCB (Process Control Block)  - blok kontroli procesu - zawiera informacje o pojedynczym procesie
-    /// Napiszcie czego potrzebujecie to wam dodam
-    /// </summary>
     public class PCB
     {
-
-        //public PCB NextPCB = null;
-        //public PCB PreviousPCB = null;
-
-        /// <summary>
-        /// Obecny priorytet procesu
-        /// </summary>
         /// <remarks>0 - najwyższy priorytet, 7 - najniższy</remarks>
         public int CurrentPriority = 7;
 
@@ -78,15 +54,9 @@ namespace Vow_win_ski.Processes
         /// </summary>
         public int PriorityTime = 0;
 
-        /// <summary>
-        /// Stan rejestrów procesora dla procesu
-        /// </summary>
-        public ProcessRegisters Registers;
 
-        /// <summary>
-        /// Adres w pamięci, gdzie rozpoczyna się kod wykonywanego programu
-        /// </summary>
-        //public int Program = 0;
+        //Sibera: w IP najlepiej zapisz indeks obecnie przetwarzanego znaku z kodu programu, jak odczytasz intrukcję mającą np. 7 znaków to zwiększasz rejestr o 7 (a przynajmniej tak jest w prawdziwych procesorach), kod pobierasz z adresu BaseMemoryAddress + IP
+        public Register Registers;
 
         /// <summary>
         /// Nazwa procesu, nie musi być unikalna
@@ -98,23 +68,14 @@ namespace Vow_win_ski.Processes
         /// </summary>
         public int PID = 0;
 
-        /// <summary>
-        /// Stan procesu
-        /// </summary>
         public ProcessState State = ProcessState.New;
 
-        ///// <summary>
-        ///// Identyfikator procesu rodzica
-        ///// </summary>
-        //public int Parent = 0;
-        
-        /// <summary>
-        /// Utworzeni przez proces członkowie programu 500+
-        /// </summary>
-        public ArrayList Children = new ArrayList();
+        public int InstructionCounter = 0;
+
+        public ArrayList ProcessChildren = new ArrayList();
 
         /// <summary>
-        /// Poziom zagnieżdżenia w sekcji SMC (System Must Complete) - procesu przebywającego w tej sekcji nie mozna zatrzymać
+        /// Poziom zagnieżdżenia w sekcji SMC (System Must Complete) - procesu przebywającego w tej sekcji nie można zatrzymać
         /// </summary>
         public int SMC = 0;
 
@@ -142,13 +103,6 @@ namespace Vow_win_ski.Processes
         //Pliki
         public ArrayList FileHandles = new ArrayList();
 
-        //Semafory
-
-        /// <summary>
-        /// Semafor używany podczas modyfikacji kolejki komunikatów
-        /// </summary>
-        //public object CommonMessageSemaphore = null;
-
         /// <summary>
         /// Semafor oczekiwania na komunikat od innego procesu
         /// Jest opisane w książce z Moodle gdzieś na początku, w opisie pól PCB
@@ -157,15 +111,10 @@ namespace Vow_win_ski.Processes
         public object StopperSemaphore = null;
         public object StoppeeSemaphore = null;
 
-
-        //Komunikaty
-        //public ListItem<Object> Messages;
-
-        /// <summary>
-        /// Kolejka oczekujących komunikatów
-        /// </summary>
-        public Queue<Object> Messages;
-
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
