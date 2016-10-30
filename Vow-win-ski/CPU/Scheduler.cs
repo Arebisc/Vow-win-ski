@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Vow_win_ski.Processes;
@@ -54,7 +55,7 @@ namespace Vow_win_ski.CPU
         {
             Console.WriteLine(ToString());
         }
-        //TODO
+
         public override string ToString()
         {
             string result = string.Empty;
@@ -64,6 +65,13 @@ namespace Vow_win_ski.CPU
                 result += (elem.PID + " " + elem.Name);
             }
             return result;
+        }
+
+        public PCB PriorityAlgorithm()
+        {
+            return WaitingForProcessorAllocation
+                .Aggregate((elem1, elem2) => 
+                    (elem1.CurrentPriority < elem2.CurrentPriority ? elem1 : elem2));
         }
     }
 }

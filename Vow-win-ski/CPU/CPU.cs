@@ -11,13 +11,12 @@ namespace Vow_win_ski.CPU
         private static volatile CPU _instance;
         private static readonly object SyncRoot = new object();
 
+        public Register Register;
+
         private CPU()
         {
             this.Register = new Register();
         }
-
-
-        public Register Register;
 
         public static CPU GetInstance
         {
