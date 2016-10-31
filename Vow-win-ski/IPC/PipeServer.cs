@@ -14,7 +14,7 @@ namespace Vow_win_ski.IPC
         private NamedPipeServerStream Server;
         private List<Message> Messages; // Kolejka wiadomosci
         private Thread thread;
-        private byte[] data; //Przechowkuje w [0] - Jeśli value=0 serwer czyta, jeśli value=1 serwer pisze | [1] - Id odbiorcy | [2] - komunikat | [3] - Id nadawcy
+        private byte[] data; //Przechowkuje w [0] - Jeśli value=0 serwer czyta, jeśli value=1 serwer pisze | [1] - Idodbiorcy | [2] - komunikat | [3] - Idnadawcy
 
         //===================================================================================================================================
         private const byte sender = 1;
