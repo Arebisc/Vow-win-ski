@@ -15,6 +15,7 @@ namespace Vow_win_ski.IPC
         private List<Message> Messages; // Kolejka wiadomosci
         private Thread thread;
         private byte[] data; //Przechowkuje w [0] - Jeśli value=0 serwer czyta, jeśli value=1 serwer pisze | [1] - Idodbiorcy | [2] - komunikat | [3] - Idnadawcy
+        private byte[] data; //Przechowkuje w [0] - Jeśli value=0 serwer czyta, jeśli value=1 serwer pisze | [1] - Id odbiorcy | [2] - komunikat | [3] - Id nadawcy
 
         //===================================================================================================================================
         private const byte sender = 1;
