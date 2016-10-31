@@ -14,24 +14,24 @@ namespace Vow_win_ski.IPC
         private NamedPipeServerStream Server;
         private List<Message> Messages; // Kolejka wiadomosci
         private Thread thread;
-        private byte[] data; //Przechowkuje w [0] - Jeśli value=0 serwer czyta, jeśli value=1 serwer pisze | [1] - Id odbiorcy | [2] - komunikat | [3] - Id nadawcy
+        private byte[] data; //Przechowkuje w [0] - Jeśli value=0 serwer czyta, jeśli value=1 serwer pisze | [1] - Idodbiorcy | [2] - komunikat | [3] - Idnadawcy
 
         //===================================================================================================================================
         private const byte sender = 1;
         private const byte receiver = 0;
         private const byte disconnecter = 2;
-        /// <summary>
-        /// Flagi do ustawienia stanu Serwera
-        /// </summary>
+
+        //Flagi do ustawienia stanu Serwera
+
         //===================================================================================================================================
         public PipeServer()
         {
             Server = new NamedPipeServerStream("SERWER", PipeDirection.InOut);
             Console.WriteLine("Utworzono Serwer IPC");
             Start();
-            /// <summary>
-            /// MICHAŁ: Konstruktor wywołany wraz ze startem systemu i to tyle jeśli chodzi o SERWER.
-            /// </summary>
+
+            // MICHAŁ: Konstruktor wywołany wraz ze startem systemu i to tyle jeśli chodzi o SERWER.
+
         }
         //===================================================================================================================================
         public void Build()
@@ -102,9 +102,9 @@ namespace Vow_win_ski.IPC
                 }
             }
         }
-        /// <summary>
-        /// Inicjalizacja i Główna pętla serwera
-        /// </summary>
+       
+        // Inicjalizacja i Główna pętla serwera
+       
         //===================================================================================================================================
         public void Start()
         {
