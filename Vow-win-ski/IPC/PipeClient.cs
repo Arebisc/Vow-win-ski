@@ -17,9 +17,9 @@ namespace Vow_win_ski.IPC
         private const byte sender = 0;
         private const byte receiver = 1;
         private const byte disconnecter = 2;
-        /// <summary>
-        /// Flagi do ustawienia stanu serwera
-        /// </summary>
+       
+        // Flagi do ustawienia stanu serwera
+       
         //===================================================================================================================================
         public PipeClient(byte clientId)
         {
@@ -27,9 +27,9 @@ namespace Vow_win_ski.IPC
             Console.WriteLine("Utworzono Clienta IPC o ID:"+clientId);
             this.clientId = clientId;
             Connect();
-            /// <summary>
-            /// MARCIN: Konstruktor wywolany gdy PROCES wejdzie w stan RUNNING. Podaj ID procesu w którym będzie siedział klient jako argument.
-            /// </summary>
+           
+            // MARCIN: Konstruktor wywolany gdy PROCES wejdzie w stan RUNNING. Podaj ID procesu w którym będzie siedział klient jako argument.
+           
         }
         //===================================================================================================================================
         public void Connect()
@@ -48,9 +48,9 @@ namespace Vow_win_ski.IPC
             data[2] = message;
             data[3] = clientId;
             client.Write(data, 0, data.Length);
-            /// <summary>
-            /// MICHAŁ: Metoda do wysyłania komunikatu. Pierwszy argument to ID odbiorcy, drugi to wiadomosc.
-            /// </summary>
+           
+            // MICHAŁ: Metoda do wysyłania komunikatu. Pierwszy argument to ID odbiorcy, drugi to wiadomosc.
+            
         }
         //===================================================================================================================================
         public void Call(byte senderId)
@@ -65,19 +65,19 @@ namespace Vow_win_ski.IPC
         {
             Call(senderId);
             Console.WriteLine("Odebrano wiadomosc: "+client.ReadByte());
-            /// <summary>
-            /// MICHAŁ: Metoda do odebrania komunikatu. Argumentem jest ID procesu od którego chcemy odebrać komunikat.
-            /// Na razie wiadomosc wypisuje tylko do konsoli, bo nie mam pojecia czy bedzie jakos wykorzystywana
-            /// </summary>
+            
+            // MICHAŁ: Metoda do odebrania komunikatu. Argumentem jest ID procesu od którego chcemy odebrać komunikat.
+            // Na razie wiadomosc wypisuje tylko do konsoli, bo nie mam pojecia czy bedzie jakos wykorzystywana
+           
         }
         //===================================================================================================================================
         public void Disconnect()
         {
             data[0] = disconnecter;
             client.Write(data, 0, data.Length);
-            /// <summary>
-            /// MARCIN: Gdy proces skończy być running wywołaj tą metodę, aby rozłączyć clienta z serwerem
-            /// </summary>
+            
+            // MARCIN: Gdy proces skończy być running wywołaj tą metodę, aby rozłączyć clienta z serwerem
+           
         }
         //===================================================================================================================================
     }
