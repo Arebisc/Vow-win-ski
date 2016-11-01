@@ -81,6 +81,7 @@ namespace Vow_win_ski.IPC
                     Console.WriteLine("Serwer wyslal dane");
                     Server.WriteByte((byte)Messages[i].getMessage());
                     Messages.RemoveAt(i);
+                    break;
                 }
             }
         }

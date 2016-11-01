@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vow_win_ski.IPC;
 
 namespace Vow_win_ski
 {
@@ -10,6 +11,7 @@ namespace Vow_win_ski
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
