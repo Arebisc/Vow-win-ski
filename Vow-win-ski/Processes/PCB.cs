@@ -66,7 +66,7 @@ namespace Vow_win_ski.Processes
         /// <summary>
         /// Identyfikator procesu, musi być unikalny
         /// </summary>
-        public int PID = 0;
+        public byte PID = 0;
 
         public ProcessState State = ProcessState.New;
 
