@@ -63,8 +63,20 @@ namespace Vow_win_ski.IPC
         //===================================================================================================================================
         public void Receive(byte senderId)
         {
+            int x;
             Call(senderId);
-            Console.WriteLine("Odebrano wiadomosc: " + client.ReadByte());
+            x = client.ReadByte();
+
+            if (x != 0)
+            {
+                Console.WriteLine("Odebrano wiadomosc: " + x);
+            }
+            else
+            {
+                //TODO
+            }
+
+
 
             // MICHAŁ: Metoda do odebrania komunikatu. Argumentem jest ID procesu od którego chcemy odebrać komunikat.
             // Na razie wiadomosc wypisuje tylko do konsoli, bo nie mam pojecia czy bedzie jakos wykorzystywana

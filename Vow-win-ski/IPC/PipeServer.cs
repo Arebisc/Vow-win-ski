@@ -74,6 +74,7 @@ namespace Vow_win_ski.IPC
 
         public void ServerWriter(byte receiverId, byte senderId)
         {
+            int counter=0;
             for (int i = 0; i < Messages.Count; i++)
             {
                 if (Messages[i].GetReceiverId() == receiverId && Messages[i].GetSenderId() == senderId) // Czy zgadza się Id odbiorcy i nadawcy
@@ -81,8 +82,17 @@ namespace Vow_win_ski.IPC
                     Console.WriteLine("Serwer wyslal dane");
                     Server.WriteByte((byte)Messages[i].getMessage());
                     Messages.RemoveAt(i);
-                    break;
+                    break;                                     
                 }
+                else
+                {
+                    counter++;
+                }
+
+                if (counter == Messages.Count)
+                {
+                    Server.WriteByte(0);
+                }         
             }
         }
         //===================================================================================================================================
@@ -103,9 +113,9 @@ namespace Vow_win_ski.IPC
                 }
             }
         }
-       
+
         // Inicjalizacja i Główna pętla serwera
-       
+
         //===================================================================================================================================
         public void Start()
         {
