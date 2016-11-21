@@ -6,11 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Vow_win_ski.CPU;
 
-namespace Vow_win_ski.Processes
-{
+namespace Vow_win_ski.Processes{
 
-    public enum ProcessState
-    {
+    public enum ProcessState    {
         /// <summary>
         /// Nowy proces, niedodany do kolejki do wykonywania
         /// </summary>
@@ -38,8 +36,7 @@ namespace Vow_win_ski.Processes
     }
 
 
-    public class PCB
-    {
+    public class PCB{
         /// <remarks>0 - najwyższy priorytet, 7 - najniższy</remarks>
         public int CurrentPriority = 7;
 
@@ -54,9 +51,7 @@ namespace Vow_win_ski.Processes
         /// </summary>
         public int PriorityTime = 0;
 
-
-        //Sibera: w IP najlepiej zapisz indeks obecnie przetwarzanego znaku z kodu programu, jak odczytasz intrukcję mającą np. 7 znaków to zwiększasz rejestr o 7 (a przynajmniej tak jest w prawdziwych procesorach), kod pobierasz z adresu BaseMemoryAddress + IP
-        public Register Registers;
+        public Register Registers = new Register();
 
         /// <summary>
         /// Nazwa procesu, nie musi być unikalna
@@ -66,54 +61,46 @@ namespace Vow_win_ski.Processes
         /// <summary>
         /// Identyfikator procesu, musi być unikalny
         /// </summary>
-        public byte PID = 0;
+        private int _PID;
+
+        public byte PID{
+            get{
+                return (byte)_PID;
+            }
+        }
 
         public ProcessState State = ProcessState.New;
 
         public int InstructionCounter = 0;
 
-        public ArrayList ProcessChildren = new ArrayList();
+        public PCB Parent = null;
+
+        public LinkedList<PCB> Children = new LinkedList<PCB>();
 
         /// <summary>
-        /// Poziom zagnieżdżenia w sekcji SMC (System Must Complete) - procesu przebywającego w tej sekcji nie można zatrzymać
-        /// </summary>
-        public int SMC = 0;
-
-        /// <summary>
-        /// Czy podczas przebywania w sekcji SMC wpłynęło żądanie zatrzymania procesu
-        /// </summary>
-        public bool WaitingForStopping = false;
-
-        /// <summary>
-        /// Pamięć zaalokowana przez proces dla danych
-        /// Jak jest z pamięcią? Jeśli proces będzie mógł dynamicznie alokować pamięć lub zajmować więcej niż jeden blok pamięci, odkomentuję
+        /// Pamięć zaalokowana przez proces dla kodu i danych
         /// </summary>        
-        //public ArrayList MemoryBlocks = new ArrayList();
-                
-        /// <summary>
-        /// Adres w pamięci, gdzie rozpoczyna się kod wykonywanego programu
-        /// </summary>
-        public int BaseMemoryAddress = 0;
-
-        /// <summary>
-        /// Limit przydzielonej pamięci
-        /// </summary>
-        public int LimitOfMemory = 0;
-
-        //Pliki
-        public ArrayList FileHandles = new ArrayList();
+        public object MemoryBlocks = null;
 
         /// <summary>
         /// Semafor oczekiwania na komunikat od innego procesu
         /// Jest opisane w książce z Moodle gdzieś na początku, w opisie pól PCB
         /// </summary>
         public object ReceiverMessageSemaphore = null;
-        public object StopperSemaphore = null;
-        public object StoppeeSemaphore = null;
 
-        public override string ToString()
-        {
-            throw new NotImplementedException();
+        /// <summary>
+        /// Semafor oczekiwania na zatrzymanie - jeśli zatrzymywany proces
+        /// ma stan inny niż Running, proces zatrzymujący blokuje się
+        /// pod tym semaforem i odblokowuje dopiero po zamknięciu procesu
+        /// </summary>
+        public object StopperSemaphore = null;
+
+        public PCB(int PID){
+            _PID = PID;
+        }
+
+        public override string ToString(){
+            return "[" + PID.ToString() + "] " + Name + ", stan=" + State.ToString() + ", priorytet=" + CurrentPriority.ToString();
         }
     }
 

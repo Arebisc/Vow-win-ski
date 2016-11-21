@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vow_win_ski.Processes
-{
-    delegate PCB CreateProcess(string Name, string ProgramFilePath);
-    delegate int TerminateProcess(ReasonOfProcessTerminating Reason, int ExitCode = 0, int PID = 0);
-    delegate void Run(PCB Process);
-    delegate PCB GetPCB(int PID);
-    delegate int EnterSMC();
-    delegate int LeaveSMC();
-    delegate int RemoveProcess(PCB Process);
+namespace Vow_win_ski.Processes{
+    public delegate PCB CreateProcess(string Name, int Priority, string ProgramFilePath);
+    public delegate int TerminateProcess(ReasonOfProcessTerminating Reason, int ExitCode = 0, PCB Process = null);
+    public delegate int Run(PCB Process);
+    public delegate PCB GetPCB(int PID);
+    public delegate int RemoveProcess(PCB Process);
+    public delegate void ShowMenu();   //wyświetla menu dla użytkownika, taki menedżer zadań
 }
