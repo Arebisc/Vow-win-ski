@@ -13,26 +13,26 @@ namespace Vow_win_ski.Test
         {
             //przygotowanie
             var frame1 = new Frame(1);
-            byte[] data = {0x22, 0x33, 0xaa, 0x76};
+            char[] data = {'2', '3', '6', '7'};
 
             //dzialnie
             frame1.WriteFrame(data);
 
             //Assercje
             Assert.AreEqual(frame1.ReadFrame().Length,4);
-            Assert.AreEqual(frame1.ReadFrame()[2],0xaa);
+            Assert.AreEqual(frame1.ReadFrame()[2],'6');
         }
 
         [TestMethod]
         public void CanClearData()
         {
             var frame1 = new Frame(4);
-            byte[] data = {1, 2, 0xaa, 45};
+            char[] data = {'1', '2','a', '4'};
 
             frame1.WriteFrame(data);
             frame1.ClearFrame();
 
-            Assert.AreEqual(frame1.ReadFrame()[10],0);
+            Assert.AreEqual(frame1.ReadFrame()[10],'0');
         }
     }
 }
