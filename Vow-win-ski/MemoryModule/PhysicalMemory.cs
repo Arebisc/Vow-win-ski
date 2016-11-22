@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vow_win_ski.Memory
+namespace Vow_win_ski.MemoryModule
 {
    public class PhysicalMemory
    {
@@ -13,6 +13,7 @@ namespace Vow_win_ski.Memory
 
        public PhysicalMemory()
        {
+            _memory=new List<Frame>();
            for (int i = 0; i < FramesCount; i++)
            {
                _memory.Add(new Frame());
@@ -26,6 +27,7 @@ namespace Vow_win_ski.Memory
 
        public void ShowMemory()
        {
+            Console.WriteLine("Tutaj");
            foreach (var frame in _memory)
            {
                frame.ShowFrame();

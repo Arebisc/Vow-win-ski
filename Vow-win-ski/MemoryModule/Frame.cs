@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Vow_win_ski.Memory
+namespace Vow_win_ski.MemoryModule
 {
     public class Frame
     {

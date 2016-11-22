@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Vow_win_ski.Memory
+namespace Vow_win_ski.MemoryModule
 {
     class ExchangeFile
     {
-        private List<ExchangeFileProcess> TakenProcesses;
+        private List<ExchangeFileProcess> _takenProcesses;
 
         public void PlaceIntoMemory(ExchangeFileProcess data)
         {
-            TakenProcesses.Add(data);
+            _takenProcesses.Add(data);
         }
 
         public void RemoveFromMemory(int id)
         {
-            TakenProcesses = TakenProcesses
+            _takenProcesses = _takenProcesses
                 .Select(x => x)
                 .Where(x => x.TakenProcessPages.Id != id)  
                 .ToList();

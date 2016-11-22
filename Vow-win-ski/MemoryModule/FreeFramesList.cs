@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vow_win_ski.Memory
+namespace Vow_win_ski.MemoryModule
 {
    public class FreeFramesList
    {
        private int _freeFramesCount;
        private List<int> _freeFrames;
 
-       public FreeFramesList(int FramesCount)
+       public FreeFramesList(int framesCount)
        {
-           _freeFramesCount = FramesCount;
+           _freeFramesCount = framesCount;
        }
        public void RemoveFromList(int pageCount)
        {

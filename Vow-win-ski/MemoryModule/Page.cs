@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vow_win_ski.Memory
+namespace Vow_win_ski.MemoryModule
 {
     public class Page
     {
@@ -15,7 +15,7 @@ namespace Vow_win_ski.Memory
         public void SetNumber(int number)
         {
             _frameIndex = number;
-            VaildInVaild = true;
+            VaildInVaild = false;
         }
 
         public int GetFrameNumber()

@@ -43,15 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Memory\ExchangeFile.cs" />
-    <Compile Include="Memory\ExchangeFileProcess.cs" />
-    <Compile Include="Memory\FifoQueue.cs" />
-    <Compile Include="Memory\Frame.cs" />
-    <Compile Include="Memory\FreeFramesList.cs" />
-    <Compile Include="Memory\Memory.cs" />
-    <Compile Include="Memory\Page.cs" />
-    <Compile Include="Memory\PhysicalMemory.cs" />
-    <Compile Include="Memory\ProcessPages.cs" />
+    <Compile Include="MemoryModule\ExchangeFile.cs" />
+    <Compile Include="MemoryModule\ExchangeFileProcess.cs" />
+    <Compile Include="MemoryModule\FifoQueue.cs" />
+    <Compile Include="MemoryModule\Frame.cs" />
+    <Compile Include="MemoryModule\FreeFramesList.cs" />
+    <Compile Include="MemoryModule\Memory.cs" />
+    <Compile Include="MemoryModule\Page.cs" />
+    <Compile Include="MemoryModule\PhysicalMemory.cs" />
+    <Compile Include="MemoryModule\ProcessPages.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

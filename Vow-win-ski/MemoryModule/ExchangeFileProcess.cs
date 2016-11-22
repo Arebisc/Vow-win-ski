@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vow_win_ski.Memory
+namespace Vow_win_ski.MemoryModule
 {
     class ExchangeFileProcess
     {
