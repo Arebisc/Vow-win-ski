@@ -52,12 +52,17 @@
     <Compile Include="MemoryModule\Page.cs" />
     <Compile Include="MemoryModule\PhysicalMemory.cs" />
     <Compile Include="MemoryModule\ProcessPages.cs" />
+    <Compile Include="Processes\Delegates.cs" />
+    <Compile Include="Processes\Managing.cs" />
+    <Compile Include="Processes\PCB.cs" />
+    <Compile Include="Processes\UserInterface.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
