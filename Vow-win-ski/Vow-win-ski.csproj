@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileSystem\Block.cs" />
+    <Compile Include="FileSystem\Disc.cs" />
+    <Compile Include="FileSystem\DiscCommander.cs" />
+    <Compile Include="FileSystem\File.cs" />
+    <Compile Include="FileSystem\Folder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
