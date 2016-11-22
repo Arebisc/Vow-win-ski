@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+
     <Compile Include="MemoryModule\ExchangeFile.cs" />
     <Compile Include="MemoryModule\ExchangeFileProcess.cs" />
     <Compile Include="MemoryModule\FifoQueue.cs" />
@@ -52,17 +55,26 @@
     <Compile Include="MemoryModule\Page.cs" />
     <Compile Include="MemoryModule\PhysicalMemory.cs" />
     <Compile Include="MemoryModule\ProcessPages.cs" />
+
+    <Compile Include="CPU\Delegates.cs" />
+    <Compile Include="CPU\Interpreter.cs" />
+    <Compile Include="CPU\Register.cs" />
+    <Compile Include="CPU\CPU.cs" />
+    <Compile Include="CPU\Scheduler.cs" />
+
     <Compile Include="Processes\Delegates.cs" />
     <Compile Include="Processes\Managing.cs" />
     <Compile Include="Processes\PCB.cs" />
     <Compile Include="Processes\UserInterface.cs" />
+    <Compile Include="IPC\Message.cs" />
+    <Compile Include="IPC\PipeClient.cs" />
+    <Compile Include="IPC\PipeServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
