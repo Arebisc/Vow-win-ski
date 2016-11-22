@@ -53,27 +53,29 @@ namespace Vow_win_ski.IPC
 
         }
         //===================================================================================================================================
-        public void Call(byte senderId)
+        public void Call()
         {
             data[0] = receiver;
             data[1] = clientId;
-            data[3] = senderId;
+           
             client.Write(data, 0, data.Length);
         }
         //===================================================================================================================================
-        public void Receive(byte senderId)
+        public bool Receive()
         {
-            int x;
-            Call(senderId);
-            x = client.ReadByte();
+            
+            byte[] temp = new byte[4];
+            Call();
+            client.Read(temp, 0, 4);
 
-            if (x != 0)
+            if (temp[0] != 0)
             {
-                Console.WriteLine("Odebrano wiadomosc: " + x);
+                Console.WriteLine("Odebrano wiadomosc: " + temp[2] + " Od procesu o ID: "+ temp[3]);
+                return true;
             }
             else
             {
-                //TODO
+                return false;
             }
 
 
