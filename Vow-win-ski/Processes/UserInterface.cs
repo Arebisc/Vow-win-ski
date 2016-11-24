@@ -15,7 +15,11 @@ namespace Vow_win_ski.Processes {
         /// Wyświetla menu, pozwalające użytkownikowi zarządzać procesami
         /// </summary>
         public static void ShowMenu() {
-
+		
+			//wyswietl liste wszystkich procesow
+			//wyswietl proces o PID
+			//wyswietl PCB procesu o ID
+		
         }
 
     }

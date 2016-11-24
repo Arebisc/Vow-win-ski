@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vow_win_ski.CPU;
+//using Vow_win_ski.CPU;
 
 namespace Vow_win_ski.Processes
 {
@@ -84,7 +84,7 @@ namespace Vow_win_ski.Processes
             //Dodaj do tablicy dzieci
 
             //Wczytaj program
-            string Program = GetFileData(ProgramFilePath);
+            string Program = ""; //GetFileData(ProgramFilePath);
             //Ilość wymaganej pamięci (pierwsza linia)
             string CountOfMemory_str = Program.Split('\n')[0].Split(',')[1].Trim();
             int CountOfMemory_int = Convert.ToInt32(CountOfMemory_str.Remove(CountOfMemory_str.Length - 1, 1)); //usun litere K
@@ -143,7 +143,7 @@ namespace Vow_win_ski.Processes
             Process.State = ProcessState.Ready;
             Console.WriteLine("Uruchomiono proces " + Process.ToString());
 
-            AddProcessToScheduler(Process);
+            //AddProcessToScheduler(Process);
             return 0;
         }
 
