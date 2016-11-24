@@ -64,9 +64,9 @@ namespace Vow_win_ski.MemoryModule
             return Byte;
         }
 
-        public void ChangeByte(int id,int index, char data)
+        public void ChangeByte(int index, char data)
         {
-            ChangeByteDel(id, index, data);
+            ChangeByteDel(Id, index, data);
         }
     }
 }

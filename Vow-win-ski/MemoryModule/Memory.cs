@@ -7,8 +7,8 @@ namespace Vow_win_ski.MemoryModule
 {
     public class Memory
     {
-        private const int FramesCount = 16;
-        private const int FramesSize = 16;
+        private const int FramesCount = 3;
+        private const int FramesSize = 4;
         private ExchangeFile _exchangeFile;
         private FifoQueue _fifoQueue;
         private PhysicalMemory _physicalMemory;
@@ -27,7 +27,7 @@ namespace Vow_win_ski.MemoryModule
         private char GetByte(int id, int index)
         {
             //Ustalenie numeru strony i offsetu
-            int pages = (int) Math.Ceiling((double) index/FramesSize);
+            int pages = index/FramesSize;
             int offset = index%FramesSize;
             //Poszukiwanie tablicy stron do danego procesu
             var process = ProcessPages.Select(x => x).SingleOrDefault(x => x.Id == id);
@@ -58,7 +58,7 @@ namespace Vow_win_ski.MemoryModule
                     //dodanie do kolejki FIFO nowego numeru ramki
                     _fifoQueue.AddFrame(new FrameData()
                     {
-                        FrameNumber = index,
+                        FrameNumber = indexprocessdata.FrameNumber,
                         Id = id
                     });
                     //wpisanie do pamieci nowej strony
@@ -79,7 +79,7 @@ namespace Vow_win_ski.MemoryModule
                     //dodanie do kolejki FIFO nowego numeru ramki
                     _fifoQueue.AddFrame(new FrameData()
                     {
-                        FrameNumber = index,
+                        FrameNumber = newFrameIndex,
                         Id = id
                     });
                     //wpisanie do pamieci nowej strony
@@ -100,12 +100,17 @@ namespace Vow_win_ski.MemoryModule
 
         public void AllocateMemory(PCB processData, char[] program)
         {
+            //obliczenie ilosci stron 
             int pages = (int) Math.Ceiling((double) program.Length/FramesSize);
+
+            //przypisnie Stron procesu i delegatow do Listy stron i do PCB
             ProcessPages temp = new ProcessPages(processData.PID, pages);
             temp.GetChar = GetByte;
             temp.ChangeByteDel = ChangeByte;
             ProcessPages.Add(temp);
             processData.MemoryBlocks = temp;
+
+            //uzupelnienie stron
             var frames = new List<Frame>();
             for (int i = 0; i < pages; i++)
             {
@@ -115,12 +120,16 @@ namespace Vow_win_ski.MemoryModule
                     .Take((program.Length - FramesSize*i < FramesSize) ? program.Length - FramesSize*i : FramesSize)
                     .ToArray());
             }
+
+            //Dodanie danych do pliku wymiany
             ExchangeFileProcess newProcess = new ExchangeFileProcess()
             {
                 TakenProcessPages = temp,
                 TakenFrames = frames
             };
             _exchangeFile.PlaceIntoMemory(newProcess);
+
+            //sprawdzenie czy mozna dodac pierwsza strone do pamieci
             if (_freeFramesList.FreeFramesCount >= 1)
             {
                 int index = _freeFramesList.RemoveFromList();
@@ -189,7 +198,7 @@ namespace Vow_win_ski.MemoryModule
         public void ChangeByte(int id, int index, char data)
         {
             //Ustalenie numeru strony i offsetu
-            int pages = (int) Math.Ceiling((double) index/FramesSize);
+            int pages = index/FramesSize;
             int offset = index%FramesSize;
             //Poszukiwanie tablicy stron do danego procesu
             var process = ProcessPages.Select(x => x).SingleOrDefault(x => x.Id == id);
@@ -220,7 +229,7 @@ namespace Vow_win_ski.MemoryModule
                     //dodanie do kolejki FIFO nowego numeru ramki
                     _fifoQueue.AddFrame(new FrameData()
                     {
-                        FrameNumber = index,
+                        FrameNumber = indexprocessdata.FrameNumber,
                         Id = id
                     });
                     //wpisanie do pamieci nowej strony
@@ -241,7 +250,7 @@ namespace Vow_win_ski.MemoryModule
                     //dodanie do kolejki FIFO nowego numeru ramki
                     _fifoQueue.AddFrame(new FrameData()
                     {
-                        FrameNumber = index,
+                        FrameNumber = newFrameIndex,
                         Id = id
                     });
                     //wpisanie do pamieci nowej strony

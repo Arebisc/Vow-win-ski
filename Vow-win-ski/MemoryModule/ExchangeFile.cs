@@ -7,6 +7,11 @@ namespace Vow_win_ski.MemoryModule
     {
         private List<ExchangeFileProcess> _takenProcesses;
 
+
+        public ExchangeFile()
+        {
+            _takenProcesses = new List<ExchangeFileProcess>();
+        }
         public void PlaceIntoMemory(ExchangeFileProcess data)
         {
             _takenProcesses.Add(data);

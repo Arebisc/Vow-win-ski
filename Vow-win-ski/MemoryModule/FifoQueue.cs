@@ -12,6 +12,11 @@ namespace Vow_win_ski.MemoryModule
    {
         private List<FrameData> _queue;
 
+
+       public FifoQueue()
+       {
+           _queue = new List<FrameData>();
+       }
        public void AddFrame(FrameData data)
        {
            _queue.Add(data);
