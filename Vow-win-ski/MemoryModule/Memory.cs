@@ -7,8 +7,8 @@ namespace Vow_win_ski.MemoryModule
 {
     public class Memory
     {
-        private const int FramesCount = 3;
-        private const int FramesSize = 4;
+        private const int FramesCount = 16;
+        private const int FramesSize = 16;
         private ExchangeFile _exchangeFile;
         private FifoQueue _fifoQueue;
         private PhysicalMemory _physicalMemory;
