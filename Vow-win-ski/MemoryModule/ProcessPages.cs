@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vow_win_ski.MemoryModule
 {
@@ -11,32 +9,64 @@ namespace Vow_win_ski.MemoryModule
         public int Id;
         private List<Page> TakenPages;
 
-        public delegate void EmptyPageDelegate(int id,int number);
-        public EmptyPageDelegate EmptyPage;
+        public delegate char GetCharDelegate(int id,int number);
+        public GetCharDelegate GetChar;
 
-        public ProcessPages()
+        public delegate void ChangeByteDelegate(int id, int number, char data);
+
+        public ChangeByteDelegate ChangeByteDel;
+
+        public ProcessPages(int id,int framesCount)
         {
+            Id = id;
             TakenPages=new List<Page>();
-            AddPage(new Page());
+            for(int i=0;i<framesCount;i++)
+            TakenPages.Add(new Page());
         }
 
-        public void AddPage(Page page)
+        public void AddFrame(int pageNumber,int frameNumber)
         {
-            TakenPages.Add(page);
+            TakenPages[pageNumber].SetNumber(frameNumber);
+            TakenPages[pageNumber].VaildInVaild = true;
+        }
+
+        public void RemoveFrame(int frameNumber)
+        {
+            foreach (Page page in TakenPages)
+            {
+                if (page.GetFrameNumber() == frameNumber)
+                {
+                    page.VaildInVaild = false;
+                }
+            }
+        }
+
+        public bool IsPageInMemory(int pageNumber)
+        {
+            return TakenPages[pageNumber].VaildInVaild;
+        }
+
+        public int[] ReadFrameNumbers()
+        {
+            var frames = TakenPages.Where(x => x.VaildInVaild).Select(x => x.GetFrameNumber()).ToArray();
+            return frames;
+        }
+
+        public int ReadFrameNumber(int pageNumber)
+        {
+            int frameNumber = TakenPages[pageNumber].GetFrameNumber();
+            return frameNumber;
         }
 
         public char ReadByte(int index)
         {
-            return '0';
+            char Byte = GetChar(Id, index);
+            return Byte;
         }
 
-        public void ChangeByte(int index, char data)
+        public void ChangeByte(int id,int index, char data)
         {
-            int page = (int)Math.Ceiling((double)index/16);
-            if (!TakenPages[page].VaildInVaild)
-            {
-                EmptyPage(Id,page);
-            }
+            ChangeByteDel(id, index, data);
         }
     }
 }

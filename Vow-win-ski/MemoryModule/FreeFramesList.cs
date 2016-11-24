@@ -1,30 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vow_win_ski.MemoryModule
 {
    public class FreeFramesList
    {
-       private int _freeFramesCount;
+       public int FreeFramesCount;
        private List<int> _freeFrames;
 
        public FreeFramesList(int framesCount)
        {
-           _freeFramesCount = framesCount;
+           FreeFramesCount = framesCount;
+            for(int i=0;i<framesCount;i++)
+                _freeFrames.Add(i);
        }
-       public void RemoveFromList(int pageCount)
+       public int RemoveFromList()
        {
-           if (_freeFramesCount >= pageCount)
-           {
-               _freeFramesCount -= pageCount;
+               int number = _freeFrames[0];
+               FreeFramesCount -= 1;
                _freeFrames = _freeFrames
                    .Select(x => x)
-                   .Skip(pageCount)
+                   .Skip(1)
                    .ToList();
-           }
+               return number;
        }
 
        public void AddToList(int frameNumber)

@@ -5,13 +5,14 @@ namespace Vow_win_ski.MemoryModule
 {
     public class Frame
     {
-        private const int FrameSize = 16;
+        private int _frameSize;
         private readonly char[] _fields;
         public int Offset;
 
-        public Frame()
+        public Frame(int frameSize)
         {
-            _fields = new char[FrameSize];
+            _frameSize = frameSize;
+            _fields = new char[_frameSize];
             ClearFrame();
             Offset = 0;
         }
@@ -42,6 +43,16 @@ namespace Vow_win_ski.MemoryModule
             {
                 Console.WriteLine(field);
             }
+        }
+
+        public char GetByte(int index)
+        {
+            return _fields[index];
+        }
+
+        public void ChangeByte(int index, char data)
+        {
+            _fields[index] = data;
         }
     }
 }

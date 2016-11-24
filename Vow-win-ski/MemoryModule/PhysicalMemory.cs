@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vow_win_ski.MemoryModule
 {
    public class PhysicalMemory
    {
-       private const int FramesCount = 32;
-       private List<Frame> _memory;
+       private int _framesCount;
+       private int _framesSize;
+       private readonly List<Frame> _memory;
 
-       public PhysicalMemory()
+       public PhysicalMemory(int framesCount,int framesSize)
        {
+           _framesCount = framesCount;
+           _framesSize = framesSize;
             _memory=new List<Frame>();
-           for (int i = 0; i < FramesCount; i++)
+           for (int i = 0; i < _framesCount; i++)
            {
-               _memory.Add(new Frame());
+               _memory.Add(new Frame(_framesSize));
            }
        }
 

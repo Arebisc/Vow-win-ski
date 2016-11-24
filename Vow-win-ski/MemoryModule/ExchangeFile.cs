@@ -19,5 +19,11 @@ namespace Vow_win_ski.MemoryModule
                 .Where(x => x.TakenProcessPages.Id != id)  
                 .ToList();
         }
+
+        public char[] ReadFromExchangeFile(int id,int pageNumber)
+        {
+            var data = _takenProcesses.Select(x => x).SingleOrDefault(x => x.TakenProcessPages.Id == id);
+            return data?.TakenFrames[pageNumber].ReadFrame();
+        }
     }
 }

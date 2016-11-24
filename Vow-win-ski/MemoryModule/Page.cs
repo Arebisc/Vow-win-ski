@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Vow_win_ski.MemoryModule
+﻿namespace Vow_win_ski.MemoryModule
 {
     public class Page
     {
@@ -12,10 +6,16 @@ namespace Vow_win_ski.MemoryModule
         public bool VaildInVaild;
         public bool IsModified;
 
+
+        public Page()
+        {
+            VaildInVaild = false;
+            IsModified = false;
+        }
         public void SetNumber(int number)
         {
             _frameIndex = number;
-            VaildInVaild = false;
+            VaildInVaild = true;
         }
 
         public int GetFrameNumber()
