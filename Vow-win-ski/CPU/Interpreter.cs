@@ -34,6 +34,5 @@ namespace Vow_win_ski.CPU
         {
             throw new NotImplementedException();
         }
-
     }
 }
