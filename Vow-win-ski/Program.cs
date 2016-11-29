@@ -17,9 +17,7 @@ namespace Vow_win_ski
     {
         static void Main(string[] args)
         {
-            CPU.CPU.GetInstance.DisplayDebug();
 
-            Console.ReadKey();
         }
     }
 }

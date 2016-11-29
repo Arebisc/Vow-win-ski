@@ -7,8 +7,8 @@ namespace Vow_win_ski.MemoryModule
 {
     public class Memory
     {
-        private const int FramesCount = 4;
-        private const int FramesSize = 4;
+        private const int FramesCount = 16;
+        private const int FramesSize = 16;
         private ExchangeFile _exchangeFile;
         private FifoQueue _fifoQueue;
         private PhysicalMemory _physicalMemory;
@@ -333,6 +333,49 @@ namespace Vow_win_ski.MemoryModule
                 Console.Write("Ramka nr "+i+": ");
                 _physicalMemory.ShowFrame(i);
             }
+        }
+
+        public void TestFillMemory(PCB testProcessData)
+        {
+            const int ProcessId = 1;
+            char[] data= {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
+                'r','s','t','u','v','w','x','y','z','a', 'b', 'c', 'd', 'e', 'f', 'g',
+                'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'x',
+                'y', 'z','a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm','n',
+                'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a','b', 'c', 'd', 'e',
+                'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n','o', 'p', 'r', 's', 't', 'u', 'v',
+                'w', 'x', 'y', 'z', 'a', 'b','c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+                'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c',
+                'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't',
+                'u', 'v', 'w', 'x', 'y', 'z','a','b','c','d','e','f','g','h','i','j',
+                'k','l','m','n','o','p','r','s','t','u','v','w','x','y','z','a',
+                'b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','r',
+                's','t','u','v','w','x','y','z','a','b','c','d','e','f','g','h',
+                'i','j','k','l','m','n','o','p','r','s','t','u','v','w','x','y',
+                'z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
+                'p','r','s','t','u','v','w','x','y','z','a','b','c','d','e','f'};
+            AllocateMemory(testProcessData,data);
+            for (int i = 0; i < FramesCount; i++)
+            {
+                GetByte(ProcessId, i*FramesSize);
+            }
+        }
+
+        public void TestCleanMemory()
+        {
+            for (int i = 0; i < ProcessPages.Count; i++)
+            {
+                var frames = ProcessPages[i].ReadFrameNumbers();
+
+                foreach (var frame in frames)
+                {
+                    _freeFramesList.AddToList(frame);
+                    _physicalMemory.GetFrame(frame).ClearFrame();
+                    _fifoQueue.RemoveChoosenProcess(ProcessPages[i].Id);
+                    _exchangeFile.RemoveFromMemory(ProcessPages[i].Id);
+                }
+            }
+            ProcessPages = new List<ProcessPages>();
         }
     }
 }
