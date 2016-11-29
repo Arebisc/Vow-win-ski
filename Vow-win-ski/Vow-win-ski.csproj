@@ -51,6 +51,7 @@
     <Compile Include="CPU\CPU.cs" />
     <Compile Include="CPU\Scheduler.cs" />
     <Compile Include="Processes\Delegates.cs" />
+    <Compile Include="Processes\Lockers.cs" />
     <Compile Include="Processes\Managing.cs" />
     <Compile Include="Processes\PCB.cs" />
     <Compile Include="Processes\UserInterface.cs" />
