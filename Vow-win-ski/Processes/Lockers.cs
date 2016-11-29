@@ -13,7 +13,7 @@ namespace Vow_win_ski.Processes
         private int id;
         PCB proces;
 
-        
+
 
         public void Lock(PCB Proces)
         {
