@@ -41,8 +41,9 @@ namespace Vow_win_ski.MemoryModule
         {
             foreach (var field in _fields)
             {
-                Console.WriteLine(field);
+                Console.Write(field+" ");
             }
+            Console.WriteLine("");
         }
 
         public char GetByte(int index)

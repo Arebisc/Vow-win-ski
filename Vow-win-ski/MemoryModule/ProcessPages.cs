@@ -7,18 +7,19 @@ namespace Vow_win_ski.MemoryModule
     public class ProcessPages
     {
         public int Id;
+        public int PagesCount;
         private List<Page> TakenPages;
 
         public delegate char GetCharDelegate(int id,int number);
         public GetCharDelegate GetChar;
 
         public delegate void ChangeByteDelegate(int id, int number, char data);
-
         public ChangeByteDelegate ChangeByteDel;
 
         public ProcessPages(int id,int framesCount)
         {
             Id = id;
+            PagesCount = framesCount;
             TakenPages=new List<Page>();
             for(int i=0;i<framesCount;i++)
             TakenPages.Add(new Page());

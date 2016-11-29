@@ -7,8 +7,8 @@ namespace Vow_win_ski.MemoryModule
 {
     public class Memory
     {
-        private const int FramesCount = 16;
-        private const int FramesSize = 16;
+        private const int FramesCount = 4;
+        private const int FramesSize = 4;
         private ExchangeFile _exchangeFile;
         private FifoQueue _fifoQueue;
         private PhysicalMemory _physicalMemory;
@@ -266,6 +266,72 @@ namespace Vow_win_ski.MemoryModule
 
 
                 }
+            }
+        }
+
+        public void DisplayPageList(int id)
+        {
+            try
+            {
+                ProcessPages pages = ProcessPages.SingleOrDefault(x => x.Id == id);
+
+                for (int i = 0; i < pages.PagesCount; i++)
+                {
+                    if (pages.IsPageInMemory(i))
+                    {
+                        Console.WriteLine("Strona " + i + " znajduje się w ramce nr " + pages.ReadFrameNumber(i));
+                    }
+                    else
+                    {
+                        Console.WriteLine("Strona " + i + " nie ma przypisanej ramki.");
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Tego procesu nie ma w pamięci");
+            }
+        }
+
+        public void DisplayPageContent(int id, int number)
+        {
+            try
+            {
+                ProcessPages pages = ProcessPages.FirstOrDefault(x => x.Id == id);
+
+                if (pages.IsPageInMemory(number))
+                {
+                    Console.WriteLine("Zawarość ramki nr: "+number);
+                    _physicalMemory.GetFrame(pages.ReadFrameNumber(number)).ShowFrame();
+                }
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Nie ma danego procesu w pamieci.");
+            }
+        }
+
+        public void DisplayFreeFrames()
+        {
+            if (_freeFramesList.FreeFramesCount == 0)
+            {
+                Console.WriteLine("Brak wolnych ramek.");
+            }
+            else
+            {
+                Console.WriteLine("Lista wolnych ramek.");
+                _freeFramesList.DisplayFreeFrames();
+            }
+        }
+
+        public void DisplayPhysicalMemory()
+        {
+            Console.WriteLine("Wyświetlenie całej pamięci.");
+            for (int i = 0; i < FramesCount; i++)
+            {
+                Console.Write("Ramka nr "+i+": ");
+                _physicalMemory.ShowFrame(i);
             }
         }
     }

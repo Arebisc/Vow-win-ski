@@ -40,7 +40,8 @@ namespace Vow_win_ski.MemoryModule
        }
 
        public void SetFrame(int index, char[] data)
-       {
+       {    
+           _memory[index].ClearFrame();
            _memory[index].WriteFrame(data);
        }
    }

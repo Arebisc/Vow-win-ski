@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Vow_win_ski.MemoryModule
@@ -25,12 +26,19 @@ namespace Vow_win_ski.MemoryModule
            FreeFramesCount = _freeFrames.Count;
                return number;
        }
-
        public void AddToList(int frameNumber)
        {
             
            _freeFrames.Add(frameNumber);
            FreeFramesCount = _freeFrames.Count;
+       }
+
+       public void DisplayFreeFrames()
+       {
+           foreach (var frame in _freeFrames)
+           {
+              Console.WriteLine(frame);
+           }
        }
    }
 }

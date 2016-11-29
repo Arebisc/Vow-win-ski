@@ -22,9 +22,9 @@ namespace Vow_win_ski
             PCB pcb2 = new PCB(2);
             PCB pcb3 = new PCB(3);
 
-            char[] program = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j','k','l','m','n','o'};
-            char[] program1 = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j','k','l','m','n','o'};
-            char[] program2 = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j','k','l','m','n','o'};
+            char[] program = {'B', 'a', 'r', 't', 'o', 's', 'z', 'e', 'k', 'T','o','C','h','u','j'};
+            char[] program1 = { 'B', 'a', 'r', 't', 'o', 's', 'z', 'e', 'k', 'T', 'o', 'C', 'h', 'u', 'j' };
+            char[] program2 = { 'B', 'a', 'r', 't', 'o', 's', 'z', 'e', 'k', 'T', 'o', 'C', 'h', 'u', 'j' };
 
             pamiec.AllocateMemory(pcb,program);
             pamiec.AllocateMemory(pcb2,program1);
@@ -51,17 +51,11 @@ namespace Vow_win_ski
             var Char8 = data1.ReadByte(12);
 
 
+            pamiec.DisplayFreeFrames();
+            pamiec.DisplayPageContent(pcb2.PID,1);
+            pamiec.DisplayPhysicalMemory();
+            pamiec.DisplayPageList(pcb2.PID);
 
-
-            Console.WriteLine(Char);
-            Console.WriteLine(Char1);
-            Console.WriteLine(Char2);
-            Console.WriteLine(Char3);
-            Console.WriteLine(Char4);
-            Console.WriteLine(Char5);
-            Console.WriteLine(Char6);
-            Console.WriteLine(Char7);
-            Console.WriteLine(Char8);
 
 
             Console.ReadKey();
