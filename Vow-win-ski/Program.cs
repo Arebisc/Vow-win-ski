@@ -17,12 +17,7 @@ namespace Vow_win_ski
     {
         static void Main(string[] args)
         {
-            CPU.CPU.GetInstance.DisplayDebug();
 
-            pamiec.DisplayPhysicalMemory();
-            pamiec.DisplayFreeFrames();
-            pamiec.DisplayPageList(1);
-            Console.ReadKey();
         }
     }
 }
