@@ -5,7 +5,6 @@ namespace FileSystem
 {
     class DiscCommander
     {
-
         public void OpenShell(Disc disc)
         {
             bool breakLoop = false;
