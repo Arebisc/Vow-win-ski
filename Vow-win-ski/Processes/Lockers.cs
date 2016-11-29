@@ -65,7 +65,7 @@ namespace Vow_win_ski.Processes
             }
             else
             {
-                waiting.Enqueue(proces);
+                waiting.Enqueue(Proces);
                 proces.State = Vow_win_ski.Processes.ProcessState.Waiting;
             }
         }
