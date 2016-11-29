@@ -18,7 +18,7 @@ namespace Vow_win_ski.IPC
         private const byte receiver = 1;
         private const byte disconnecter = 2;
 
-        // Flagi do ustawienia stanu serwera
+
 
         //===================================================================================================================================
         public PipeClient(byte clientId)
@@ -26,22 +26,22 @@ namespace Vow_win_ski.IPC
             client = new NamedPipeClientStream(".", "SERWER", PipeDirection.InOut);
             Console.WriteLine("Utworzono Clienta IPC o ID:" + clientId);
             this.clientId = clientId;
-            Connect();
-
-            // MARCIN: Konstruktor wywolany gdy PROCES wejdzie w stan RUNNING. Podaj ID procesu w którym będzie siedział klient jako argument.
-
         }
         //===================================================================================================================================
         public void Connect()
         {
-            client.Connect();
+
             if (client.IsConnected)
             {
                 Console.WriteLine("Client polaczony z serwerem");
             }
+            else
+            {
+                client.Connect();
+            }
         }
         //===================================================================================================================================
-        public void Send(byte receiverId, byte message)
+        public void _send(byte receiverId, byte message)
         {
             data[0] = sender;
             data[1] = receiverId;
@@ -49,7 +49,7 @@ namespace Vow_win_ski.IPC
             data[3] = clientId;
             client.Write(data, 0, data.Length);
 
-            // MICHAŁ: Metoda do wysyłania komunikatu. Pierwszy argument to ID odbiorcy, drugi to wiadomosc.
+
 
         }
         //===================================================================================================================================
@@ -57,20 +57,20 @@ namespace Vow_win_ski.IPC
         {
             data[0] = receiver;
             data[1] = clientId;
-           
+
             client.Write(data, 0, data.Length);
         }
         //===================================================================================================================================
-        public bool Receive()
+        public bool _receive()
         {
-            
+
             byte[] temp = new byte[4];
             Call();
             client.Read(temp, 0, 4);
 
             if (temp[0] != 0)
             {
-                Console.WriteLine("Odebrano wiadomosc: " + temp[2] + " Od procesu o ID: "+ temp[3]);
+                Console.WriteLine("Odebrano wiadomosc: " + temp[2] + " Od procesu o ID: " + temp[3]);
                 return true;
             }
             else
@@ -80,17 +80,18 @@ namespace Vow_win_ski.IPC
 
 
 
-            // MICHAŁ: Metoda do odebrania komunikatu. Argumentem jest ID procesu od którego chcemy odebrać komunikat.
-            // Na razie wiadomosc wypisuje tylko do konsoli, bo nie mam pojecia czy bedzie jakos wykorzystywana
+
         }
         //===================================================================================================================================
         public void Disconnect()
         {
-            data[0] = disconnecter;
-            client.Write(data, 0, data.Length);
 
-            // MARCIN: Gdy proces skończy być running wywołaj tą metodę, aby rozłączyć clienta z serwerem
-
+            if (client.IsConnected)
+            {
+                data[0] = disconnecter;
+                client.Write(data, 0, data.Length);
+            }
+          
         }
         //===================================================================================================================================
     }

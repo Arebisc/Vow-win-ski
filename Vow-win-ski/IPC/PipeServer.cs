@@ -12,16 +12,16 @@ namespace Vow_win_ski.IPC
     class PipeServer
     {
         private NamedPipeServerStream Server;
-        private List<Message> Messages; // Kolejka wiadomosci
+        private List<Message> Messages; 
         private Thread thread;
-        private byte[] data; //Przechowkuje w [0] - Jeśli value=0 serwer czyta, jeśli value=1 serwer pisze | [1] - Idodbiorcy | [2] - komunikat | [3] - Idnadawcy
+        private byte[] data; 
 
         //===================================================================================================================================
         private const byte sender = 1;
         private const byte receiver = 0;
         private const byte disconnecter = 2;
 
-        //Flagi do ustawienia stanu Serwera
+       
 
         //===================================================================================================================================
         public PipeServer()
@@ -30,7 +30,7 @@ namespace Vow_win_ski.IPC
             Console.WriteLine("Utworzono Serwer IPC");
             Start();
 
-            // MICHAŁ: Konstruktor wywołany wraz ze startem systemu i to tyle jeśli chodzi o SERWER.
+           
 
         }
         //===================================================================================================================================
@@ -51,20 +51,20 @@ namespace Vow_win_ski.IPC
         //===================================================================================================================================
         public void StoreMessage()
         {
-            Messages.Add(new Message(data[1], data[2], data[3])); // Zapisywanie do listy 
+            Messages.Add(new Message(data[1], data[2], data[3])); 
         }
         //===================================================================================================================================
         public void Switch()
         {
-            if (data[0] == receiver) // Stan odczytu wiadomosci
+            if (data[0] == receiver) 
             {
                 StoreMessage();
             }
-            else if (data[0] == sender) // Stan zapisu wiadomosci
+            else if (data[0] == sender) 
             {
                 ServerWriter(data[1], data[3]);
             }
-            else if (data[0] == disconnecter) // Stan rozlaczenia 
+            else if (data[0] == disconnecter) 
             {
                 Server.Disconnect();
                 Console.WriteLine("Client rozlaczony z serwerem");
@@ -87,7 +87,7 @@ namespace Vow_win_ski.IPC
                 for (int i = 0; i < Messages.Count; i++)
                 {
 
-                    if (Messages[i].GetReceiverId() == receiverId) // Czy zgadza się Id odbiorcy 
+                    if (Messages[i].GetReceiverId() == receiverId) 
                     {
                         Console.WriteLine("Serwer wyslal dane");
                         temp[0] = 1;
@@ -124,7 +124,7 @@ namespace Vow_win_ski.IPC
             }
         }
 
-        // Inicjalizacja i Główna pętla serwera
+       
 
         //===================================================================================================================================
         public void Start()
@@ -133,5 +133,6 @@ namespace Vow_win_ski.IPC
             thread.Start();
         }
         //===================================================================================================================================
+       
     }
 }
