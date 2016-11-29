@@ -5,6 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using FileSystem;
 using FileSystem.FileSystem;
+using Vow_win_ski.MemoryModule;
+using System.Threading;
+using Vow_win_ski.CPU;
+using Vow_win_ski.IPC;
+using Vow_win_ski.Processes;
 
 namespace Vow_win_ski
 {
@@ -12,9 +17,8 @@ namespace Vow_win_ski
     {
         static void Main(string[] args)
         {
-            Disc disc = args.Length > 0 ? new Disc(int.Parse(args[0])) : new Disc();
-            DiscCommander discCommander = new DiscCommander();
-            discCommander.OpenShell(disc);
+            CPU.CPU.GetInstance.DisplayDebug();
+
             Console.ReadKey();
         }
     }
