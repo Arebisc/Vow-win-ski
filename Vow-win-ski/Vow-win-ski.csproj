@@ -45,6 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+
+    <Compile Include="MemoryModule\ExchangeFile.cs" />
+    <Compile Include="MemoryModule\ExchangeFileProcess.cs" />
+    <Compile Include="MemoryModule\FifoQueue.cs" />
+    <Compile Include="MemoryModule\Frame.cs" />
+    <Compile Include="MemoryModule\FreeFramesList.cs" />
+    <Compile Include="MemoryModule\Memory.cs" />
+    <Compile Include="MemoryModule\Page.cs" />
+    <Compile Include="MemoryModule\PhysicalMemory.cs" />
+    <Compile Include="MemoryModule\ProcessPages.cs" />
     <Compile Include="CPU\Delegates.cs" />
     <Compile Include="CPU\Interpreter.cs" />
     <Compile Include="CPU\Register.cs" />
@@ -58,6 +68,11 @@
     <Compile Include="IPC\Message.cs" />
     <Compile Include="IPC\PipeClient.cs" />
     <Compile Include="IPC\PipeServer.cs" />
+    <Compile Include="FileSystem\Block.cs" />
+    <Compile Include="FileSystem\Disc.cs" />
+    <Compile Include="FileSystem\DiscCommander.cs" />
+    <Compile Include="FileSystem\File.cs" />
+    <Compile Include="FileSystem\Folder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
