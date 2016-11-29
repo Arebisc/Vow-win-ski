@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-
     <Compile Include="MemoryModule\ExchangeFile.cs" />
     <Compile Include="MemoryModule\ExchangeFileProcess.cs" />
     <Compile Include="MemoryModule\FifoQueue.cs" />
@@ -62,7 +61,8 @@
     <Compile Include="CPU\Scheduler.cs" />
     <Compile Include="Processes\Delegates.cs" />
     <Compile Include="Processes\Managing.cs" />
-    <Compile Include="Processes\PCB.cs" />
+    <Compile Include="Processes\PCB_fields.cs" />
+    <Compile Include="Processes\PCB_methods.cs" />
     <Compile Include="Processes\UserInterface.cs" />
     <Compile Include="IPC\Message.cs" />
     <Compile Include="IPC\PipeClient.cs" />

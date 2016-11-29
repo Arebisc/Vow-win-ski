@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vow_win_ski.CPU;
+using Vow_win_ski.IPC;
 
 namespace Vow_win_ski.Processes{
 
@@ -36,7 +37,7 @@ namespace Vow_win_ski.Processes{
     }
 
 
-    public class PCB{
+    public partial class PCB {
         /// <remarks>0 - najwyższy priorytet, 7 - najniższy</remarks>
         public int CurrentPriority = 7;
 
@@ -63,8 +64,8 @@ namespace Vow_win_ski.Processes{
         /// </summary>
         private int _PID;
 
-        public byte PID{
-            get{
+        public byte PID {
+            get {
                 return (byte)_PID;
             }
         }
@@ -86,7 +87,7 @@ namespace Vow_win_ski.Processes{
         /// Semafor oczekiwania na komunikat od innego procesu
         /// Jest opisane w książce z Moodle gdzieś na początku, w opisie pól PCB
         /// </summary>
-        public object ReceiverMessageSemaphore = null;
+        public int ReceiverMessageSemaphore = 0;
 
         /// <summary>
         /// Semafor oczekiwania na zatrzymanie - jeśli zatrzymywany proces
@@ -95,13 +96,13 @@ namespace Vow_win_ski.Processes{
         /// </summary>
         public object StopperSemaphore = null;
 
-        public PCB(int PID){
-            _PID = PID;
-        }
+        /// <summary>
+        /// Klient do odbioru wiadomosci
+        /// </summary>
+        PipeClient client = null;
 
-        public override string ToString(){
-            return "[" + PID.ToString() + "] " + Name + ", stan=" + State.ToString() + ", priorytet=" + CurrentPriority.ToString();
-        }
+
+
     }
 
 }
