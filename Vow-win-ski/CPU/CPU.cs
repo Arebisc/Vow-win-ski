@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FileSystem.FileSystem;
 
 namespace Vow_win_ski.CPU
 {
@@ -39,7 +40,7 @@ namespace Vow_win_ski.CPU
         public void DisplayDebug()
         {
             int debugChosen = 0;
-
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("---------------DEBUG---------------");
             Console.WriteLine("1. Wyświetl listę procesów Ready");
             Console.WriteLine("2. Wyświetl listę wszystkich procesów");
@@ -57,7 +58,11 @@ namespace Vow_win_ski.CPU
             Console.WriteLine("14. Przejdź do kolejnego rozkazu");
             Console.WriteLine("15. Wykonaj resztę programu");
             Console.WriteLine("---------------DEBUG---------------");
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("Wpisz akcję: ");
+
+
+
             try
             {
                 debugChosen = Convert.ToInt32(Console.ReadLine());
