@@ -5,13 +5,13 @@ namespace FileSystem
 {
     class DiscCommander
     {
-        public void OpenShell(Disc disc)
+        public void OpenShell()
         {
             bool breakLoop = false;
             while (!breakLoop)
             {
                 Console.WriteLine();
-                Console.Write(disc.CurrentFolder.PathToFolder + ">");
+                Console.Write(Disc.GetDisc.CurrentFolder.PathToFolder + ">");
                 string path = "";
                 string parameters = "";
                 string cmd = "";
@@ -49,36 +49,36 @@ namespace FileSystem
                         break;
                     case "DIR":
                     case "LS":
-                        disc.ShowDirectory(path);
+                        Disc.GetDisc.ShowDirectory(path);
                         break;
                     case "MKDIR":
                     case "MD":
-                        disc.CreateFolder(path);
+                        Disc.GetDisc.CreateFolder(path);
                         break;
                     case "RMDIR":
                     case "RD":
-                        disc.DeleteFolder(path);
+                        Disc.GetDisc.DeleteFolder(path);
                         break;
                     case "CD":
-                        disc.ChangeDirectory(path);
+                        Disc.GetDisc.ChangeDirectory(path);
                         break;
                     case "CF":
-                        disc.CreateFile(path, parameters);
+                        Disc.GetDisc.CreateFile(path, parameters);
                         break;
                     case "TYPE":
-                        Console.WriteLine(disc.GetFileData(path) ?? "Error reading file");
+                        Console.WriteLine(Disc.GetDisc.GetFileData(path) ?? "Error reading file");
                         break;
                     case "DF":
-                        disc.DeleteFile(path);
+                        Disc.GetDisc.DeleteFile(path);
                         break;
                     case "TREE":
-                        disc.ShowTree(path);
+                        Disc.GetDisc.ShowTree(path);
                         break;
                     case "APP":
-                        disc.AppendToFile(path, parameters);
+                        Disc.GetDisc.AppendToFile(path, parameters);
                         break;
                     case "DDB":
-                        disc.DisplayDataBlocks();
+                        Disc.GetDisc.DisplayDataBlocks();
                         break;
                     case "":
                         break;

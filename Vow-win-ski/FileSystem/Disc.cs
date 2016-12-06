@@ -14,37 +14,58 @@ namespace FileSystem.FileSystem
 {
     class Disc
     {
+        private static volatile Disc instance;
+        private static object syncRoot = new object();
+
         private readonly int _blockSize = 32;
-        private readonly int _numberOfBlocks;
+        public static int NumberOfBlocks = -1;
         private Block[] _blocks;
         private BitArray _occupiedBlocksArray;
         private Folder _rootFolder;
         public Folder CurrentFolder { get; private set; }
 
-        public Disc()
+        public static Disc GetDisc
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (syncRoot)
+                    {
+                        if (instance == null)
+                        {
+                            instance = NumberOfBlocks == -1 ? new Disc() : new Disc(NumberOfBlocks);
+                        }
+                    }
+                }
+                return instance;
+            }
+        }
+
+        private Disc()
         {
             Console.WriteLine("Creating disc with the default blocks number (32).");
-            _numberOfBlocks = 32;
-            _blocks = new Block[_numberOfBlocks].Select(h => new Block()).ToArray(); //initialize elements in array
-            _occupiedBlocksArray = new BitArray(_numberOfBlocks);
+            NumberOfBlocks = 32;
+            _blocks = new Block[NumberOfBlocks].Select(h => new Block()).ToArray(); //initialize elements in array
+            _occupiedBlocksArray = new BitArray(NumberOfBlocks);
             _rootFolder = new Folder();
             CurrentFolder = _rootFolder;
         }
 
-        public Disc(int numberOfblocks)
+        private Disc(int numberOfblocks)
         {
             if (numberOfblocks < 2 || numberOfblocks >= 255)
             {
-                _numberOfBlocks = 32;
+                NumberOfBlocks = 32;
                 Console.WriteLine("Disc parameter was invalid. Creating disc with the default blocks number (32).");
             }
             else
             {
                 Console.WriteLine("Creating disc with custom block numer: " + numberOfblocks);
-                _numberOfBlocks = numberOfblocks;
+                NumberOfBlocks = numberOfblocks;
             }
-            _blocks = new Block[_numberOfBlocks].Select(h => new Block()).ToArray(); //initialize elements in array
-            _occupiedBlocksArray = new BitArray(_numberOfBlocks);
+            _blocks = new Block[NumberOfBlocks].Select(h => new Block()).ToArray(); //initialize elements in array
+            _occupiedBlocksArray = new BitArray(NumberOfBlocks);
             _rootFolder = new Folder();
             CurrentFolder = _rootFolder;
         }
@@ -197,12 +218,12 @@ namespace FileSystem.FileSystem
 
         public void DisplayDataBlocks()
         {
-            Console.WriteLine("\nNumber of blocks: " + _numberOfBlocks + "\tBlock size: " + _blockSize + " B");
-            Console.WriteLine("Total Space: " + _numberOfBlocks*_blockSize + " B");
+            Console.WriteLine("\nNumber of blocks: " + NumberOfBlocks + "\tBlock size: " + _blockSize + " B");
+            Console.WriteLine("Total Space: " + NumberOfBlocks*_blockSize + " B");
             Console.WriteLine("Free space: " + (from bool bit in _occupiedBlocksArray where !bit select bit).Count()*32 + " B\tOccupied space: " + (from bool bit in _occupiedBlocksArray where bit select bit).Count()*32 + " B");
             Console.WriteLine("Free blocks: " + (from bool bit in _occupiedBlocksArray where !bit select bit).Count() + "\t\tOccupied Blocks: " + (from bool bit in _occupiedBlocksArray where bit select bit).Count() + "\n");
 
-            for (int i = 0; i < _numberOfBlocks; i++)
+            for (int i = 0; i < NumberOfBlocks; i++)
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("[Block nr "+i+"]: ");
@@ -278,7 +299,7 @@ namespace FileSystem.FileSystem
             int[] blocksToBeOccupied = new int[blocksneeded];
             for (int i = 0; i < blocksneeded; i++)
             {
-                for (int j = 0; j < _numberOfBlocks; j++)
+                for (int j = 0; j < NumberOfBlocks; j++)
                 {
                     if (_occupiedBlocksArray[j] == false)
                     {
@@ -497,7 +518,7 @@ namespace FileSystem.FileSystem
             int[] blocksToBeOccupied = new int[blocksNeeded];
             for (int i = 0; i < blocksNeeded; i++)
             {
-                for (int j = 0; j < _numberOfBlocks; j++)
+                for (int j = 0; j < NumberOfBlocks; j++)
                 {
                     if (_occupiedBlocksArray[j] == false)
                     {
