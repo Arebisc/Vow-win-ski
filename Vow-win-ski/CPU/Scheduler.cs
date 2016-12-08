@@ -12,11 +12,11 @@ namespace Vow_win_ski.CPU
     {
         private static volatile Scheduler _instance;
         private static readonly object SyncRoot = new object();
-        private static List<PCB> WaitingForProcessorAllocation;
+        private static List<PCB> WaitingForProcessor;
 
         private Scheduler()
         {
-            WaitingForProcessorAllocation = new List<PCB>();
+            WaitingForProcessor = new List<PCB>();
         }
 
         public static Scheduler GetInstance
@@ -38,17 +38,17 @@ namespace Vow_win_ski.CPU
         
         public void AddProcess(PCB process)
         {
-            WaitingForProcessorAllocation.Add(process);
+            WaitingForProcessor.Add(process);
         }
 
         public void RemoveProcess(PCB process)
         {
-            WaitingForProcessorAllocation.RemoveAll(element => element.PID == process.PID);
+            WaitingForProcessor.RemoveAll(element => element.PID == process.PID);
         }
-        //TODO
+
         public PCB SearchForProcessInList(PCB process)
         {
-            return WaitingForProcessorAllocation.Find(element => element.PID == process.PID);
+            return WaitingForProcessor.Find(element => element.PID == process.PID);
         }
 
         public void PrintList()
@@ -60,7 +60,7 @@ namespace Vow_win_ski.CPU
         {
             string result = string.Empty;
 
-            foreach (var elem in WaitingForProcessorAllocation)
+            foreach (var elem in WaitingForProcessor)
             {
                 result += (elem.PID + " " + elem.Name);
             }
@@ -69,7 +69,7 @@ namespace Vow_win_ski.CPU
 
         public PCB PriorityAlgorithm()
         {
-            return WaitingForProcessorAllocation
+            return WaitingForProcessor
                 .Aggregate((elem1, elem2) => 
                     (elem1.CurrentPriority < elem2.CurrentPriority ? elem1 : elem2));
         }

@@ -15,13 +15,34 @@ namespace Vow_win_ski.MemoryModule
         private FreeFramesList _freeFramesList;
         public List<ProcessPages> ProcessPages;
 
-        public Memory()
+        private static volatile Memory _instance;
+        private static object syncRoot = new Object();
+
+        private Memory()
         {
             _exchangeFile = new ExchangeFile();
             _fifoQueue = new FifoQueue();
             _physicalMemory = new PhysicalMemory(FramesCount, FramesSize);
             _freeFramesList = new FreeFramesList(FramesCount);
             ProcessPages = new List<ProcessPages>();
+        }
+
+        public static Memory GetInstance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (syncRoot)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new Memory();
+                        }
+                    }
+                }
+                return _instance;
+            }
         }
 
         private char GetByte(int id, int index)
@@ -98,7 +119,7 @@ namespace Vow_win_ski.MemoryModule
             }
         }
 
-        public void AllocateMemory(PCB processData, char[] program)
+        public void AllocateMemory(PCB processData, string program)
         {
             //obliczenie ilosci stron 
             int pages = (int) Math.Ceiling((double) program.Length/FramesSize);
@@ -338,27 +359,28 @@ namespace Vow_win_ski.MemoryModule
         public void TestFillMemory(PCB testProcessData)
         {
             const int ProcessId = 1;
-            char[] data= {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
-                'r','s','t','u','v','w','x','y','z','a', 'b', 'c', 'd', 'e', 'f', 'g',
-                'h', 'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'x',
-                'y', 'z','a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm','n',
-                'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a','b', 'c', 'd', 'e',
-                'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n','o', 'p', 'r', 's', 't', 'u', 'v',
-                'w', 'x', 'y', 'z', 'a', 'b','c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
-                'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c',
-                'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't',
-                'u', 'v', 'w', 'x', 'y', 'z','a','b','c','d','e','f','g','h','i','j',
-                'k','l','m','n','o','p','r','s','t','u','v','w','x','y','z','a',
-                'b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','r',
-                's','t','u','v','w','x','y','z','a','b','c','d','e','f','g','h',
-                'i','j','k','l','m','n','o','p','r','s','t','u','v','w','x','y',
-                'z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
-                'p','r','s','t','u','v','w','x','y','z','a','b','c','d','e','f'};
+            string data= "abcdefghijklmnop" +
+                         "rstuvwxyzabcdefg" +
+                         "hijklmnoprstuvwx" +
+                         "yzabcdefghijklmn" +
+                         "oprstuvwxyzabcde" +
+                         "fghijklmnoprstuv" +
+                         "wxyzabcdefghijkl" +
+                         "mnoprstuvwxyzabc" +
+                         "defghijklmnoprst" +
+                         "uvwxyzabcdefghij" +
+                         "klmnoprstuvwxyza" +
+                         "bcdefghijklmnopr" +
+                         "stuvwxyzabcdefgh" +
+                         "ijklmnoprstuvwxy" +
+                         "zabcdefghijklmno" +
+                         "prstuvwxyzabcdef";
             AllocateMemory(testProcessData,data);
             for (int i = 0; i < FramesCount; i++)
             {
                 GetByte(ProcessId, i*FramesSize);
             }
+            
         }
 
         public void TestCleanMemory()
