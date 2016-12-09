@@ -150,7 +150,7 @@ namespace Vow_win_ski.Processes {
             throw new NotImplementedException();
         }
 
-        public void Send(PCB receiver, byte message) {
+        public void Send(string receivername, string message) {
 
             //byte id = receiver.PID;
             //if(receiver.Lock == 0) {

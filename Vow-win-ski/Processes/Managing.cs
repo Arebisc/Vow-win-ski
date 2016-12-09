@@ -76,7 +76,7 @@ namespace Vow_win_ski.Processes
 
             //Utwórz PCB
             _PID = ++_NextPID;
-            client = new PipeClient(PID);
+            client = new PipeClient(Name);
             CurrentPriority = Priority;
             StartPriority = Priority;
             Name = Name_;
