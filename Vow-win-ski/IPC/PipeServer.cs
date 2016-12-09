@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.IO.Pipes;
+using System.IO;
 
 
 
@@ -12,26 +13,21 @@ namespace Vow_win_ski.IPC
     class PipeServer
     {
         private NamedPipeServerStream Server;
-        private List<Message> Messages; 
+        private List<Message> Messages;
+        private StreamString strString;
         private Thread thread;
-        private byte[] data; 
-
+        private string[] message;
+ 
         //===================================================================================================================================
-        private const byte sender = 1;
-        private const byte receiver = 0;
-        private const byte disconnecter = 2;
-
-       
-
+        private const string receiver = "0";
+        private const string sender = "1";
+        private const string disconnecter = "2";
         //===================================================================================================================================
         public PipeServer()
         {
             Server = new NamedPipeServerStream("SERWER", PipeDirection.InOut);
             Console.WriteLine("Utworzono Serwer IPC");
             Start();
-
-           
-
         }
         //===================================================================================================================================
         public void Build()
@@ -39,70 +35,59 @@ namespace Vow_win_ski.IPC
             Server.WaitForConnection();
             Console.WriteLine("Serwer oczekuje na polaczenie");
             Messages = new List<Message>();
-            data = new byte[4];
+            strString = new StreamString(Server);
         }
         //===================================================================================================================================
-        public byte[] ServerReceiver()
+        public void ServerReceiver()
         {
-            Console.WriteLine("Serwer otrzymal dane");
-            Server.Read(data, 0, 4);
-            return data;
+            string receive = strString.ReadString();
+         
+            if (receive != null)
+            {
+                message = receive.Split(';');               
+            }
         }
         //===================================================================================================================================
         public void StoreMessage()
         {
-            Messages.Add(new Message(data[1], data[2], data[3])); 
+            Messages.Add(new Message(message[1], message[2], message[3]));
         }
         //===================================================================================================================================
         public void Switch()
         {
-            if (data[0] == receiver) 
+            switch (message[0])
             {
-                StoreMessage();
-            }
-            else if (data[0] == sender) 
-            {
-                ServerWriter(data[1], data[3]);
-            }
-            else if (data[0] == disconnecter) 
-            {
-                Server.Disconnect();
-                Console.WriteLine("Client rozlaczony z serwerem");
+                case receiver:
+                    StoreMessage();
+                    break;
+                case sender:
+                    ServerWriter(message[3]);
+                    break;
+                case disconnecter:
+                    Server.Disconnect();
+                    Console.WriteLine("Client rozlaczony z serwerem");
+                    break;
             }
         }
         //===================================================================================================================================
 
-        public void ServerWriter(byte receiverId, byte senderId)
+        public void ServerWriter(string receiverId)
         {
-           
-            byte[] temp = new byte[4];
-
-            if (Messages.Where(x => x.GetReceiverId() == receiverId).Count() == 0)
+            if (Messages.All(x => x.GetReceiverId() != receiverId))
             {
-                temp[0] = 0;              
-                Server.Write(temp, 0, 4);
+                Server.WriteByte(0);
             }
-            else {
-
+            else
+            {
+                Server.WriteByte(1);
                 for (int i = 0; i < Messages.Count; i++)
                 {
-
-                    if (Messages[i].GetReceiverId() == receiverId) 
-                    {
-                        Console.WriteLine("Serwer wyslal dane");
-                        temp[0] = 1;
-                        temp[1] = Messages[i].GetReceiverId();
-                        temp[2] = (byte)Messages[i].getMessage();
-                        temp[3] = Messages[i].GetSenderId();
-
-                        Server.Write(temp, 0, 4);
-                        Messages.RemoveAt(i);
-
-
-                        break;
-                    }
+                    if (Messages[i].GetReceiverId() != receiverId) continue;
+                    Console.WriteLine("Serwer wyslal dane");
+                    strString.WriteString(Messages[i].GetMessage() + ";" + Messages[i].GetSenderId());
+                    Messages.RemoveAt(i);
+                    break;
                 }
-                      
             }
         }
         //===================================================================================================================================
@@ -113,7 +98,7 @@ namespace Vow_win_ski.IPC
             {
                 if (Server.IsConnected)
                 {
-                    data = ServerReceiver();
+                    ServerReceiver();
                     Switch();
                 }
                 else
@@ -123,9 +108,6 @@ namespace Vow_win_ski.IPC
                 }
             }
         }
-
-       
-
         //===================================================================================================================================
         public void Start()
         {
@@ -133,6 +115,13 @@ namespace Vow_win_ski.IPC
             thread.Start();
         }
         //===================================================================================================================================
-       
+
+        public void Show()
+        {
+            foreach (var x in Messages)
+            {
+                Console.WriteLine(x.GetSenderId()+ " to " +x.GetReceiverId() + " " +x.GetMessage());
+            }
+        }
     }
 }

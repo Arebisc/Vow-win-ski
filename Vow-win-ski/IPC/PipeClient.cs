@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.IO;
 using System.IO.Pipes;
 
 namespace Vow_win_ski.IPC
@@ -10,88 +11,61 @@ namespace Vow_win_ski.IPC
     class PipeClient
     {
         private NamedPipeClientStream client;
-        private byte[] data = new byte[4];
-        private byte clientId;
+        private StreamString strString;
+        private string[] message;
+        private string clientId;
 
         //===================================================================================================================================
-        private const byte sender = 0;
-        private const byte receiver = 1;
-        private const byte disconnecter = 2;
-
-
-
+        private const string sender = "0";
+        private const string receiver = "1";
+        private const string disconnecter = "2";
         //===================================================================================================================================
-        public PipeClient(byte clientId)
+        public PipeClient(string clientId)
         {
             client = new NamedPipeClientStream(".", "SERWER", PipeDirection.InOut);
-            Console.WriteLine("Utworzono Clienta IPC o ID:" + clientId);
             this.clientId = clientId;
+            strString = new StreamString(client);
         }
         //===================================================================================================================================
         public void Connect()
         {
-
-            if (client.IsConnected)
-            {
-                Console.WriteLine("Client polaczony z serwerem");
-            }
-            else
-            {
-                client.Connect();
-            }
+            if (client.IsConnected) return;
+            client.Connect();
+            Console.WriteLine("Client polaczony z serwerem");
         }
         //===================================================================================================================================
-        public void _send(byte receiverId, byte message)
+        public void _send(string receiverId, string message)
         {
-            data[0] = sender;
-            data[1] = receiverId;
-            data[2] = message;
-            data[3] = clientId;
-            client.Write(data, 0, data.Length);
-
-
-
+            strString.WriteString(sender + ";" + message + ";" + receiverId + ";" + clientId);
         }
         //===================================================================================================================================
         public void Call()
         {
-            data[0] = receiver;
-            data[1] = clientId;
-
-            client.Write(data, 0, data.Length);
+            strString.WriteString(receiver + ";" + " " + ";" + " " + ";" + clientId);
         }
         //===================================================================================================================================
         public bool _receive()
         {
-
-            byte[] temp = new byte[4];
             Call();
-            client.Read(temp, 0, 4);
-
-            if (temp[0] != 0)
+            if (client.ReadByte() != 0)
             {
-                Console.WriteLine("Odebrano wiadomosc: " + temp[2] + " Od procesu o ID: " + temp[3]);
+                var readLine = strString.ReadString();
+                if (readLine != null) message = readLine.Split(';');
+                Console.WriteLine("Proces " + clientId + " odebral wiadomosc od " + message[1]);
+                Console.WriteLine(message[0]);
                 return true;
             }
             else
             {
+                Console.WriteLine("Nie ma wiadomosci dla procesu " +clientId);
                 return false;
             }
-
-
-
-
         }
         //===================================================================================================================================
         public void Disconnect()
         {
-
-            if (client.IsConnected)
-            {
-                data[0] = disconnecter;
-                client.Write(data, 0, data.Length);
-            }
-          
+            if (!client.IsConnected) return;
+            strString.WriteString(disconnecter);
         }
         //===================================================================================================================================
     }
