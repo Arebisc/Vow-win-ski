@@ -87,7 +87,7 @@ namespace Vow_win_ski.FileSystem
 
         //=================================================================================================================================
 
-        public void DisplayDataBlocks()
+        public void ShowDataBlocks()
         {
             Console.WriteLine("\nNumber of blocks: " + _numberOfBlocks + "\tBlock size: " + _blockSize + " B");
             Console.WriteLine("Total Space: " + _numberOfBlocks*_blockSize + " B");
@@ -115,9 +115,8 @@ namespace Vow_win_ski.FileSystem
         }
             
         //=================================================================================================================================
-        public void CreateFile(string path, string data)
+        public void CreateFile(string nameForNewFile, string data)
         {
-            string nameForNewFile = path;
 
             if (data.Any(d => d > 255))
             {
@@ -129,7 +128,7 @@ namespace Vow_win_ski.FileSystem
 
             if(_rootFolder.FilesInDirectory.Any(file => file.FileName == nameForNewFile))
             { 
-                Console.WriteLine("Error: File \"" + path + "\" already exists");
+                Console.WriteLine("Error: File \"" + nameForNewFile + "\" already exists");
                 return;
             }
 
@@ -199,14 +198,13 @@ namespace Vow_win_ski.FileSystem
         }
         //=================================================================================================================================
 
-        public string GetFileData(string path)
+        public string GetFileData(string fileToOpen)
         {
-            string fileToOpen = path;
-
             int indexBlock = _rootFolder.FilesInDirectory.Single(x => x.FileName == fileToOpen).DataBlockPointer;
             int length = _rootFolder.FilesInDirectory.Single(x => x.FileName == fileToOpen).FileSize;
             List<byte> dataBlocksToRead = new List<byte>();
 
+            //TODO
             /*for (var i = 0; _blocks[indexBlock].BlockData[i] != 255; i++)
             {
                 dataBlocksToRead.Add(_blocks[indexBlock].BlockData[i]);
@@ -231,9 +229,8 @@ namespace Vow_win_ski.FileSystem
         }
         //=================================================================================================================================
 
-        public void DeleteFile(string path)
+        public void DeleteFile(string filenameToDelete)
         {            
-            string filenameToDelete = path;
             if (_rootFolder.FilesInDirectory.All(x => x.FileName != filenameToDelete))
             {
                 Console.WriteLine("Error: Specified file \"" + filenameToDelete + "\" does not exist in root\\");
@@ -253,10 +250,8 @@ namespace Vow_win_ski.FileSystem
         }
         //=================================================================================================================================
 
-        public void AppendToFile(string path, string data)
+        public void AppendToFile(string filenameToAppend, string data)
         {
-            string filenameToAppend = path;
-
             if (_rootFolder.FilesInDirectory.All(x => x.FileName != filenameToAppend))
             {
                 Console.WriteLine("Error: Specified file \"" + filenameToAppend + "\" does not exist in root\\");

@@ -18,7 +18,7 @@ namespace Vow_win_ski
         {
             DisplayLogo();
 
-            //inity here
+            //wstawiać inity here
             Disc.InitDisc();
 
             Shell.GetShell.OpenShell();
@@ -27,6 +27,7 @@ namespace Vow_win_ski
 
         static void DisplayLogo()
         {
+            Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(" _    __                      _       __ _               _____  __    _ ");
             Console.WriteLine("| |  / /____  _      __      | |     / /(_)____         / ___/ / /__ (_)");
@@ -34,6 +35,7 @@ namespace Vow_win_ski
             Console.WriteLine("| |/ // /_/ /| |/ |/ //_____/| |/ |/ // // / / //_____/___/ //   / / /  ");
             Console.WriteLine("|___/ \\____/ |__/|__/        |__/|__//_//_/ /_/       /____//_/\\_\\/_/");
             Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine();
         }
     }
 }

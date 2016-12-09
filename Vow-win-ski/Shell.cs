@@ -8,33 +8,32 @@ namespace Vow_win_ski
         private Shell()
         {}
 
-        private static volatile Shell instance;
-        private static object syncRoot = new object();
+        private static volatile Shell _instance;
+        private static object _syncRoot = new object();
         public static Shell GetShell
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    lock (syncRoot)
+                    lock (_syncRoot)
                     {
-                        if (instance == null)
+                        if (_instance == null)
                         {
-                            instance = new Shell();
+                            _instance = new Shell();
                         }
                     }
                 }
-                return instance;
+                return _instance;
             }
         }
 
         public void OpenShell()
         {
-            bool breakLoop = false;
-            while (!breakLoop)
+            bool exit = false;
+            while (!exit)
             {
                 Console.WriteLine();
-                //Disc.GetDisc.CurrentFolder.PathToFolder
                 Console.Write("root\\>");
                 string p1 = "";
                 string p2 = "";
@@ -42,6 +41,7 @@ namespace Vow_win_ski
                 string cmdline = Console.ReadLine();
 
                 var x = 0;
+                // ReSharper disable once PossibleNullReferenceException
                 for (var i = 0; i < cmdline.Length && x != 3; i++)
                 {
                     switch (x)
@@ -68,9 +68,65 @@ namespace Vow_win_ski
                 cmd = cmd.ToUpper();
                 switch (cmd)
                 {
+                    case "":
+                        break;
                     case "HELP":
                         ShowHelp();
                         break;
+                    case "EX":
+                        throw new NotImplementedException();
+                        break;
+                    case "QUIT":
+                        exit = true;
+                        break;
+                    //===================================================
+                    case "SRP":
+                        throw new NotImplementedException();
+                        break;
+                    case "SRG":
+                        throw new NotImplementedException();
+                        break;
+                    //===================================================
+                    case "CP":
+                        throw new NotImplementedException();
+                        break;
+                    case "HP":
+                        throw new NotImplementedException();
+                        break;
+                    case "SAP":
+                        throw new NotImplementedException();
+                        break;
+                    case "SP":
+                        throw new NotImplementedException();
+                        break;
+                    case "SPCB":
+                        throw new NotImplementedException();
+                        break;
+                    //===================================================
+                    case "SPL":
+                        throw new NotImplementedException();
+                        break;
+                    case "SPC":
+                        throw new NotImplementedException();
+                        break;
+                    case "SEP":
+                        throw new NotImplementedException();
+                        break;
+                    case "SM":
+                        throw new NotImplementedException();
+                        break;
+                    //===================================================
+                    case "SLM":
+                        throw new NotImplementedException();
+                        break;
+                    case "SAM":
+                        throw new NotImplementedException();
+                        break;
+                    //===================================================
+                    case "SW":
+                        throw new NotImplementedException();
+                        break;
+                    //===================================================
                     case "DIR":
                     case "LS":
                         Disc.GetDisc.ShowDirectory();
@@ -79,51 +135,80 @@ namespace Vow_win_ski
                         Disc.GetDisc.CreateFile(p1, p2);
                         break;
                     case "TYPE":
-                        Console.WriteLine(Disc.GetDisc.GetFileData(p1) ?? "Error reading file");
+                        Console.WriteLine(Disc.GetDisc.GetFileData(p1) ?? "Błąd czytania pliku");
                         break;
                     case "DF":
                         Disc.GetDisc.DeleteFile(p1);
                         break;
-                        break;
                     case "APP":
                         Disc.GetDisc.AppendToFile(p1, p2);
                         break;
-                    case "DDB":
-                        Disc.GetDisc.DisplayDataBlocks();
-                        break;
-                    case "":
-                        break;
-                    case "EXIT":
-                        breakLoop = true;
+                    case "SDB":
+                        Disc.GetDisc.ShowDataBlocks();
                         break;
                     default:
-                        Console.WriteLine("Unknown command");
+                        Console.WriteLine("Nieznane polecenie\nWpisz \"help\" aby wyświetlić listę dostępnych poleceń");
                         break;
                 }
             }
         }
 
-
-
-
-
-
-
-
         private void ShowHelp()
         {
             Console.WriteLine();
-            Console.WriteLine("Parameters: [optional] {obligatory}");
+            Console.WriteLine("Parametry: [opcjonalny] {wymagany}");
             Console.WriteLine();
-            Console.WriteLine("Command\t\t\tDescription");
-            Console.WriteLine("HELP\t\t\tShows this list");
-            Console.WriteLine("DIR \t\tShows a list of files");
-            Console.WriteLine("LS \t\tSame as DIR");
-            Console.WriteLine("CF {name} [data]\tCreates file {name} and fills it with [data]");
-            Console.WriteLine("APP {name} [data]\tAppends [data] to file {name}");
-            Console.WriteLine("TYPE {name}\tShows data from file {name}");
-            Console.WriteLine("DF {name}\t\tDeletes file {name}");
-            Console.WriteLine("DDB \t\t\tShows raw data of all data blocks");
+            Console.WriteLine("Polecenia\t\t   Opis");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("-------------------------------Ogólne---------------------------------");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("HELP\t\t   Wyświetla tę listę");
+            Console.WriteLine("EX\t\t   Wykonuje kolejny rozkaz");
+            Console.WriteLine("QUIT\t\t   Zamyka system");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("------------------------------Procesor--------------------------------");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("SRP\t\t   Wyświetla listę procesów Ready");
+            Console.WriteLine("SRG\t\t   Wyświetla rejestry procesora");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("-------------------------------Procesy--------------------------------");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("CP {nazwa} {prog}  Tworzy proces {nazwa} z programu {prog}");
+            Console.WriteLine("HP {nazwa}\t   Zatrzymuje proces {nazwa}");
+            Console.WriteLine("SAP\t\t   Wyświetla listę wszystkich procesów");
+            Console.WriteLine("SP {nazwa}\t   Wyświetla proces {nazwa}");
+            Console.WriteLine("SPCB {nazwa}\t   Wyświetla listę PCB procesu {nazwa}");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("-------------------------------Pamięć---------------------------------");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("SPL {nazwa}\t   Wyświetla listę stron procesu {nazwa}");
+            Console.WriteLine("SPC {nazwa} {nr}   Wyświetla zawartość strony {nr} procesu {nazwa}");
+            Console.WriteLine("SEP\t\t   Wyświetla puste stron");
+            Console.WriteLine("SM\t\t   Wyświetla całą pamięć");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("-----------------------------Komunikacja------------------------------");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("SLM\t\t   Wyświetla ostatnią wiadomość");
+            Console.WriteLine("SAM\t\t   Wyświetla wszystkie wiadomości");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("----------------------------Synchronizacja----------------------------");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("SW\t\t   Wyświetla procesy oczekujące pod zamkiem komunikatów");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("--------------------------------Dysk----------------------------------");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("DIR/LS\t\t   Wyświetla listę plików");
+            Console.WriteLine("CF {nazwa} [dane]  Tworzy plik {nazwa} i wypełnia [dane]");
+            Console.WriteLine("APP {nazwa} [dane] Dołącza [dane] do pliku {nazwa}");
+            Console.WriteLine("TYPE {nazwa}\t   Wyświetla dane z pliku {nazwa}");
+            Console.WriteLine("DF {nazwa}\t   Usuwa plik {nazwa}");
+            Console.WriteLine("SDB\t\t   Wyświetla dane ze wszystkich bloków");
         }
     }
 }
