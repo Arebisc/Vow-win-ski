@@ -46,6 +46,7 @@
     <Compile Include="IPC\Message.cs" />
     <Compile Include="IPC\PipeClient.cs" />
     <Compile Include="IPC\PipeServer.cs" />
+    <Compile Include="IPC\StreamString.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
