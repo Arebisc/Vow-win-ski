@@ -10,220 +10,91 @@ using System.Text;
  foldertodelete = k1
  */
 
-namespace FileSystem.FileSystem
+namespace Vow_win_ski.FileSystem
 {
     class Disc
     {
-        private static volatile Disc instance;
-        private static object syncRoot = new object();
+        private static volatile Disc _instance;
 
         private readonly int _blockSize = 32;
-        public static int NumberOfBlocks = -1;
+        private static int _numberOfBlocks;
         private Block[] _blocks;
         private BitArray _occupiedBlocksArray;
         private Folder _rootFolder;
-        public Folder CurrentFolder { get; private set; }
 
-        public static Disc GetDisc
+        /// <summary>
+        /// Use this if no parameter is provided
+        /// </summary>
+        public static void InitDisc()
         {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (syncRoot)
-                    {
-                        if (instance == null)
-                        {
-                            instance = NumberOfBlocks == -1 ? new Disc() : new Disc(NumberOfBlocks);
-                        }
-                    }
-                }
-                return instance;
-            }
+            _numberOfBlocks = 32;
+            _instance = new Disc();
         }
+
+        /// <summary>
+        /// Use this if a parameter is provided
+        /// </summary>
+        /// <param name="numberOfBlocks"></param>
+        public static void InitDisc(int numberOfBlocks)
+        {
+            _numberOfBlocks = numberOfBlocks;
+            _instance = new Disc(_numberOfBlocks);
+        }
+
+        public static Disc GetDisc => _instance;
 
         private Disc()
         {
             Console.WriteLine("Creating disc with the default blocks number (32).");
-            NumberOfBlocks = 32;
-            _blocks = new Block[NumberOfBlocks].Select(h => new Block()).ToArray(); //initialize elements in array
-            _occupiedBlocksArray = new BitArray(NumberOfBlocks);
+            _numberOfBlocks = 32;
+            _blocks = new Block[_numberOfBlocks].Select(h => new Block()).ToArray(); //initialize elements in array
+            _occupiedBlocksArray = new BitArray(_numberOfBlocks);
             _rootFolder = new Folder();
-            CurrentFolder = _rootFolder;
         }
 
         private Disc(int numberOfblocks)
         {
             if (numberOfblocks < 2 || numberOfblocks >= 255)
             {
-                NumberOfBlocks = 32;
+                _numberOfBlocks = 32;
                 Console.WriteLine("Disc parameter was invalid. Creating disc with the default blocks number (32).");
             }
             else
             {
                 Console.WriteLine("Creating disc with custom block numer: " + numberOfblocks);
-                NumberOfBlocks = numberOfblocks;
+                _numberOfBlocks = numberOfblocks;
             }
-            _blocks = new Block[NumberOfBlocks].Select(h => new Block()).ToArray(); //initialize elements in array
-            _occupiedBlocksArray = new BitArray(NumberOfBlocks);
+            _blocks = new Block[_numberOfBlocks].Select(h => new Block()).ToArray(); //initialize elements in array
+            _occupiedBlocksArray = new BitArray(_numberOfBlocks);
             _rootFolder = new Folder();
-            CurrentFolder = _rootFolder;
         }
 
         //=================================================================================================================================
-
-        private Folder GetDirectory(string path)
+      
+        public void ShowDirectory()
         {
-            Folder tempFolder;
-            string[] pathfolders = path.Split('\\');
-            pathfolders = pathfolders.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            if (pathfolders.Length == 0)
-            {
-                //no path provided
-                return CurrentFolder;
-            }
-            if (pathfolders[0] == "root")
-            {
-                //path is absolute
-                pathfolders = pathfolders.Skip(1).ToArray();
-                tempFolder = _rootFolder;
-            }
-            else
-            {
-                //path is relative
-                tempFolder = CurrentFolder;
-            }
-
-            foreach (var folderName in pathfolders)
-            {
-                bool exists = false;
-                foreach (var folderInDirectory in tempFolder.FoldersInDirectory)
-                {
-                    if (folderInDirectory.FolderName == folderName)
-                    {
-                        tempFolder = folderInDirectory;
-                        exists = true;
-                    }
-                }
-                if (!exists)
-                {
-                    Console.WriteLine("Error: Specified path: \"" + path + "\" does not exist");
-                    return null;
-                }
-            }
-            return tempFolder;
-        }
-        //=================================================================================================================================
-
-        public void ChangeDirectory(string path)
-        {
-            if (GetDirectory(path) == null) return;
-            CurrentFolder = GetDirectory(path);
-        }
-        //=================================================================================================================================
-
-        public void ShowDirectory(string path)
-        {
-            if (GetDirectory(path) == null) return;
-            Console.WriteLine("Directory of " + GetDirectory(path).PathToFolder + "\n");
-            if (GetDirectory(path).FoldersInDirectory.Count + GetDirectory(path).FilesInDirectory.Count == 0)
+            Console.WriteLine("Directory of root\\\n");
+            if (_rootFolder.FilesInDirectory.Count == 0)
             {
                 Console.WriteLine("This directory is empty.");
                 return;
             }
-            foreach (var folder in GetDirectory(path).FoldersInDirectory)
-            {
-                Console.WriteLine(folder.FolderName.PadRight(17) + "<DIR>");
-            }
-            foreach (var file in GetDirectory(path).FilesInDirectory)
+            foreach (var file in _rootFolder.FilesInDirectory)
             {
                 Console.WriteLine(file.FileName.PadRight(17) + file.FileSize + " B\t" + file.CreationDateTime);
             }
         }
-        //=================================================================================================================================
 
-        public void CreateFolder(string path)
-        {
-            if (path.EndsWith("\\"))
-                path = path.Reverse().Skip(1).Reverse().ToString();
-            // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
-            string nameForNewFolder = path.Substring(path.LastIndexOf("\\") + 1);
-            string beginIn = path.Substring(0, path.Length - nameForNewFolder.Length);
-            if (GetDirectory(beginIn) == null) return;
-
-            foreach (var folder in GetDirectory(beginIn).FoldersInDirectory)
-            {
-                if (folder.FolderName == nameForNewFolder)
-                {
-                    Console.WriteLine("Error: Directory \"" + path + "\" already exists");
-                    return;
-                }
-            }
-            if(nameForNewFolder.Length == 0 || nameForNewFolder.Length > 15 || nameForNewFolder.Contains("\\") || nameForNewFolder.Contains("/") || nameForNewFolder.Contains(" ") || nameForNewFolder == "root")
-            {
-                Console.WriteLine("Error: Invalid Folder name");
-                Console.WriteLine("Folder name must be between 1 and 15 characters long and cannot contain:");
-                Console.WriteLine("'\t' '/' '\\' 'root'");
-                return;
-            }
-            GetDirectory(beginIn).FoldersInDirectory.Add(new Folder(GetDirectory(beginIn).PathToFolder, nameForNewFolder));
-            Console.WriteLine("Directory \"" + nameForNewFolder + "\" has been created in " + GetDirectory(beginIn).PathToFolder);
-        }
-        //=================================================================================================================================
-
-        public void DeleteFolder(string path)
-        {
-            path = GetDirectory(path).PathToFolder;
-            path = path.Remove(path.Length - 1);
-            // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
-            string folderToDelete = path.Substring(path.LastIndexOf("\\") + 1);
-            string beginIn = path.Substring(0, path.Length - folderToDelete.Length);
-            if (GetDirectory(path) == _rootFolder)
-            {
-                Console.WriteLine("Error: root directory cannot be deleted");
-                return;
-            }
-            if (GetDirectory(path) == null) return;
-
-            if (CurrentFolder.PathToFolder.Length >= path.Length)
-            {
-                if (GetDirectory(path).PathToFolder ==
-                    CurrentFolder.PathToFolder.Substring(0, GetDirectory(path).PathToFolder.Length))
-                {
-                    ChangeDirectory(beginIn);
-                }
-            }
-
-            while (GetDirectory(path).FoldersInDirectory.Count != 0)
-            {
-                DeleteFolder(GetDirectory(path).FoldersInDirectory[0].PathToFolder);
-            }
-
-            while (GetDirectory(path).FilesInDirectory.Count != 0)
-            {
-                DeleteFile(GetDirectory(path).PathToFolder + GetDirectory(path).FilesInDirectory[0].FileName);
-            }
-
-            for (int i = 0; i < GetDirectory(beginIn).FoldersInDirectory.Count; i++)
-            {
-                if (GetDirectory(beginIn).FoldersInDirectory[i].FolderName == folderToDelete)
-                {
-                    GetDirectory(beginIn).FoldersInDirectory.RemoveAt(i);
-                    break;
-                }
-            }
-            Console.WriteLine("Directory \"" + GetDirectory(beginIn).PathToFolder + folderToDelete + "\" has been deleted");
-        }
         //=================================================================================================================================
 
         public void DisplayDataBlocks()
         {
-            Console.WriteLine("\nNumber of blocks: " + NumberOfBlocks + "\tBlock size: " + _blockSize + " B");
-            Console.WriteLine("Total Space: " + NumberOfBlocks*_blockSize + " B");
+            Console.WriteLine("\nNumber of blocks: " + _numberOfBlocks + "\tBlock size: " + _blockSize + " B");
+            Console.WriteLine("Total Space: " + _numberOfBlocks*_blockSize + " B");
             Console.WriteLine("Free space: " + (from bool bit in _occupiedBlocksArray where !bit select bit).Count()*32 + " B\tOccupied space: " + (from bool bit in _occupiedBlocksArray where bit select bit).Count()*32 + " B");
             Console.WriteLine("Free blocks: " + (from bool bit in _occupiedBlocksArray where !bit select bit).Count() + "\t\tOccupied Blocks: " + (from bool bit in _occupiedBlocksArray where bit select bit).Count() + "\n");
 
-            for (int i = 0; i < NumberOfBlocks; i++)
+            for (int i = 0; i < _numberOfBlocks; i++)
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("[Block nr "+i+"]: ");
@@ -246,31 +117,22 @@ namespace FileSystem.FileSystem
         //=================================================================================================================================
         public void CreateFile(string path, string data)
         {
-            if (path.EndsWith("\\"))
-                path = path.Reverse().Skip(1).Reverse().ToString();
-            // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
-            string nameForNewFile = path.Substring(path.LastIndexOf("\\") + 1);
-            string beginIn = path.Substring(0, path.Length - nameForNewFile.Length);
-            if (GetDirectory(beginIn) == null) return;
+            string nameForNewFile = path;
 
-            foreach (var d in data)
+            if (data.Any(d => d > 255))
             {
-                if (d > 255)
-                {
-                    Console.WriteLine("Error: Data contains illegal character");
-                    return;
-                }
+                Console.WriteLine("Error: Data contains illegal character");
+                return;
             }
 
             int newFileSize = data.Length;
-            foreach (var file in GetDirectory(beginIn).FilesInDirectory)
-            {
-                if (file.FileName == nameForNewFile)
-                {
-                    Console.WriteLine("Error: File \"" + path + "\" already exists");
-                    return;
-                }
+
+            if(_rootFolder.FilesInDirectory.Any(file => file.FileName == nameForNewFile))
+            { 
+                Console.WriteLine("Error: File \"" + path + "\" already exists");
+                return;
             }
+
             if (nameForNewFile.Length == 0 || nameForNewFile.Length > 15 || nameForNewFile.Contains("\\") || nameForNewFile.Contains("/") || nameForNewFile.Contains("\t") || nameForNewFile == "root")
             {
                 Console.WriteLine("Error: Invalid File name");
@@ -299,7 +161,7 @@ namespace FileSystem.FileSystem
             int[] blocksToBeOccupied = new int[blocksneeded];
             for (int i = 0; i < blocksneeded; i++)
             {
-                for (int j = 0; j < NumberOfBlocks; j++)
+                for (int j = 0; j < _numberOfBlocks; j++)
                 {
                     if (_occupiedBlocksArray[j] == false)
                     {
@@ -332,26 +194,24 @@ namespace FileSystem.FileSystem
                 data = data.Substring(1);
             }
 
-            GetDirectory(beginIn).FilesInDirectory.Add(new File(nameForNewFile, newFileSize, blocksToBeOccupied[0]));
-            Console.WriteLine("New File \"" + nameForNewFile + "\" has been created in " + GetDirectory(beginIn).PathToFolder);
+            _rootFolder.FilesInDirectory.Add(new File(nameForNewFile, newFileSize, blocksToBeOccupied[0]));
+            Console.WriteLine("New File \"" + nameForNewFile + "\" has been created in root\\");
         }
         //=================================================================================================================================
 
         public string GetFileData(string path)
         {
-            // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
-            string fileToOpen = path.Substring(path.LastIndexOf("\\") + 1);
-            string beginIn = path.Substring(0, path.Length - fileToOpen.Length);
-            if (GetDirectory(beginIn) == null) return null;
+            string fileToOpen = path;
 
-            int indexBlock = GetDirectory(beginIn).FilesInDirectory.Single(x => x.FileName == fileToOpen).DataBlockPointer;
-            int length = GetDirectory(beginIn).FilesInDirectory.Single(x => x.FileName == fileToOpen).FileSize;
-            List<int> dataBlocksToRead = new List<int>();
+            int indexBlock = _rootFolder.FilesInDirectory.Single(x => x.FileName == fileToOpen).DataBlockPointer;
+            int length = _rootFolder.FilesInDirectory.Single(x => x.FileName == fileToOpen).FileSize;
+            List<byte> dataBlocksToRead = new List<byte>();
 
-            for (var i = 0; _blocks[indexBlock].BlockData[i] != 255; i++)
+            /*for (var i = 0; _blocks[indexBlock].BlockData[i] != 255; i++)
             {
                 dataBlocksToRead.Add(_blocks[indexBlock].BlockData[i]);
-            }
+            }*/
+            dataBlocksToRead.AddRange(_blocks[indexBlock].BlockData);
 
             List<byte> dataList = new List<byte>();
             int inBlockPointer = 0, blockPointer = 0;
@@ -373,26 +233,13 @@ namespace FileSystem.FileSystem
 
         public void DeleteFile(string path)
         {            
-            // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
-            string filenameToDelete = path.Substring(path.LastIndexOf("\\") + 1);
-            string beginIn = path.Substring(0, path.Length - filenameToDelete.Length);
-
-            if (GetDirectory(beginIn) == null) return;
-
-            File fileToDelete = null;
-            foreach (File file in GetDirectory(beginIn).FilesInDirectory)
+            string filenameToDelete = path;
+            if (_rootFolder.FilesInDirectory.All(x => x.FileName != filenameToDelete))
             {
-                if (file.FileName == filenameToDelete)
-                {
-                    fileToDelete = file;
-                    break;
-                }
-            }
-            if (fileToDelete == null)
-            {
-                Console.WriteLine("Error: Specified file " + filenameToDelete + " does not exit in " + beginIn);
+                Console.WriteLine("Error: Specified file \"" + filenameToDelete + "\" does not exist in root\\");
                 return;
             }
+            File fileToDelete = _rootFolder.FilesInDirectory.Single(x => x.FileName == filenameToDelete);
 
             _occupiedBlocksArray[fileToDelete.DataBlockPointer] = false;
             foreach (var datablocknr in _blocks[fileToDelete.DataBlockPointer].BlockData)
@@ -400,96 +247,31 @@ namespace FileSystem.FileSystem
                 if (datablocknr == 255) break;
                 _occupiedBlocksArray[datablocknr] = false;
             }
+            _rootFolder.FilesInDirectory.RemoveAll(x => x.FileName == filenameToDelete);
 
-            for (int i = 0; i < GetDirectory(beginIn).FilesInDirectory.Count; i++)
-            {
-                if (GetDirectory(beginIn).FilesInDirectory[i].FileName == filenameToDelete)
-                {
-                    GetDirectory(beginIn).FilesInDirectory.RemoveAt(i);
-                    break;
-                }
-            }
-            Console.WriteLine("File \"" + GetDirectory(beginIn).PathToFolder + filenameToDelete + "\" has been deleted");
-        }
-        //=================================================================================================================================
-        private void ShowFiles(File file, int level)
-        {
-            for (int i = 0; i < level; i++)
-            {
-                Console.Write(i + 1 == level ? "└───" : "    ");
-            }
-            Console.WriteLine(file.FileName);
-        }
-
-        private void ShowFolders(Folder folder, int level)
-        {
-            for (int i = 0; i < level; i++)
-            {
-                Console.Write(i + 1 == level ? "└───" : "    ");
-            }
-
-            Console.WriteLine(folder.FolderName + "\\");
-            foreach (var fol in folder.FoldersInDirectory)
-            {
-                ShowFolders(fol, level + 1);
-            }
-            foreach (var fil in folder.FilesInDirectory)
-            {
-                ShowFiles(fil, level + 1);
-            }
-        }
-
-        public void ShowTree(string path)
-        {
-            if (GetDirectory(path) == null) return;
-
-            int level = 0;
-            Console.WriteLine(GetDirectory(path).FolderName + "\\");
-            foreach (var folder in GetDirectory(path).FoldersInDirectory)
-            {
-                ShowFolders(folder, level + 1);
-            }
-            foreach (var file in GetDirectory(path).FilesInDirectory)
-            {
-                ShowFiles(file, level + 1);
-            }
+            Console.WriteLine("File \"" + filenameToDelete + "\" has been deleted");
         }
         //=================================================================================================================================
 
         public void AppendToFile(string path, string data)
         {
-            // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
-            string filenameToAppend = path.Substring(path.LastIndexOf("\\") + 1);
-            string beginIn = path.Substring(0, path.Length - filenameToAppend.Length);
+            string filenameToAppend = path;
 
-            if (GetDirectory(beginIn) == null) return;
-
-            File fileToAppend = null;
-            foreach (File file in GetDirectory(beginIn).FilesInDirectory)
+            if (_rootFolder.FilesInDirectory.All(x => x.FileName != filenameToAppend))
             {
-                if (file.FileName == filenameToAppend)
-                {
-                    fileToAppend = file;
-                    break;
-                }
+                Console.WriteLine("Error: Specified file \"" + filenameToAppend + "\" does not exist in root\\");
+                return;
             }
-            if (fileToAppend == null)
+            File fileToAppend = _rootFolder.FilesInDirectory.Single(x => x.FileName == filenameToAppend);
+
+            if (data.Any(d => d > 255))
             {
-                Console.WriteLine("Error: Specified file " + filenameToAppend + " does not exit in " + beginIn);
+                Console.WriteLine("Error: Data contains illegal character");
                 return;
             }
 
-            foreach (var d in data)
-            {
-                if (d > 255)
-                {
-                    Console.WriteLine("Error: Data contains illegal character");
-                    return;
-                }
-            }
-
             int allBytesToAppend = data.Length;
-            //                              space available in the last block            
+            //                              space available in the last block
             int bytesNeeded = data.Length - (32 - fileToAppend.FileSize%32);
             if (bytesNeeded < 0) bytesNeeded = 0;
             int blocksNeeded = bytesNeeded/32;
@@ -518,7 +300,7 @@ namespace FileSystem.FileSystem
             int[] blocksToBeOccupied = new int[blocksNeeded];
             for (int i = 0; i < blocksNeeded; i++)
             {
-                for (int j = 0; j < NumberOfBlocks; j++)
+                for (int j = 0; j < _numberOfBlocks; j++)
                 {
                     if (_occupiedBlocksArray[j] == false)
                     {
@@ -564,7 +346,7 @@ namespace FileSystem.FileSystem
                 data = data.Substring(1);
             }
             fileToAppend.Append(allBytesToAppend);
-            Console.WriteLine(allBytesToAppend + " B have been appended to file \"" + GetDirectory(beginIn).PathToFolder + filenameToAppend + "\"");
+            Console.WriteLine(allBytesToAppend + " B have been appended to file \"" + filenameToAppend + "\"");
         }
 
         //=================================================================================================================================

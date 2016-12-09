@@ -1,19 +1,43 @@
 ﻿using System;
-using FileSystem.FileSystem;
+using Vow_win_ski.FileSystem;
 
-namespace FileSystem
+namespace Vow_win_ski
 {
-    class DiscCommander
+    public class Shell
     {
+        private Shell()
+        {}
+
+        private static volatile Shell instance;
+        private static object syncRoot = new object();
+        public static Shell GetShell
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (syncRoot)
+                    {
+                        if (instance == null)
+                        {
+                            instance = new Shell();
+                        }
+                    }
+                }
+                return instance;
+            }
+        }
+
         public void OpenShell()
         {
             bool breakLoop = false;
             while (!breakLoop)
             {
                 Console.WriteLine();
-                Console.Write(Disc.GetDisc.CurrentFolder.PathToFolder + ">");
-                string path = "";
-                string parameters = "";
+                //Disc.GetDisc.CurrentFolder.PathToFolder
+                Console.Write("root\\>");
+                string p1 = "";
+                string p2 = "";
                 string cmd = "";
                 string cmdline = Console.ReadLine();
 
@@ -30,12 +54,12 @@ namespace FileSystem
                             break;
                         case 1:
                             if (cmdline[i] != ' ')
-                                path += cmdline[i];
+                                p1 += cmdline[i];
                             else
                                 x++;
                             break;
                         case 2:
-                            parameters = cmdline.Substring(path.Length + cmd.Length + 2);
+                            p2 = cmdline.Substring(p1.Length + cmd.Length + 2);
                             x++;
                             break;
                     }
@@ -49,33 +73,20 @@ namespace FileSystem
                         break;
                     case "DIR":
                     case "LS":
-                        Disc.GetDisc.ShowDirectory(path);
-                        break;
-                    case "MKDIR":
-                    case "MD":
-                        Disc.GetDisc.CreateFolder(path);
-                        break;
-                    case "RMDIR":
-                    case "RD":
-                        Disc.GetDisc.DeleteFolder(path);
-                        break;
-                    case "CD":
-                        Disc.GetDisc.ChangeDirectory(path);
+                        Disc.GetDisc.ShowDirectory();
                         break;
                     case "CF":
-                        Disc.GetDisc.CreateFile(path, parameters);
+                        Disc.GetDisc.CreateFile(p1, p2);
                         break;
                     case "TYPE":
-                        Console.WriteLine(Disc.GetDisc.GetFileData(path) ?? "Error reading file");
+                        Console.WriteLine(Disc.GetDisc.GetFileData(p1) ?? "Error reading file");
                         break;
                     case "DF":
-                        Disc.GetDisc.DeleteFile(path);
+                        Disc.GetDisc.DeleteFile(p1);
                         break;
-                    case "TREE":
-                        Disc.GetDisc.ShowTree(path);
                         break;
                     case "APP":
-                        Disc.GetDisc.AppendToFile(path, parameters);
+                        Disc.GetDisc.AppendToFile(p1, p2);
                         break;
                     case "DDB":
                         Disc.GetDisc.DisplayDataBlocks();
@@ -92,6 +103,13 @@ namespace FileSystem
             }
         }
 
+
+
+
+
+
+
+
         private void ShowHelp()
         {
             Console.WriteLine();
@@ -99,18 +117,12 @@ namespace FileSystem
             Console.WriteLine();
             Console.WriteLine("Command\t\t\tDescription");
             Console.WriteLine("HELP\t\t\tShows this list");
-            Console.WriteLine("DIR [path]\t\tShows a list of files and subdirectories in [path]");
-            Console.WriteLine("LS [path]\t\tSame as DIR");
-            Console.WriteLine("MKDIR [path]{name}\tCreates new directory {name} in [path]");
-            Console.WriteLine("MD [path]{name}\t\tSame as MKDIR");
-            Console.WriteLine("RMDIR [path]{name}\tDeletes directory {name} in [path]");
-            Console.WriteLine("RD [path]{name}\t\tSame as RMDIR");
-            Console.WriteLine("CD [path]\t\tChanges to directory [path]");
-            Console.WriteLine("CF [path]{name} [data]\tCreates file {name} in [path] and fills it with [data]");
-            Console.WriteLine("APP [path]{name} [data]\tAppends [data] to file {name} in [path]");
-            Console.WriteLine("TYPE [path]{name}\tShows data from file {name} in [path]");
-            Console.WriteLine("DF [path]{name}\t\tDeletes file {name} in [path]");
-            Console.WriteLine("TREE [path]\t\tShows the directory structure of [path]");
+            Console.WriteLine("DIR \t\tShows a list of files");
+            Console.WriteLine("LS \t\tSame as DIR");
+            Console.WriteLine("CF {name} [data]\tCreates file {name} and fills it with [data]");
+            Console.WriteLine("APP {name} [data]\tAppends [data] to file {name}");
+            Console.WriteLine("TYPE {name}\tShows data from file {name}");
+            Console.WriteLine("DF {name}\t\tDeletes file {name}");
             Console.WriteLine("DDB \t\t\tShows raw data of all data blocks");
         }
     }
