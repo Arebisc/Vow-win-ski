@@ -70,7 +70,7 @@
     <Compile Include="IPC\PipeServer.cs" />
     <Compile Include="FileSystem\Block.cs" />
     <Compile Include="FileSystem\Disc.cs" />
-    <Compile Include="FileSystem\DiscCommander.cs" />
+    <Compile Include="Shell.cs" />
     <Compile Include="FileSystem\File.cs" />
     <Compile Include="FileSystem\Folder.cs" />
     <Compile Include="Program.cs" />
