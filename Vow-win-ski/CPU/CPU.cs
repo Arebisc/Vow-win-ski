@@ -43,25 +43,23 @@ namespace Vow_win_ski.CPU
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("---------------DEBUG---------------");
             Console.WriteLine("1. Wyświetl listę procesów Ready");
-            Console.WriteLine("2. Wyświetl listę wszystkich procesów");
-            Console.WriteLine("3. Wyświetl proces: ID_Procesu");
-            Console.WriteLine("4. Wyświetl listę PCB procesu: ID_Procesu");
-            Console.WriteLine("5. Wyświetl listę stron: ID_Procesu");
-            Console.WriteLine("6. Wyświetl zawartość stron: ID_Procesu");
-            Console.WriteLine("7. Wyświetl puste strony");
-            Console.WriteLine("8. Wyświetl całą pamięć");
-            Console.WriteLine("9. Wyświetl wszystkie bloki na dysku");
-            Console.WriteLine("10. Wyświetl strukturę katalogów");
-            Console.WriteLine("11. Wyświetl ID nadawcy ostatniej nadanej wiadomości");
-            Console.WriteLine("12. Wyświetl ID odbiorcy ostatniej odebranej wiadomości");
+            Console.WriteLine("2. Wyświetl stan rejestrów");
+            Console.WriteLine("3. Wyświetl listę wszystkich procesów");
+            Console.WriteLine("4. Wyświetl proces: NazwaProcesu");
+            Console.WriteLine("5. Wyświetl listę PCB procesu: NazwaProcesu");
+            Console.WriteLine("6. Wyświetl listę stron: NazwaProcesu");
+            Console.WriteLine("7. Wyświetl zawartość stron: NazwaProcesu");
+            Console.WriteLine("8. Wyświetl puste strony");
+            Console.WriteLine("9. Wyświetl całą pamięć");
+            Console.WriteLine("10. Wyświetl wszystkie bloki na dysku");
+            Console.WriteLine("11. Wyświetl zawartość folderu głównego");
+            Console.WriteLine("12. Wyświetl zawartość listy wiadomości");
             Console.WriteLine("13. Wyświetl oczekujące pod zamkiem komunikatów procesy");
             Console.WriteLine("14. Przejdź do kolejnego rozkazu");
             Console.WriteLine("15. Wykonaj resztę programu");
             Console.WriteLine("---------------DEBUG---------------");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("Wpisz akcję: ");
-
-
 
             try
             {
@@ -86,47 +84,47 @@ namespace Vow_win_ski.CPU
                     DisplayDebug();
                     break;
                 case 2:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl listę wszystkich procesów!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl stan rejestrów procesora!");
                     DisplayDebug();
                     break;
                 case 3:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl proces: ID_Procesu!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl listę wszystkich procesów!");
                     DisplayDebug();
                     break;
                 case 4:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl listę PCB procesu: ID_Procesu!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl proces: NazwaProcesu!");
                     DisplayDebug();
                     break;
                 case 5:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl listę stron: ID_Procesu!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl listę PCB procesu: NazwaProcesu!");
                     DisplayDebug();
                     break;
                 case 6:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl zawartość stron: ID_Procesu!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl listę stron: NazwaProcesu!");
                     DisplayDebug();
                     break;
                 case 7:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl puste strony!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl zawartość stron: NazwaProcesu!");
                     DisplayDebug();
                     break;
                 case 8:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl całą pamięć!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl puste strony!");
                     DisplayDebug();
                     break;
                 case 9:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl wszystkie bloki na dysku!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl całą pamięć!");
                     DisplayDebug();
                     break;
                 case 10:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl strukturę katalogów!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl wszystkie bloki na dysku!");
                     DisplayDebug();
                     break;
                 case 11:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl ID nadawcy ostatniej nadanej wiadomości!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl zawartość folderu głównego!");
                     DisplayDebug();
                     break;
                 case 12:
-                    Console.WriteLine("Nie zaimplementowano - Wyświetl ID odbiorcy ostatniej odebranej wiadomości!");
+                    Console.WriteLine("Nie zaimplementowano - Wyświetl zawartość listy wiadomości!");
                     DisplayDebug();
                     break;
                 case 13:

@@ -32,7 +32,7 @@ namespace Vow_win_ski.CPU
         //TODO
         private void InterpretOrder(string order)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
