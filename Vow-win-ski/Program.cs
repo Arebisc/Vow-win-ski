@@ -14,12 +14,16 @@ namespace Vow_win_ski
 {
     class Program
     {
+        static void InitSystemResources()
+        {
+            Disc.InitDisc();
+        }
+
         static void Main(string[] args)
         {
             DisplayLogo();
 
-            //wstawiać inity here
-            Disc.InitDisc();
+            InitSystemResources();
 
             Shell.GetShell.OpenShell();
 

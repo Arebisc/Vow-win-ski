@@ -51,7 +51,8 @@ namespace Vow_win_ski.Processes
     /// <summary>
     /// Umożliwia zarządzenie procesami na wyższym poziomie
     /// </summary>
-    public partial class PCB{
+    public partial class PCB
+    {
 
         /// <summary>
         /// Procesy bez rodzica (utworzone przez użytkownika, nie przez inny proces)
@@ -71,7 +72,8 @@ namespace Vow_win_ski.Processes
         /// <param name="ProgramFilePath">Ścieżka do pliku z programem (z której zostanie wczytany kod programu)</param>
         /// <param name="Parent">Proces rodzic; null jeśli proces tworzony przez system</param>
         /// <remarks>Utworzenie procesu - XC</remarks>
-        public PCB(string Name_, int Priority, string ProgramFilePath, PCB Parent){
+        public PCB(string Name_, int Priority, string ProgramFilePath, PCB Parent)
+        {
             //throw new NotImplementedException();
 
             //Utwórz PCB
@@ -81,11 +83,12 @@ namespace Vow_win_ski.Processes
             StartPriority = Priority;
             Name = Name_;
 
-            if(Parent == null) {
+            if(Parent == null)
+            {
                 ProcessesCreatedByUser.AddLast(this);
-            } else {
-                Parent.Children.AddLast(this);
             }
+            else 
+                Parent.Children.AddLast(this);
 
             //Wczytaj program
             string Program = ""; //GetFileData(ProgramFilePath);
@@ -106,11 +109,14 @@ namespace Vow_win_ski.Processes
 
         /// <summary>Zwraca blok kontrolny procesu o podanym identyfikatorze</summary>
         /// <remarks>Znalezienie bloku PCB o danej nazwie - XN</remarks>
-        public static PCB GetPCB(int PID){
+        public static PCB GetPCB(int PID)
+        {
             LinkedList<PCB>.Enumerator en = _CreatedPCBs.GetEnumerator();
 
-            while (en.MoveNext()){
-                if (en.Current.PID == PID) {
+            while (en.MoveNext())
+            {
+                if (en.Current.PID == PID)
+                {
                     Console.WriteLine("Znaleziono proces o podanym PID: " + en.Current.ToString());
                     return en.Current;
                 }
