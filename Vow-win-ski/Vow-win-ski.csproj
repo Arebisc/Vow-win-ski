@@ -54,7 +54,6 @@
     <Compile Include="MemoryModule\Page.cs" />
     <Compile Include="MemoryModule\PhysicalMemory.cs" />
     <Compile Include="MemoryModule\ProcessPages.cs" />
-    <Compile Include="CPU\Delegates.cs" />
     <Compile Include="CPU\Interpreter.cs" />
     <Compile Include="CPU\Register.cs" />
     <Compile Include="CPU\CPU.cs" />
