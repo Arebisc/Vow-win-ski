@@ -30,5 +30,16 @@ namespace Vow_win_ski.MemoryModule
             var data = _takenProcesses.Select(x => x).SingleOrDefault(x => x.TakenProcessPages.Id == id);
             return data?.TakenFrames[pageNumber].ReadFrame();
         }
+
+        public void UpdateData(int processId, int pageNumber, Frame data)
+        {
+            foreach (var exchangeFileProcess in _takenProcesses)
+            {
+                if (exchangeFileProcess.TakenProcessPages.Id == processId)
+                {
+                    exchangeFileProcess.TakenFrames[pageNumber] = data;
+                }
+            }
+        }
     }
 }

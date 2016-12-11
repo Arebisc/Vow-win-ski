@@ -41,7 +41,12 @@ namespace Vow_win_ski.MemoryModule
         {
             foreach (var field in _fields)
             {
-                Console.Write(field+" ");
+                if (field == '\n')
+                {
+                    Console.Write(field + " ");
+                }
+                else 
+                    Console.Write(field+" ");
             }
             Console.WriteLine("");
         }

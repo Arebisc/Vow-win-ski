@@ -13,7 +13,7 @@ namespace Vow_win_ski.MemoryModule
        {
            FreeFramesCount = framesCount;
             _freeFrames = new List<int>();
-            for(int i=0;i<framesCount;i++)
+            for(int i=0;i<framesCount-2;i++)
                 _freeFrames.Add(i);
        }
        public int RemoveFromList()

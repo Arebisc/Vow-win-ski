@@ -9,6 +9,7 @@ namespace Vow_win_ski.MemoryModule
     {
         private const int FramesCount = 16;
         private const int FramesSize = 16;
+        private int _messageLength;
         private ExchangeFile _exchangeFile;
         private FifoQueue _fifoQueue;
         private PhysicalMemory _physicalMemory;
@@ -119,6 +120,15 @@ namespace Vow_win_ski.MemoryModule
             }
         }
 
+        public void UploadChanges(int id, int pageNumber, int frameNumber)
+        {
+            //pobranie danych z danej ramki
+            Frame tempdata = _physicalMemory.GetFrame(frameNumber);
+
+            //wpisanie ich do pliku wymiany
+            _exchangeFile.UpdateData(id,pageNumber,tempdata);
+        }
+
         public void AllocateMemory(PCB processData, string program)
         {
             //obliczenie ilosci stron 
@@ -128,6 +138,7 @@ namespace Vow_win_ski.MemoryModule
             ProcessPages temp = new ProcessPages(processData.PID, pages);
             temp.GetChar = GetByte;
             temp.ChangeByteDel = ChangeByte;
+            temp.UploadChangesDel = UploadChanges;
             ProcessPages.Add(temp);
             processData.MemoryBlocks = temp;
 
@@ -227,7 +238,9 @@ namespace Vow_win_ski.MemoryModule
             if (process.IsPageInMemory(pages))
             {
                 //Zwrocenie danego bajtu
+                process.SetModified(pages);
                 _physicalMemory.GetFrame(process.ReadFrameNumber(pages)).ChangeByte(offset, data);
+
             }
             else
             {
@@ -259,9 +272,13 @@ namespace Vow_win_ski.MemoryModule
                     foreach (var processPage in ProcessPages)
                     {
                         if (processPage.Id == id)
+                        {
                             processPage.AddFrame(pages, newFrameIndex);
+                            processPage.SetModified(pages);
+                        }
                     }
                     //zwrocenie bajtu
+
                     _physicalMemory.GetFrame(newFrameIndex).ChangeByte(offset, data);
                 }
                 else
@@ -280,12 +297,14 @@ namespace Vow_win_ski.MemoryModule
                     foreach (var processPage in ProcessPages)
                     {
                         if (processPage.Id == id)
+                        {
                             processPage.AddFrame(pages, newFrameIndex);
+                   //ustawienie ze ramka byla modyfikowana
+                            processPage.SetModified(pages);
+                        }
                     }
                     //zwrocenie bajtu
                     _physicalMemory.GetFrame(newFrameIndex).ChangeByte(offset, data);
-
-
                 }
             }
         }
@@ -324,6 +343,10 @@ namespace Vow_win_ski.MemoryModule
                 {
                     Console.WriteLine("Zawarość ramki nr: "+number);
                     _physicalMemory.GetFrame(pages.ReadFrameNumber(number)).ShowFrame();
+                }
+                else
+                {
+                   Console.WriteLine("Danej strony nie ma w pamięci.");
                 }
 
             }
@@ -399,5 +422,35 @@ namespace Vow_win_ski.MemoryModule
             }
             ProcessPages = new List<ProcessPages>();
         }
+
+        public void PlaceMessage(string message)
+        {
+            _messageLength = message.Length;
+            char[] data = {'0','0'};
+            if (_messageLength <= 16)
+            {
+                _physicalMemory.SetFrame(FramesCount - 2,
+                    message.Take(_messageLength).ToArray());
+                _physicalMemory.SetFrame(FramesCount - 1, data);
+            }
+            else
+            {
+                _physicalMemory.SetFrame(FramesCount - 2,
+                    message.Take(16).ToArray());
+                _physicalMemory.SetFrame(FramesCount - 1,
+                    message.Skip(16).Take(_messageLength - 16).ToArray());
+            }
+        }
+
+        public void ReadMessage()
+        {
+            _physicalMemory.ShowFrame(FramesCount-2);
+            if (_messageLength > 16)
+            {
+                _physicalMemory.ShowFrame(FramesCount-1);
+            }
+        }
+
+
     }
 }
