@@ -129,9 +129,9 @@ namespace Vow_win_ski.Processes
             return !(a == b);
         }
 
-        public bool Equals(PCB other)
+        public override bool Equals(object other)
         {
-            return this == other;
+            return this == (PCB)other;
         }
 
     }
