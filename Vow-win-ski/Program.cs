@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Vow_win_ski.MemoryModule;
-using System.Threading;
 using Vow_win_ski.CPU;
 using Vow_win_ski.FileSystem;
 using Vow_win_ski.IPC;
@@ -16,13 +11,9 @@ namespace Vow_win_ski
     {
         static void Main(string[] args)
         {
-            DisplayLogo();
 
-            //wstawiać inity here
-            Disc.InitDisc();
 
             Shell.GetShell.OpenShell();
-
         }
 
         static void DisplayLogo()
