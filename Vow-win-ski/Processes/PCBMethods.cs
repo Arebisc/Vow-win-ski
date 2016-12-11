@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Vow_win_ski.Processes {
-
-    public partial class PCB {
-
+namespace Vow_win_ski.Processes
+{
+    public partial class PCB
+    {
         /// <summary>
         /// Zamyka aktualnie wykonywany lub wskazany przez identyfikator proces
         /// (przejście na Terminated, przygotowanie do całkowitego usunięcia procesu)
@@ -19,7 +19,8 @@ namespace Vow_win_ski.Processes {
         /// 0 - zamknięto proces
         /// </returns>
         /// <remarks>Zatrzymanie procesu i zawiadomienie nadzorcy - XH, nienormowalne zatrzymanie realizacji zlecenia - XQUE</remarks>
-        public int TerminateProcess(ReasonOfProcessTerminating Reason, int ExitCode = 0) {
+        public int TerminateProcess(ReasonOfProcessTerminating Reason, int ExitCode = 0)
+        {
             throw new NotImplementedException();
             client.Disconnect();
         }
@@ -34,9 +35,11 @@ namespace Vow_win_ski.Processes {
         /// 1 - nie znaleziono procesu
         /// 2 - błąd: proces ma stan inny niż New
         /// </returns>
-        public int RunNewProcess() {
+        public int RunNewProcess()
+        {
 
-            if (this.State != ProcessState.New) {
+            if (this.State != ProcessState.New)
+            {
                 Console.WriteLine("Blad uruchamiania procesu: Proces musi miec stan New. " + this.ToString());
                 return 2;
             }
@@ -52,19 +55,22 @@ namespace Vow_win_ski.Processes {
         /// </summary>
         /// <remarks>Ready -> Running</remarks>
         /// <returns></returns>
-        public int RunReadyProcess() {
-            if(State == ProcessState.Ready) {
+        public int RunReadyProcess()
+        {
+            if(State == ProcessState.Ready)
+            {
                 State = ProcessState.Running;
                 client.Connect();
 
-                if (ReceiverMessageSemaphore == 1) {
+                if (ReceiverMessageSemaphore == 1)
+                {
                     Receive();
                 }
 
                 return 0;
-            } else {
-                return 1;
             }
+            else
+                return 1;
         }
 
         /// <summary>
@@ -72,7 +78,8 @@ namespace Vow_win_ski.Processes {
         /// </summary>
         /// <remarks>Running -> Waiting</remarks>
         /// <returns></returns>
-        public int WaitForSomething() {
+        public int WaitForSomething()
+        {
             throw new NotImplementedException();
             client.Disconnect();
         }
@@ -82,7 +89,8 @@ namespace Vow_win_ski.Processes {
         /// </summary>
         /// <remarks>Waiting -> Ready</remarks>
         /// <returns></returns>
-        public int StopWaiting() {
+        public int StopWaiting()
+        {
             throw new NotImplementedException();
         }
 
@@ -90,14 +98,16 @@ namespace Vow_win_ski.Processes {
         /// 
         /// </summary>
         /// <returns>Running -> Ready</returns>
-        public int WaitForScheduling() {
-            if (State == ProcessState.Running) {
+        public int WaitForScheduling()
+        {
+            if (State == ProcessState.Running)
+            {
                 State = ProcessState.Ready;
                 client.Disconnect();
                 return 0;
-            } else {
-                return 1;
             }
+            else 
+                return 1;
         }
         
         /// <summary>
@@ -111,15 +121,18 @@ namespace Vow_win_ski.Processes {
         /// 2 - błąd: przed usunięciem procesu należy go zatrzymać
         /// </returns>
         /// <remarks>Usunięcie procesu - XD</remarks>
-        public int RemoveProcess() {
+        public int RemoveProcess()
+        {
             throw new NotImplementedException();
 
-            if (this.State == ProcessState.Terminated) {
+            if (this.State == ProcessState.Terminated)
+            {
                 //Usuń dzieci
                 int ret;
                 LinkedList<PCB>.Enumerator en = this.Children.GetEnumerator();
 
-                while (en.MoveNext()) {
+                while (en.MoveNext())
+                {
                     ret = en.Current.RemoveProcess();
                     if (ret != 0) return ret;
                 }
@@ -132,25 +145,30 @@ namespace Vow_win_ski.Processes {
                 Console.WriteLine("Usunieto proces " + this.ToString());
                 return 0;
 
-            } else {
+            }
+            else
+            {
                 Console.WriteLine("Blad usuwania procesu: Proces nie zostal zatrzymany przed usunieciem. " + this.ToString());
                 return 2;
             }
 
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return "[" + PID.ToString() + "] " + Name + ", stan=" + State.ToString() + ", priorytet=" + CurrentPriority.ToString();
         }
 
         /// <summary>
         /// Drukuje w mkonsoli zawartosc wszystkich pol PCB
         /// </summary>
-        public void PrintAllFields() {
+        public void PrintAllFields()
+        {
             throw new NotImplementedException();
         }
 
-        public void Send(PCB receiver, byte message) {
+        public void Send(string receivername, string message)
+        {
 
             //byte id = receiver.PID;
             //if(receiver.Lock == 0) {
@@ -161,7 +179,8 @@ namespace Vow_win_ski.Processes {
             //}
         }
 
-        void Receive() {
+        void Receive()
+        {
             //if(client._receive() == false) {
             //    Lock == 1;
             //}

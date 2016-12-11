@@ -29,10 +29,12 @@ namespace Vow_win_ski.CPU
                 return _instance;
             }
         }
+
+
         //TODO
         private void InterpretOrder(string order)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

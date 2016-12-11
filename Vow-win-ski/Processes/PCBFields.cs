@@ -37,7 +37,8 @@ namespace Vow_win_ski.Processes{
     }
 
 
-    public partial class PCB {
+    public partial class PCB
+    {
         /// <remarks>0 - najwyższy priorytet, 7 - najniższy</remarks>
         public int CurrentPriority = 7;
 
@@ -64,8 +65,10 @@ namespace Vow_win_ski.Processes{
         /// </summary>
         private int _PID;
 
-        public byte PID {
-            get {
+        public byte PID
+        {
+            get
+            {
                 return (byte)_PID;
             }
         }
@@ -100,9 +103,6 @@ namespace Vow_win_ski.Processes{
         /// Klient do odbioru wiadomosci
         /// </summary>
         PipeClient client = null;
-
-
-
     }
 
 }

@@ -7,30 +7,28 @@ using System.Threading.Tasks;
 namespace Vow_win_ski.IPC
 {
     class Message
-    {      
-        private byte senderId;
-        private byte receiverId;
-        private byte message;
+    {
+        private string senderId;
+        private string receiverId;
+        private string message;
 
         //===================================================================================================================================
-        public Message(byte receiverId, byte message, byte senderId)
+        public Message(string message, string receiverId, string senderId)
         {
             this.receiverId = receiverId;
             this.message = message;
             this.senderId = senderId;
         }
         //===================================================================================================================================
-        public byte GetReceiverId()
+        public string GetReceiverId()
         {
             return receiverId;
         }
-
-        public int getMessage()
+        public string GetMessage()
         {
             return message;
         }
-
-        public byte GetSenderId()
+        public string GetSenderId()
         {
             return senderId;
         }

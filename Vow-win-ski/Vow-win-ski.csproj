@@ -70,17 +70,18 @@
     <Compile Include="Processes\Delegates.cs" />
     <Compile Include="Processes\Lockers.cs" />
     <Compile Include="Processes\Managing.cs" />
-    <Compile Include="Processes\PCB_fields.cs" />
-    <Compile Include="Processes\PCB_methods.cs" />
+    <Compile Include="Processes\PCBFields.cs" />
+    <Compile Include="Processes\PCBMethods.cs" />
     <Compile Include="Processes\UserInterface.cs" />
     <Compile Include="IPC\Message.cs" />
     <Compile Include="IPC\PipeClient.cs" />
     <Compile Include="IPC\PipeServer.cs" />
     <Compile Include="FileSystem\Block.cs" />
     <Compile Include="FileSystem\Disc.cs" />
-    <Compile Include="FileSystem\DiscCommander.cs" />
+    <Compile Include="Shell.cs" />
     <Compile Include="FileSystem\File.cs" />
     <Compile Include="FileSystem\Folder.cs" />
+    <Compile Include="IPC\StreamString.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
