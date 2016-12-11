@@ -12,6 +12,9 @@ namespace Vow_win_ski
         static void InitSystemResources(string[] args)
         {
             //wstawiać inity here
+
+            var Server = new PipeServer();
+
             if (args.Length > 0)
                 Disc.InitDisc(args[0]);
             else

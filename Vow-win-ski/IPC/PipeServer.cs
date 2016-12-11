@@ -26,14 +26,13 @@ namespace Vow_win_ski.IPC
         public PipeServer()
         {
             Server = new NamedPipeServerStream("SERWER", PipeDirection.InOut);
-            Console.WriteLine("Utworzono Serwer IPC");
+            Console.WriteLine("Tworzenie Serwera IPC");
             Start();
         }
         //===================================================================================================================================
         public void Build()
         {
             Server.WaitForConnection();
-            Console.WriteLine("Serwer oczekuje na polaczenie");
             Messages = new List<Message>();
             strString = new StreamString(Server);
         }
