@@ -22,7 +22,6 @@ namespace Vow_win_ski
         {
             Console.WriteLine("Uruchamianie systemu...");
             DisplayLogo();
-
             InitSystemResources(args);
 
             Shell.GetShell.OpenShell();

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vow_win_ski.IPC;
+using Vow_win_ski.MemoryModule;
 
 namespace Vow_win_ski.Processes
 {
@@ -34,7 +35,7 @@ namespace Vow_win_ski.Processes
         /// <summary>
         /// Zakończenie procesu rodzica
         /// </summary>
-        KilledByParent = 5,
+        //KilledByParent = 5,
 
         /// <summary>
         /// Inny proces go zakończył
@@ -46,7 +47,7 @@ namespace Vow_win_ski.Processes
         /// </summary>
         ClosingSystem = 7
     }
-    
+
 
     /// <summary>
     /// Umożliwia zarządzenie procesami na wyższym poziomie
@@ -57,7 +58,7 @@ namespace Vow_win_ski.Processes
         /// <summary>
         /// Procesy bez rodzica (utworzone przez użytkownika, nie przez inny proces)
         /// </summary>
-        public static LinkedList<PCB> ProcessesCreatedByUser = new LinkedList<PCB>();
+        //public static LinkedList<PCB> ProcessesCreatedByUser = new LinkedList<PCB>();
 
         /// <summary>
         /// Wszystkie utworzone PCB
@@ -66,32 +67,76 @@ namespace Vow_win_ski.Processes
         private static int _NextPID = 1;
 
         /// <summary>
+        /// Pusty konstruktor do testow
+        /// </summary>
+        public PCB()
+        {
+            _PID = ++_NextPID;
+        }
+
+        public PCB(string name, int priority)
+        {
+            this.Name = name;
+            this.CurrentPriority = priority;
+        }
+
+        /// <summary>
         /// Tworzy nowy proces bez uruchamiania go (stan procesu = New)
         /// </summary>
-        /// <param name="Name_">Nazwa procesu, nie musi być unikalna</param>
+        /// <param name="Name_">Nazwa procesu, musi być unikalna</param>
         /// <param name="ProgramFilePath">Ścieżka do pliku z programem (z której zostanie wczytany kod programu)</param>
-        /// <param name="Parent">Proces rodzic; null jeśli proces tworzony przez system</param>
         /// <remarks>Utworzenie procesu - XC</remarks>
-        public PCB(string Name_, int Priority, string ProgramFilePath, PCB Parent)
+        public PCB(string Name_, int Priority, string ProgramFilePath)
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
+
+            //Wczytaj program
+            string Program;
+
+            try
+            {
+                Program = System.IO.File.ReadAllText(ProgramFilePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Nie udalo sie utworzyc procesu: nie znaleziono pliku o nazwie " + ProgramFilePath);
+                State = ProcessState.Terminated;
+                return;
+            }
+
+            //Nazwa procesu
+            if (IsProcessNameUsed(Name_))
+            {
+
+                int i = 1;
+                while (IsProcessNameUsed(Name_ + i.ToString()))
+                {
+                    i++;
+                }
+
+                Name = Name_ + i.ToString();
+                Console.WriteLine("Podana nazwa [" + Name_ + "] jest juz uzywana, proces otrzymal nazwe " + Name);
+
+            }
+            else
+            {
+                Name = Name_;
+                Console.WriteLine("Proces otrzymal nazwe " + Name + ".");
+            }
 
             //Utwórz PCB
             _PID = ++_NextPID;
-            client = new PipeClient(Name);
             CurrentPriority = Priority;
             StartPriority = Priority;
-            Name = Name_;
+            client = new PipeClient(Name);
 
-            if(Parent == null)
-            {
-                ProcessesCreatedByUser.AddLast(this);
-            }
-            else 
-                Parent.Children.AddLast(this);
+            //if(Parent == null) {
+            //    ProcessesCreatedByUser.AddLast(this);
+            //} else {
+            //    Parent.Children.AddLast(this);
+            //}
 
-            //Wczytaj program
-            string Program = ""; //GetFileData(ProgramFilePath);
+
             //Ilość wymaganej pamięci (pierwsza linia)
             string CountOfMemory_str = Program.Split('\n')[0].Split(',')[1].Trim();
             int CountOfMemory_int = Convert.ToInt32(CountOfMemory_str.Remove(CountOfMemory_str.Length - 1, 1)); //usun litere K
@@ -99,6 +144,7 @@ namespace Vow_win_ski.Processes
             Console.WriteLine("Wczytano z pliku " + ProgramFilePath + " kod programu dla procesu " + this.ToString());
 
             //Zaalokuj pamięć
+            //MemoryBlocks = new MemoryModule.ProcessPages()
 
 
             Console.WriteLine("Utworzono proces: " + this.ToString());
@@ -124,6 +170,35 @@ namespace Vow_win_ski.Processes
 
             Console.WriteLine("Nie znaleziono proces o PID=" + PID.ToString() + ".");
             return null;
+        }
+
+        public static PCB GetPCB(string Name)
+        {
+            LinkedList<PCB>.Enumerator en = _CreatedPCBs.GetEnumerator();
+
+            while (en.MoveNext())
+            {
+                if (en.Current.Name == Name)
+                {
+                    Console.WriteLine("Znaleziono proces o podanej nazwie: " + en.Current.ToString());
+                    return en.Current;
+                }
+            }
+
+            Console.WriteLine("Nie znaleziono procesu o nazwie " + Name + ".");
+            return null;
+        }
+
+        private bool IsProcessNameUsed(string Name)
+        {
+            LinkedList<PCB>.Enumerator en = _CreatedPCBs.GetEnumerator();
+
+            while (en.MoveNext())
+            {
+                if (en.Current.Name == Name) return true;
+            }
+
+            return false;
         }
 
     }
