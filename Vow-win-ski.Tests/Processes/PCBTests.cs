@@ -12,10 +12,13 @@ namespace Vow_win_ski.Tests.Processes
     public class PCBTests
     {
         [Test]
-        public void PCB_CheckEquatable()
+        [TestCase("first", 1, "first", 2)]
+        [TestCase("second", 2, "second", 2)]
+        [TestCase("second", 3, "second", 2)]
+        public void PCB_CheckEquatable(string firstName, int firstPriority, string secondName, int secondPriority)
         {
-            var firstPcb = new PCB("first", 4);
-            var secondPcb = new PCB("first", 5);
+            var firstPcb = new PCB(firstName, firstPriority);
+            var secondPcb = new PCB(secondName, secondPriority);
             Assert.IsTrue(firstPcb.Equals(secondPcb));
         }
 
