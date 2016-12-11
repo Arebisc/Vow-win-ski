@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using Vow_win_ski.IPC;
 using Vow_win_ski.MemoryModule;
 
-namespace Vow_win_ski.Processes {
+namespace Vow_win_ski.Processes
+{
 
-    public enum ReasonOfProcessTerminating{
+    public enum ReasonOfProcessTerminating
+    {
         /// <summary>
         /// Skończył się normalnie
         /// </summary>
@@ -45,12 +47,13 @@ namespace Vow_win_ski.Processes {
         /// </summary>
         ClosingSystem = 7
     }
-    
+
 
     /// <summary>
     /// Umożliwia zarządzenie procesami na wyższym poziomie
     /// </summary>
-    public partial class PCB{
+    public partial class PCB
+    {
 
         /// <summary>
         /// Procesy bez rodzica (utworzone przez użytkownika, nie przez inny proces)
@@ -66,11 +69,13 @@ namespace Vow_win_ski.Processes {
         /// <summary>
         /// Pusty konstruktor do testow
         /// </summary>
-        public PCB() {
+        public PCB()
+        {
             _PID = ++_NextPID;
         }
 
-        public PCB(string name, int priority) {
+        public PCB(string name, int priority)
+        {
             this.Name = name;
             this.CurrentPriority = priority;
         }
@@ -81,32 +86,40 @@ namespace Vow_win_ski.Processes {
         /// <param name="Name_">Nazwa procesu, musi być unikalna</param>
         /// <param name="ProgramFilePath">Ścieżka do pliku z programem (z której zostanie wczytany kod programu)</param>
         /// <remarks>Utworzenie procesu - XC</remarks>
-        public PCB(string Name_, int Priority, string ProgramFilePath){
+        public PCB(string Name_, int Priority, string ProgramFilePath)
+        {
             throw new NotImplementedException();
 
             //Wczytaj program
             string Program;
 
-            try {
+            try
+            {
                 Program = System.IO.File.ReadAllText(ProgramFilePath);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Console.WriteLine("Nie udalo sie utworzyc procesu: nie znaleziono pliku o nazwie " + ProgramFilePath);
                 State = ProcessState.Terminated;
                 return;
             }
 
             //Nazwa procesu
-            if (IsProcessNameUsed(Name_)) {
+            if (IsProcessNameUsed(Name_))
+            {
 
                 int i = 1;
-                while(IsProcessNameUsed(Name_ + i.ToString())) {
+                while (IsProcessNameUsed(Name_ + i.ToString()))
+                {
                     i++;
                 }
 
                 Name = Name_ + i.ToString();
                 Console.WriteLine("Podana nazwa [" + Name_ + "] jest juz uzywana, proces otrzymal nazwe " + Name);
 
-            } else {
+            }
+            else
+            {
                 Name = Name_;
                 Console.WriteLine("Proces otrzymal nazwe " + Name + ".");
             }
@@ -132,7 +145,7 @@ namespace Vow_win_ski.Processes {
 
             //Zaalokuj pamięć
             //MemoryBlocks = new MemoryModule.ProcessPages()
-            
+
 
             Console.WriteLine("Utworzono proces: " + this.ToString());
 
@@ -142,11 +155,14 @@ namespace Vow_win_ski.Processes {
 
         /// <summary>Zwraca blok kontrolny procesu o podanym identyfikatorze</summary>
         /// <remarks>Znalezienie bloku PCB o danej nazwie - XN</remarks>
-        public static PCB GetPCB(int PID){
+        public static PCB GetPCB(int PID)
+        {
             LinkedList<PCB>.Enumerator en = _CreatedPCBs.GetEnumerator();
 
-            while (en.MoveNext()){
-                if (en.Current.PID == PID) {
+            while (en.MoveNext())
+            {
+                if (en.Current.PID == PID)
+                {
                     Console.WriteLine("Znaleziono proces o podanym PID: " + en.Current.ToString());
                     return en.Current;
                 }
@@ -156,11 +172,14 @@ namespace Vow_win_ski.Processes {
             return null;
         }
 
-        public static PCB GetPCB(string Name) {
+        public static PCB GetPCB(string Name)
+        {
             LinkedList<PCB>.Enumerator en = _CreatedPCBs.GetEnumerator();
 
-            while (en.MoveNext()) {
-                if (en.Current.Name == Name) {
+            while (en.MoveNext())
+            {
+                if (en.Current.Name == Name)
+                {
                     Console.WriteLine("Znaleziono proces o podanej nazwie: " + en.Current.ToString());
                     return en.Current;
                 }
@@ -170,10 +189,12 @@ namespace Vow_win_ski.Processes {
             return null;
         }
 
-        private bool IsProcessNameUsed(string Name) {
+        private bool IsProcessNameUsed(string Name)
+        {
             LinkedList<PCB>.Enumerator en = _CreatedPCBs.GetEnumerator();
 
-            while (en.MoveNext()) {
+            while (en.MoveNext())
+            {
                 if (en.Current.Name == Name) return true;
             }
 

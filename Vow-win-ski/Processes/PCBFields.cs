@@ -8,9 +8,11 @@ using Vow_win_ski.CPU;
 using Vow_win_ski.IPC;
 using Vow_win_ski.MemoryModule;
 
-namespace Vow_win_ski.Processes{
+namespace Vow_win_ski.Processes
+{
 
-    public enum ProcessState    {
+    public enum ProcessState
+    {
         /// <summary>
         /// Nowy proces, niedodany do kolejki do wykonywania
         /// </summary>
@@ -38,7 +40,8 @@ namespace Vow_win_ski.Processes{
     }
 
 
-    public partial class PCB {
+    public partial class PCB
+    {
         /// <remarks>0 - najwyższy priorytet, 7 - najniższy</remarks>
         public int CurrentPriority = 7;
 
@@ -65,8 +68,10 @@ namespace Vow_win_ski.Processes{
         /// </summary>
         private int _PID = 0;
 
-        public byte PID {
-            get {
+        public byte PID
+        {
+            get
+            {
                 return (byte)_PID;
             }
         }
@@ -104,23 +109,28 @@ namespace Vow_win_ski.Processes{
         /// </summary>
         private PipeClient client = null;
 
-        public static bool operator ==(PCB a, PCB b) {
-            if (System.Object.ReferenceEquals(a, b)) {
+        public static bool operator ==(PCB a, PCB b)
+        {
+            if (System.Object.ReferenceEquals(a, b))
+            {
                 return true;
             }
 
-            if (((object)a == null) || ((object)b == null)) {
+            if (((object)a == null) || ((object)b == null))
+            {
                 return false;
             }
 
             return a.Name == b.Name;
         }
 
-        public static bool operator !=(PCB a, PCB b) {
+        public static bool operator !=(PCB a, PCB b)
+        {
             return !(a == b);
         }
 
-        public bool Equals(PCB other) {
+        public bool Equals(PCB other)
+        {
             return this == other;
         }
 
