@@ -9,8 +9,21 @@ namespace Vow_win_ski
 {
     class Program
     {
+        static void InitSystemResources(string[] args)
+        {
+            //wstawiać inity here
+            if (args.Length > 0)
+                Disc.InitDisc(args[0]);
+            else
+                Disc.InitDisc();
+        }
+
         static void Main(string[] args)
         {
+            Console.WriteLine("Uruchamianie systemu...");
+            DisplayLogo();
+
+            InitSystemResources(args);
 
 
             Shell.GetShell.OpenShell();
