@@ -31,12 +31,12 @@ namespace Vow_win_ski.IPC
         {
             if (client.IsConnected) return;
             client.Connect();
-            Console.WriteLine("Client polaczony z serwerem");
         }
         //===================================================================================================================================
         public void _send(string receiverId, string message)
         {
             strString.WriteString(sender + ";" + message + ";" + receiverId + ";" + clientId);
+            Console.WriteLine(clientId+ " sent to "+receiverId+": "+message);
         }
         //===================================================================================================================================
         public void Call()
@@ -51,13 +51,11 @@ namespace Vow_win_ski.IPC
             {
                 var readLine = strString.ReadString();
                 if (readLine != null) message = readLine.Split(';');
-                Console.WriteLine("Proces " + clientId + " odebral wiadomosc od " + message[1]);
-                Console.WriteLine(message[0]);
+                Console.WriteLine(clientId + " received from " + message[1] + ": "+ message[0]);
                 return true;
             }
             else
             {
-                Console.WriteLine("Nie ma wiadomosci dla procesu " +clientId);
                 return false;
             }
         }

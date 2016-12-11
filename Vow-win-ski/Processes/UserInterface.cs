@@ -18,11 +18,19 @@ namespace Vow_win_ski.Processes
         /// </summary>
         public static void ShowMenu()
         {
-		
-			//wyswietl liste wszystkich procesow
-			//wyswietl proces o PID
-			//wyswietl PCB procesu o ID
-		
+
+            //wyswietl liste wszystkich procesow
+            //wyswietl proces o PID
+            //wyswietl PCB procesu o ID
+
+            //CP - utworz proces
+            //HP - zatrzymaj proces
+
+            //SRP - show ready processes
+            //SAP - show all PCB
+            //SP {name} - show process
+            //SPCB {name} - show PCB list
+
         }
 
     }

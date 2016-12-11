@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Vow_win_ski.MemoryModule;
 using System.Threading;
 using Moq;
@@ -15,19 +11,25 @@ namespace Vow_win_ski
 {
     class Program
     {
-        static void InitSystemResources()
+        static void InitSystemResources(string[] args)
         {
-            Disc.InitDisc();
+            //wstawiać inity here
+
+            var Server = new PipeServer();
+
+            if (args.Length > 0)
+                Disc.InitDisc(args[0]);
+            else
+                Disc.InitDisc();
         }
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Uruchamianie systemu...");
             DisplayLogo();
-
-            InitSystemResources();
+            InitSystemResources(args);
 
             Shell.GetShell.OpenShell();
-
         }
 
         static void DisplayLogo()

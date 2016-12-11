@@ -122,6 +122,9 @@ namespace Vow_win_ski
                     case "SAM":
                         throw new NotImplementedException();
                         break;
+                    case "SMH":
+                        throw new NotImplementedException();
+                        break;
                     //===================================================
                     case "SW":
                         throw new NotImplementedException();
@@ -144,7 +147,7 @@ namespace Vow_win_ski
                         Disc.GetDisc.AppendToFile(p1, p2);
                         break;
                     case "SDB":
-                        Disc.GetDisc.ShowDataBlocks();
+                        Disc.GetDisc.ShowDataBlocks(p1);
                         break;
                     default:
                         Console.WriteLine("Nieznane polecenie\nWpisz \"help\" aby wyświetlić listę dostępnych poleceń");
@@ -193,7 +196,8 @@ namespace Vow_win_ski
             Console.WriteLine("-----------------------------Komunikacja------------------------------");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("SLM\t\t   Wyświetla ostatnią wiadomość");
-            Console.WriteLine("SAM\t\t   Wyświetla wszystkie wiadomości");
+            Console.WriteLine("SAM\t\t   Wyświetla wszystkie oczekujące komunikaty");
+            Console.WriteLine("SMH\t\t   Wyświetla historię komunikatów");
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("----------------------------Synchronizacja----------------------------");
@@ -208,7 +212,7 @@ namespace Vow_win_ski
             Console.WriteLine("APP {nazwa} [dane] Dołącza [dane] do pliku {nazwa}");
             Console.WriteLine("TYPE {nazwa}\t   Wyświetla dane z pliku {nazwa}");
             Console.WriteLine("DF {nazwa}\t   Usuwa plik {nazwa}");
-            Console.WriteLine("SDB\t\t   Wyświetla dane ze wszystkich bloków");
+            Console.WriteLine("SDB [nr]\t   Wyświetla dane wszystkich bloków, [nr] bloków na ekran");
         }
     }
 }
