@@ -6,12 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Vow_win_ski.CPU;
 using Vow_win_ski.IPC;
+using Vow_win_ski.MemoryModule;
 
-namespace Vow_win_ski.Processes
-{
+namespace Vow_win_ski.Processes{
 
-    public enum ProcessState
-    {
+    public enum ProcessState    {
         /// <summary>
         /// Nowy proces, niedodany do kolejki do wykonywania
         /// </summary>
@@ -39,8 +38,7 @@ namespace Vow_win_ski.Processes
     }
 
 
-    public partial class PCB : IEquatable<PCB>
-    {
+    public partial class PCB {
         /// <remarks>0 - najwyższy priorytet, 7 - najniższy</remarks>
         public int CurrentPriority = 7;
 
@@ -58,19 +56,17 @@ namespace Vow_win_ski.Processes
         public Register Registers = new Register();
 
         /// <summary>
-        /// Nazwa procesu, nie musi być unikalna
+        /// Nazwa procesu, musi być unikalna
         /// </summary>
         public string Name = "";
 
         /// <summary>
         /// Identyfikator procesu, musi być unikalny
         /// </summary>
-        private int _PID;
+        private int _PID = 0;
 
-        public byte PID
-        {
-            get
-            {
+        public byte PID {
+            get {
                 return (byte)_PID;
             }
         }
@@ -79,56 +75,55 @@ namespace Vow_win_ski.Processes
 
         public int InstructionCounter = 0;
 
-        public PCB Parent = null;
+        //public PCB Parent = null;
 
-        public LinkedList<PCB> Children = new LinkedList<PCB>();
+        //public LinkedList<PCB> Children = new LinkedList<PCB>();
 
         /// <summary>
         /// Pamięć zaalokowana przez proces dla kodu i danych
         /// </summary>        
-        public object MemoryBlocks = null;
+        public ProcessPages MemoryBlocks = null;
 
         /// <summary>
         /// Semafor oczekiwania na komunikat od innego procesu
         /// Jest opisane w książce z Moodle gdzieś na początku, w opisie pól PCB
         /// </summary>
-        public int ReceiverMessageSemaphore = 0;
+        public int ReceiverMessageLock = 0;
 
         /// <summary>
         /// Semafor oczekiwania na zatrzymanie - jeśli zatrzymywany proces
         /// ma stan inny niż Running, proces zatrzymujący blokuje się
         /// pod tym semaforem i odblokowuje dopiero po zamknięciu procesu
         /// </summary>
-        public object StopperSemaphore = null;
+        public object StopperLock = null;
+
+        private bool WaitingForStopping = false;
 
         /// <summary>
         /// Klient do odbioru wiadomosci
         /// </summary>
-        PipeClient client = null;
+        private PipeClient client = null;
 
-        public static bool operator ==(PCB a, PCB b)
-        {
-            if (System.Object.ReferenceEquals(a, b))
-            {
+        public static bool operator ==(PCB a, PCB b) {
+            if (System.Object.ReferenceEquals(a, b)) {
                 return true;
             }
 
-            if (((object)a == null) || ((object)b == null))
-            {
+            if (((object)a == null) || ((object)b == null)) {
                 return false;
             }
 
             return a.Name == b.Name;
         }
 
-        public static bool operator !=(PCB a, PCB b)
-        {
+        public static bool operator !=(PCB a, PCB b) {
             return !(a == b);
         }
 
-        public bool Equals(PCB other)
-        {
+        public bool Equals(PCB other) {
             return this == other;
         }
+
     }
+
 }

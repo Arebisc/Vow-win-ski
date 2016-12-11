@@ -13,7 +13,7 @@ namespace Vow_win_ski.Processes
         private int id;
         PCB proces;
 
-
+        
 
         public void Lock(PCB Proces)
         {
@@ -26,7 +26,7 @@ namespace Vow_win_ski.Processes
             }
             else
             {
-                waiting.Enqueue(Proces);
+                waiting.Enqueue(proces);
                 proces.State = Vow_win_ski.Processes.ProcessState.Waiting;
             }
         }
@@ -39,56 +39,21 @@ namespace Vow_win_ski.Processes
                 {
                     if (Check(Proces))
                     {
-                        proces.State = Vow_win_ski.Processes.ProcessState.Ready;
-                        Proces.ReceiverMessageSemaphore = 1;
                         proces = waiting.Dequeue();
+                        proces.State = Vow_win_ski.Processes.ProcessState.Ready;
+                        Proces.ReceiverMessageLock = 1;
                         this.id = proces.PID;
                     }
                 }
-                else if (waiting.Count() == 0)
-                {
-                    proces.State = Vow_win_ski.Processes.ProcessState.Ready;
-                    Proces.ReceiverMessageSemaphore = 1;
-                    open = 0;
-                }
-            }
-        }
-
-        public void Lock(PCB Proces, int z)
-        {
-            if (Check())
-            {
-                proces = Proces;
-                this.id = proces.PID;
-                open = 1;
-                Proces.MemoryBlocks = 1;
-            }
-            else
-            {
-                waiting.Enqueue(Proces);
-                proces.State = Vow_win_ski.Processes.ProcessState.Waiting;
-            }
-        }
-
-        public void Unlock(PCB Proces, int z)
-        {
-            if (!Check())
-            {
-                if (waiting.Count() > 1)
+                else if (waiting.Count() == 1)
                 {
                     if (Check(Proces))
                     {
-                        Proces.MemoryBlocks = 0;
                         proces = waiting.Dequeue();
                         proces.State = Vow_win_ski.Processes.ProcessState.Ready;
-                        proces.MemoryBlocks = 1;
-                        this.id = proces.PID;
+                        Proces.ReceiverMessageLock = 1;
+                        open = 0;
                     }
-                }
-                else if (waiting.Count() == 0)
-                {
-                    Proces.MemoryBlocks = 0;
-                    open = 0;
                 }
             }
         }
