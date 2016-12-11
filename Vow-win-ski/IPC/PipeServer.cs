@@ -64,7 +64,6 @@ namespace Vow_win_ski.IPC
                     break;
                 case disconnecter:
                     Server.Disconnect();
-                    Console.WriteLine("Client rozlaczony z serwerem");
                     break;
             }
         }
@@ -82,7 +81,6 @@ namespace Vow_win_ski.IPC
                 for (int i = 0; i < Messages.Count; i++)
                 {
                     if (Messages[i].GetReceiverId() != receiverId) continue;
-                    Console.WriteLine("Serwer wyslal dane");
                     strString.WriteString(Messages[i].GetMessage() + ";" + Messages[i].GetSenderId());
                     Messages.RemoveAt(i);
                     break;
@@ -102,7 +100,6 @@ namespace Vow_win_ski.IPC
                 }
                 else
                 {
-                    Console.WriteLine("Serwer oczekuje na polaczenie");
                     Server.WaitForConnection();
                 }
             }
