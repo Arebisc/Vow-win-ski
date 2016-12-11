@@ -88,19 +88,25 @@ namespace Vow_win_ski
                         break;
                     //===================================================
                     case "CP":
-                        throw new NotImplementedException();
+                        Processes.UserInterface.CreateProcess(p1, p2);
                         break;
                     case "HP":
-                        throw new NotImplementedException();
+                        Processes.UserInterface.StopProcess(p1);
                         break;
                     case "SAP":
-                        throw new NotImplementedException();
+                        Processes.UserInterface.ShowAllProcesses();
                         break;
-                    case "SP":
-                        throw new NotImplementedException();
-                        break;
+                    //case "SP":
+                        //throw new NotImplementedException();
+                        //break;
                     case "SPCB":
-                        throw new NotImplementedException();
+                        Processes.UserInterface.ShowPCB(p1);
+                        break;
+                    case "WP":
+                        Processes.UserInterface.SleepProcess(p1);
+                        break;
+                    case "RP":
+                        Processes.UserInterface.ResumeProcess(p1);
                         break;
                     //===================================================
                     case "SPL":

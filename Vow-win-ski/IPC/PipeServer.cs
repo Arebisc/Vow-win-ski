@@ -14,6 +14,7 @@ namespace Vow_win_ski.IPC
     {
         private NamedPipeServerStream Server;
         private List<Message> Messages;
+        private List<Message> History;
         private StreamString strString;
         private Thread thread;
         private string[] message;
@@ -26,15 +27,15 @@ namespace Vow_win_ski.IPC
         public PipeServer()
         {
             Server = new NamedPipeServerStream("SERWER", PipeDirection.InOut);
-            Console.WriteLine("Utworzono Serwer IPC");
+            Console.WriteLine("Tworzenie Serwera IPC");
             Start();
         }
         //===================================================================================================================================
         public void Build()
         {
             Server.WaitForConnection();
-            Console.WriteLine("Serwer oczekuje na polaczenie");
             Messages = new List<Message>();
+            History = new List<Message>();
             strString = new StreamString(Server);
         }
         //===================================================================================================================================
@@ -51,6 +52,7 @@ namespace Vow_win_ski.IPC
         public void StoreMessage()
         {
             Messages.Add(new Message(message[1], message[2], message[3]));
+            History.Add(new Message(message[1], message[2], message[3]));
         }
         //===================================================================================================================================
         public void Switch()
@@ -65,7 +67,6 @@ namespace Vow_win_ski.IPC
                     break;
                 case disconnecter:
                     Server.Disconnect();
-                    Console.WriteLine("Client rozlaczony z serwerem");
                     break;
             }
         }
@@ -83,7 +84,6 @@ namespace Vow_win_ski.IPC
                 for (int i = 0; i < Messages.Count; i++)
                 {
                     if (Messages[i].GetReceiverId() != receiverId) continue;
-                    Console.WriteLine("Serwer wyslal dane");
                     strString.WriteString(Messages[i].GetMessage() + ";" + Messages[i].GetSenderId());
                     Messages.RemoveAt(i);
                     break;
@@ -103,7 +103,6 @@ namespace Vow_win_ski.IPC
                 }
                 else
                 {
-                    Console.WriteLine("Serwer oczekuje na polaczenie");
                     Server.WaitForConnection();
                 }
             }
@@ -121,6 +120,14 @@ namespace Vow_win_ski.IPC
             foreach (var x in Messages)
             {
                 Console.WriteLine(x.GetSenderId()+ " to " +x.GetReceiverId() + " " +x.GetMessage());
+            }
+        }
+
+        public void ShowHistory()
+        {
+            foreach (var x in History)
+            {
+                Console.WriteLine(x.GetSenderId() + " to " + x.GetReceiverId() + " " + x.GetMessage());
             }
         }
     }
