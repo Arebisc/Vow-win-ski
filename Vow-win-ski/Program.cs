@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Vow_win_ski.MemoryModule;
-using System.Threading;
 using Vow_win_ski.CPU;
 using Vow_win_ski.FileSystem;
 using Vow_win_ski.IPC;
@@ -14,15 +9,20 @@ namespace Vow_win_ski
 {
     class Program
     {
-        static void InitSystemResources()
+        static void InitSystemResources(string[] args)
         {
-            Disc.InitDisc();
+            //wstawiać inity here
+            if (args.Length > 0)
+                Disc.InitDisc(args[0]);
+            else
+                Disc.InitDisc();
         }
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Uruchamianie systemu...");
             DisplayLogo();
-            InitSystemResources();
+            InitSystemResources(args);
 
             Shell.GetShell.OpenShell();
         }
