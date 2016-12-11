@@ -68,7 +68,7 @@ namespace Vow_win_ski.Processes
         public PCB(string name, int priority)
         {
             this.Name = name;
-            this.StartPriority = priority;
+            this.CurrentPriority = priority;
         }
 
         /// <summary>
