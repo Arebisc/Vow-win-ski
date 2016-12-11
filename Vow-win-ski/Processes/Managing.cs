@@ -65,6 +65,12 @@ namespace Vow_win_ski.Processes
         private static LinkedList<PCB> _CreatedPCBs = new LinkedList<PCB>();
         private static int _NextPID = 1;
 
+        public PCB(string name, int priority)
+        {
+            this.Name = name;
+            this.StartPriority = priority;
+        }
+
         /// <summary>
         /// Tworzy nowy proces bez uruchamiania go (stan procesu = New)
         /// </summary>

@@ -11,13 +11,13 @@ namespace Vow_win_ski.Tests.Processes
     [TestFixture]
     public class PCBTests
     {
-        //[Test]
-        //public void PCB_CheckEquatable()
-        //{
-        //    var firstPcb = new PCB("first", 4, "", null);
-        //    var secondPcb = new PCB("first", 5, "", null);
-        //    Assert.IsTrue(firstPcb.Equals(secondPcb));
-        //}
+        [Test]
+        public void PCB_CheckEquatable()
+        {
+            var firstPcb = new PCB("first", 4);
+            var secondPcb = new PCB("first", 5);
+            Assert.IsTrue(firstPcb.Equals(secondPcb));
+        }
 
     }
 }
