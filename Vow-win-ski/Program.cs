@@ -25,7 +25,6 @@ namespace Vow_win_ski
 
             InitSystemResources(args);
 
-
             Shell.GetShell.OpenShell();
         }
 
