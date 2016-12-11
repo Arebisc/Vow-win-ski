@@ -22,11 +22,9 @@ namespace Vow_win_ski
         static void Main(string[] args)
         {
             DisplayLogo();
-
             InitSystemResources();
 
             Shell.GetShell.OpenShell();
-
         }
 
         static void DisplayLogo()
