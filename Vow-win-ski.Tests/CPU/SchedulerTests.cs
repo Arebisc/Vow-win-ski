@@ -27,6 +27,8 @@ namespace Vow_win_ski.Tests.CPU
             scheduler.AddProcess(pcb3);
             scheduler.AddProcess(pcb4);
             scheduler.AddProcess(pcb5);
+            var prior = scheduler.PriorityAlgorithm();
+            scheduler.AddProcess(pcb5);
 
             Assert.AreEqual(pcb4, scheduler.PriorityAlgorithm());
         }
