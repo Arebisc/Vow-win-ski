@@ -88,19 +88,25 @@ namespace Vow_win_ski
                         break;
                     //===================================================
                     case "CP":
-                        throw new NotImplementedException();
+                        Processes.UserInterface.CreateProcess(p1, p2);
                         break;
                     case "HP":
-                        throw new NotImplementedException();
+                        Processes.UserInterface.StopProcess(p1);
                         break;
                     case "SAP":
-                        throw new NotImplementedException();
+                        Processes.UserInterface.ShowAllProcesses();
                         break;
-                    case "SP":
-                        throw new NotImplementedException();
-                        break;
+                    //case "SP":
+                        //throw new NotImplementedException();
+                        //break;
                     case "SPCB":
-                        throw new NotImplementedException();
+                        Processes.UserInterface.ShowPCB(p1);
+                        break;
+                    case "WP":
+                        Processes.UserInterface.SleepProcess(p1);
+                        break;
+                    case "RP":
+                        Processes.UserInterface.ResumeProcess(p1);
                         break;
                     //===================================================
                     case "SPL":
@@ -115,10 +121,10 @@ namespace Vow_win_ski
                     case "SM":
                         throw new NotImplementedException();
                         break;
-                    //===================================================
                     case "SLM":
                         throw new NotImplementedException();
                         break;
+                    //===================================================
                     case "SAM":
                         throw new NotImplementedException();
                         break;
@@ -181,8 +187,10 @@ namespace Vow_win_ski
             Console.WriteLine("CP {nazwa} {prog}  Tworzy proces {nazwa} z programu {prog}");
             Console.WriteLine("HP {nazwa}\t   Zatrzymuje proces {nazwa}");
             Console.WriteLine("SAP\t\t   Wyświetla listę wszystkich procesów");
-            Console.WriteLine("SP {nazwa}\t   Wyświetla proces {nazwa}");
+            //Console.WriteLine("SP {nazwa}\t   Wyświetla proces {nazwa}");
             Console.WriteLine("SPCB {nazwa}\t   Wyświetla listę PCB procesu {nazwa}");
+            Console.WriteLine("WP {nazwa}\t   Usypia uruchomiony proces {nazwa}");
+            Console.WriteLine("RP {nazwa}\t   Wznawia uśpiony proces {nazwa}");
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("-------------------------------Pamięć---------------------------------");
@@ -191,11 +199,11 @@ namespace Vow_win_ski
             Console.WriteLine("SPC {nazwa} {nr}   Wyświetla zawartość strony {nr} procesu {nazwa}");
             Console.WriteLine("SEP\t\t   Wyświetla puste stron");
             Console.WriteLine("SM\t\t   Wyświetla całą pamięć");
+            Console.WriteLine("SLM\t\t   Wyświetla ostatnią wiadomość z pamięci");
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("-----------------------------Komunikacja------------------------------");
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("SLM\t\t   Wyświetla ostatnią wiadomość");
             Console.WriteLine("SAM\t\t   Wyświetla wszystkie oczekujące komunikaty");
             Console.WriteLine("SMH\t\t   Wyświetla historię komunikatów");
 

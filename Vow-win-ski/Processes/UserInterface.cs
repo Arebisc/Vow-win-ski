@@ -7,30 +7,37 @@ using System.Threading.Tasks;
 namespace Vow_win_ski.Processes
 {
 
-    /// <summary>
-    /// Klasa służąca do interakcji z użytkownikiem, dająca mu możliwość zarządzania procesami
-    /// </summary>
     static class UserInterface
     {
 
-        /// <summary>
-        /// Wyświetla menu, pozwalające użytkownikowi zarządzać procesami
-        /// </summary>
-        public static void ShowMenu()
+        public static void CreateProcess(string Name, string Path)
         {
+            new PCB(Name, new Random().Next(0, 7), Path).RunNewProcess();
+        }
 
-            //wyswietl liste wszystkich procesow
-            //wyswietl proces o PID
-            //wyswietl PCB procesu o ID
+        public static void StopProcess(string Name)
+        {
+            PCB.GetPCB(Name).TerminateProcess(ReasonOfProcessTerminating.UserClosed);
+        }
 
-            //CP - utworz proces
-            //HP - zatrzymaj proces
+        public static void ShowAllProcesses()
+        {
+            PCB.PrintAllPCBs();
+        }
 
-            //SRP - show ready processes
-            //SAP - show all PCB
-            //SP {name} - show process
-            //SPCB {name} - show PCB list
+        public static void ShowPCB(string Name)
+        {
+            PCB.GetPCB(Name).PrintAllFields();
+        }
 
+        public static void SleepProcess(string Name)
+        {
+            PCB.GetPCB(Name).WaitForSomething();
+        }
+
+        public static void ResumeProcess(string Name)
+        {
+            PCB.GetPCB(Name).StopWaiting();
         }
 
     }

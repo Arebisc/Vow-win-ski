@@ -14,6 +14,7 @@ namespace Vow_win_ski.IPC
     {
         private NamedPipeServerStream Server;
         private List<Message> Messages;
+        private List<Message> History;
         private StreamString strString;
         private Thread thread;
         private string[] message;
@@ -34,6 +35,7 @@ namespace Vow_win_ski.IPC
         {
             Server.WaitForConnection();
             Messages = new List<Message>();
+            History = new List<Message>();
             strString = new StreamString(Server);
         }
         //===================================================================================================================================
@@ -50,6 +52,7 @@ namespace Vow_win_ski.IPC
         public void StoreMessage()
         {
             Messages.Add(new Message(message[1], message[2], message[3]));
+            History.Add(new Message(message[1], message[2], message[3]));
         }
         //===================================================================================================================================
         public void Switch()
@@ -117,6 +120,14 @@ namespace Vow_win_ski.IPC
             foreach (var x in Messages)
             {
                 Console.WriteLine(x.GetSenderId()+ " to " +x.GetReceiverId() + " " +x.GetMessage());
+            }
+        }
+
+        public void ShowHistory()
+        {
+            foreach (var x in History)
+            {
+                Console.WriteLine(x.GetSenderId() + " to " + x.GetReceiverId() + " " + x.GetMessage());
             }
         }
     }
