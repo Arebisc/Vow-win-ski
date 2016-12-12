@@ -8,16 +8,13 @@ namespace Vow_win_ski.MemoryModule
     {
         public int Id;
         public int PagesCount;
-        private List<Page> TakenPages;
+        public List<Page> TakenPages;
 
         public delegate char GetCharDelegate(int id,int number);
         public GetCharDelegate GetChar;
 
         public delegate void ChangeByteDelegate(int id, int number, char data);
         public ChangeByteDelegate ChangeByteDel;
-
-        public delegate void UploadChangesDelegate(int id, int frameNumber, int pageNumber);
-        public UploadChangesDelegate UploadChangesDel;
 
 
         public ProcessPages(int id,int framesCount)
@@ -43,10 +40,7 @@ namespace Vow_win_ski.MemoryModule
                 if (page.GetFrameNumber() == frameNumber)
                 {
                     page.VaildInVaild = false;
-                    if (page.IsModified)
-                    {
-                        UploadChangesDel(Id, TakenPages.IndexOf(page), frameNumber);
-                    }
+                    page.IsModified = false;
                 }
             }
         }

@@ -31,13 +31,13 @@ namespace Vow_win_ski.MemoryModule
             return data?.TakenFrames[pageNumber].ReadFrame();
         }
 
-        public void UpdateData(int processId, int pageNumber, Frame data)
+        public void UpdateData(int processId, int pageNumber, char[] data)
         {
             foreach (var exchangeFileProcess in _takenProcesses)
             {
                 if (exchangeFileProcess.TakenProcessPages.Id == processId)
                 {
-                    exchangeFileProcess.TakenFrames[pageNumber] = data;
+                    exchangeFileProcess.TakenFrames[pageNumber].WriteFrame(data);
                 }
             }
         }

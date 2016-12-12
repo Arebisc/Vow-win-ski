@@ -30,7 +30,7 @@ namespace Vow_win_ski.MemoryModule
         }
         public void ClearFrame()
         {
-            Offset = 16;
+            Offset = 0;
             for (int i = 0; i < _fields.Length; i++)
             {
                 _fields[i] = '0';
