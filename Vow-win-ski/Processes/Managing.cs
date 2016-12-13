@@ -39,6 +39,7 @@ namespace Vow_win_ski.Processes
             _PID = ++_NextPID;
             this.Name = name;
             this.CurrentPriority = priority;
+            this.State = ProcessState.Ready;
         }
 
         /// <summary>

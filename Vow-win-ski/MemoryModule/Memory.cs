@@ -163,6 +163,7 @@ namespace Vow_win_ski.MemoryModule
             temp.ChangeByteDel = ChangeByte;
             ProcessPages.Add(temp);
             processData.MemoryBlocks = temp;
+            processData.MaxMemory = program.Length-1;
 
             //uzupelnienie stron
             var frames = new List<Frame>();
