@@ -35,6 +35,7 @@ namespace Vow_win_ski
             }
             catch (Exception e)
             {
+                PipeServer.GetServer.Exit();
                 Console.BufferHeight = 25;
                 Console.BackgroundColor = ConsoleColor.DarkBlue;
                 Console.Clear();

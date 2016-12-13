@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -18,7 +19,8 @@ namespace Vow_win_ski.IPC
         private StreamString strString;
         private Thread thread;
         private string[] message;
-      
+        private bool exit = false;
+
 
         public static void InitServer()
         {
@@ -26,7 +28,7 @@ namespace Vow_win_ski.IPC
             {
                 _instance = new PipeServer();
             }
-            
+
         }
 
         public static PipeServer GetServer => _instance;
@@ -46,7 +48,6 @@ namespace Vow_win_ski.IPC
         //===================================================================================================================================
         public void Build()
         {
-            Server.WaitForConnection();
             Messages = new List<Message>();
             History = new List<Message>();
             strString = new StreamString(Server);
@@ -55,10 +56,10 @@ namespace Vow_win_ski.IPC
         public void ServerReceiver()
         {
             string receive = strString.ReadString();
-         
+
             if (receive != null)
             {
-                message = receive.Split(';');               
+                message = receive.Split(';');
             }
         }
         //===================================================================================================================================
@@ -107,7 +108,7 @@ namespace Vow_win_ski.IPC
         public void ServerInit()
         {
             Build();
-            while (true)
+            while (!exit)
             {
                 if (Server.IsConnected)
                 {
@@ -118,6 +119,7 @@ namespace Vow_win_ski.IPC
                 {
                     Server.WaitForConnection();
                 }
+
             }
         }
         //===================================================================================================================================
@@ -132,7 +134,7 @@ namespace Vow_win_ski.IPC
         {
             foreach (var x in Messages)
             {
-                Console.WriteLine(x.GetSenderId()+ " to " +x.GetReceiverId() + " " +x.GetMessage());
+                Console.WriteLine(x.GetSenderId() + " to " + x.GetReceiverId() + " " + x.GetMessage());
             }
         }
 
@@ -142,6 +144,17 @@ namespace Vow_win_ski.IPC
             {
                 Console.WriteLine(x.GetSenderId() + " to " + x.GetReceiverId() + " " + x.GetMessage());
             }
+        }
+
+        public void Exit()
+        {
+            exit = true;
+            if (!Server.IsConnected)
+            {
+                PipeClient terminator = new PipeClient("terminator");
+                terminator.Connect();
+            }
+
         }
     }
 }

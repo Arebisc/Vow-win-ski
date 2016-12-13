@@ -81,6 +81,7 @@ namespace Vow_win_ski
                         break;
                     case "QUIT":
                         exit = true;
+                        PipeServer.GetServer.Exit();
                         break;
                     //===================================================
                     case "SRP":
@@ -167,6 +168,7 @@ namespace Vow_win_ski
                         break;
                 }
             }
+          
         }
 
         private void ShowHelp()
