@@ -9,7 +9,6 @@ namespace Vow_win_ski.Processes
     public sealed class LockersHolder
     {
         private static volatile LockersHolder _instance;
-        private static readonly object SyncRoot = new object();
         public static Lockers MemoLock;
         public static Lockers ProcLock;
 
@@ -20,8 +19,9 @@ namespace Vow_win_ski.Processes
 
         private LockersHolder()
         {
+            Console.WriteLine("Tworzenie mechanizmów synchronizacji LOCKS.");
             Lockers MemoLock = new Lockers();
-            Lockers ProcLock = new Lockers();
+            Lockers ProcLock = new Lockers();          
         }
 
         public static LockersHolder GetInstance => _instance;

@@ -81,6 +81,7 @@ namespace Vow_win_ski
                         break;
                     case "QUIT":
                         exit = true;
+                        PipeServer.GetServer.Exit();
                         break;
                     //===================================================
                     case "SRP":
@@ -99,9 +100,6 @@ namespace Vow_win_ski
                     case "SAP":
                         Processes.UserInterface.ShowAllProcesses();
                         break;
-                    //case "SP":
-                        //throw new NotImplementedException();
-                        //break;
                     case "SPCB":
                         Processes.UserInterface.ShowPCB(p1);
                         break;
@@ -129,7 +127,7 @@ namespace Vow_win_ski
                         Memory.GetInstance.DisplayPhysicalMemory();
                         break;
                     case "SFIFO":
-                        //Memory.GetInstance.
+                        Memory.GetInstance.DisplayFifoQueue();
                         break;
                     case "SLM":
                         Console.WriteLine(Memory.GetInstance.ReadMessage() + "\n");
@@ -143,7 +141,7 @@ namespace Vow_win_ski
                         break;
                     //===================================================
                     case "SW":
-                        throw new NotImplementedException();
+                        LockersHolder.ProcLock.Show();
                         break;
                     //===================================================
                     case "DIR":
@@ -170,6 +168,7 @@ namespace Vow_win_ski
                         break;
                 }
             }
+          
         }
 
         private void ShowHelp()
@@ -197,7 +196,6 @@ namespace Vow_win_ski
             Console.WriteLine("CP {nazwa} {prog}  Tworzy proces {nazwa} z programu {prog}");
             Console.WriteLine("HP {nazwa}\t   Zatrzymuje proces {nazwa}");
             Console.WriteLine("SAP\t\t   Wyświetla listę wszystkich procesów");
-            //Console.WriteLine("SP {nazwa}\t   Wyświetla proces {nazwa}");
             Console.WriteLine("SPCB {nazwa}\t   Wyświetla listę PCB procesu {nazwa}");
             Console.WriteLine("WP {nazwa}\t   Usypia uruchomiony proces {nazwa}");
             Console.WriteLine("RP {nazwa}\t   Wznawia uśpiony proces {nazwa}");

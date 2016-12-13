@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Vow_win_ski.MemoryModule;
 using Vow_win_ski.CPU;
 using Vow_win_ski.FileSystem;
@@ -12,10 +13,11 @@ namespace Vow_win_ski
         static void InitSystemResources(string[] args)
         {
             //wstawiać inity here
+            Thread.Sleep(500);
             LockersHolder.InitLockers();
-
+            Thread.Sleep(500); 
             PipeServer.InitServer();
-
+            Thread.Sleep(500);
             if (args.Length > 0)
                 Disc.InitDisc(args[0]);
             else
@@ -35,6 +37,7 @@ namespace Vow_win_ski
             }
             catch (Exception e)
             {
+                PipeServer.GetServer.Exit();
                 Console.BufferHeight = 25;
                 Console.BackgroundColor = ConsoleColor.DarkBlue;
                 Console.Clear();
@@ -55,10 +58,15 @@ namespace Vow_win_ski
         {
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
+            Thread.Sleep(100);
             Console.WriteLine(" _    __                      _       __ _               _____  __    _ ");
+            Thread.Sleep(100);
             Console.WriteLine("| |  / /____  _      __      | |     / /(_)____         / ___/ / /__ (_)");
+            Thread.Sleep(100);
             Console.WriteLine("| | / // __ \\| | /| / /______| | /| / // // __ \\ ______ \\__ \\ / //_// / ");
+            Thread.Sleep(100);
             Console.WriteLine("| |/ // /_/ /| |/ |/ //_____/| |/ |/ // // / / //_____/___/ //   / / /  ");
+            Thread.Sleep(100);
             Console.WriteLine("|___/ \\____/ |__/|__/        |__/|__//_//_/ /_/       /____//_/\\_\\/_/");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine();
