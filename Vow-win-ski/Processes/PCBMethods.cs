@@ -1,4 +1,5 @@
 ﻿using System;
+using Vow_win_ski.CPU;
 
 namespace Vow_win_ski.Processes
 {
@@ -273,7 +274,7 @@ namespace Vow_win_ski.Processes
 
         public void Send(string receivername, string message)
         {
-            //ProcLock.Unlock(receivername); 
+            LockersHolder.ProcLock.Unlock(receivername);
             client._send(receivername, message);
         }
 
@@ -281,7 +282,7 @@ namespace Vow_win_ski.Processes
         {
             if (client._receive() == false)
             {
-                //ProcLock.Lock(this);
+               LockersHolder.ProcLock.Lock(this);
             }
         }
 
