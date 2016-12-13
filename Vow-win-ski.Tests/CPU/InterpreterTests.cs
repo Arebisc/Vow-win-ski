@@ -1,8 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Vow_win_ski.CPU;
 using Vow_win_ski.Processes;
-using Assert = NUnit.Framework.Assert;
 
 namespace Vow_win_ski.Tests.CPU
 {

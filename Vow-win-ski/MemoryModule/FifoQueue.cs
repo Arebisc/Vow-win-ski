@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Vow_win_ski.MemoryModule
@@ -40,6 +41,16 @@ namespace Vow_win_ski.MemoryModule
                 .Where(x => x.Id != id)
                 .ToList();
            Size = _queue.Count;
+       }
+
+       public void DisplayQueue()
+       {
+           var display = _queue.Select(x => x.FrameNumber).Reverse().ToList();
+            Console.WriteLine("Kolejka FIFO");
+           foreach (var field in display)
+           {
+               Console.Write(field+" ");
+           }
        }
    }
 }

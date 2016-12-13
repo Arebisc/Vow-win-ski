@@ -121,6 +121,9 @@ namespace Vow_win_ski
                     case "SM":
                         throw new NotImplementedException();
                         break;
+                    case "SFIFO":
+                        throw new NotImplementedException();
+                        break;
                     case "SLM":
                         throw new NotImplementedException();
                         break;
@@ -200,6 +203,7 @@ namespace Vow_win_ski
             Console.WriteLine("SEP\t\t   Wyświetla puste stron");
             Console.WriteLine("SM\t\t   Wyświetla całą pamięć");
             Console.WriteLine("SLM\t\t   Wyświetla ostatnią wiadomość z pamięci");
+            Console.WriteLine("SFIFO\t\t   Wyświetla kolejke FIFO");
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("-----------------------------Komunikacja------------------------------");
