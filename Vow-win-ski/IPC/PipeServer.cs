@@ -42,7 +42,7 @@ namespace Vow_win_ski.IPC
         public PipeServer()
         {
             Server = new NamedPipeServerStream("SERWER", PipeDirection.InOut);
-            Console.WriteLine("Tworzenie Serwera IPC");
+            Console.WriteLine("Tworzenie Serwera IPC.");
             Start();
         }
         //===================================================================================================================================
