@@ -71,11 +71,9 @@
     <Compile Include="CPU\CPU.cs" />
     <Compile Include="CPU\Scheduler.cs" />
     <Compile Include="Processes\Lockers.cs" />
-    <Compile Include="Processes\LockersHolder.cs" />
     <Compile Include="Processes\Managing.cs" />
     <Compile Include="Processes\PCBFields.cs" />
     <Compile Include="Processes\PCBMethods.cs" />
-    <Compile Include="Processes\LockersHolder.cs" />
     <Compile Include="Processes\UserInterface.cs" />
     <Compile Include="IPC\Message.cs" />
     <Compile Include="IPC\PipeClient.cs" />
