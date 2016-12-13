@@ -7,7 +7,6 @@ using System.IO.Pipes;
 using System.IO;
 
 
-
 namespace Vow_win_ski.IPC
 {
     class PipeServer

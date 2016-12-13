@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.IO;
 using System.IO.Pipes;
+using Vow_win_ski.MemoryModule;
 
 namespace Vow_win_ski.IPC
 {
@@ -52,6 +53,7 @@ namespace Vow_win_ski.IPC
                 var readLine = strString.ReadString();
                 if (readLine != null) message = readLine.Split(';');
                 Console.WriteLine(clientId + " received from " + message[1] + ": "+ message[0]);
+                Memory.GetInstance.PlaceMessage(message[0]);
                 return true;
             }
             else
