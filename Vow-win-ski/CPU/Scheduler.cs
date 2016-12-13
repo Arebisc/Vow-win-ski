@@ -62,7 +62,7 @@ namespace Vow_win_ski.CPU
 
             foreach (var elem in WaitingForProcessor)
             {
-                result += (elem.PID + " " + elem.Name);
+                result += (elem.PID + " " + elem.Name + "\n");
             }
             return result;
         }

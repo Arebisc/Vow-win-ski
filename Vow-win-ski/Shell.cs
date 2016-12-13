@@ -1,5 +1,8 @@
 ﻿using System;
 using Vow_win_ski.FileSystem;
+using Vow_win_ski.IPC;
+using Vow_win_ski.MemoryModule;
+using Vow_win_ski.Processes;
 
 namespace Vow_win_ski
 {
@@ -81,10 +84,10 @@ namespace Vow_win_ski
                         break;
                     //===================================================
                     case "SRP":
-                        throw new NotImplementedException();
+                        CPU.Scheduler.GetInstance.PrintList();
                         break;
                     case "SRG":
-                        throw new NotImplementedException();
+                        CPU.CPU.GetInstance.Register.PrintRegisters();
                         break;
                     //===================================================
                     case "CP":
@@ -110,29 +113,33 @@ namespace Vow_win_ski
                         break;
                     //===================================================
                     case "SPL":
-                        throw new NotImplementedException();
+                        Memory.GetInstance.DisplayPageList(PCB.GetPCB(p1).PID);
                         break;
                     case "SPC":
-                        throw new NotImplementedException();
+                        int nr;
+                        if (Int32.TryParse(p2, out nr))
+                            Memory.GetInstance.DisplayPageContent(PCB.GetPCB(p1).PID, nr);
+                        else
+                            Console.WriteLine("Błąd: Nieprawidłowy numer strony.");
                         break;
                     case "SEP":
-                        throw new NotImplementedException();
+                        Memory.GetInstance.DisplayFreeFrames();
                         break;
                     case "SM":
-                        throw new NotImplementedException();
+                        Memory.GetInstance.DisplayPhysicalMemory();
                         break;
                     case "SFIFO":
-                        throw new NotImplementedException();
+                        //Memory.GetInstance.
                         break;
                     case "SLM":
-                        throw new NotImplementedException();
+                        Console.WriteLine(Memory.GetInstance.ReadMessage() + "\n");
                         break;
                     //===================================================
                     case "SAM":
-                        throw new NotImplementedException();
+                        PipeServer.GetServer.Show();
                         break;
                     case "SMH":
-                        throw new NotImplementedException();
+                        PipeServer.GetServer.ShowHistory();
                         break;
                     //===================================================
                     case "SW":

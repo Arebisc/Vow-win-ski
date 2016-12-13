@@ -13,7 +13,7 @@ namespace Vow_win_ski
         {
             //wstawiać inity here
 
-           PipeServer.InitServer();
+            PipeServer.InitServer();
 
             if (args.Length > 0)
                 Disc.InitDisc(args[0]);
@@ -21,13 +21,33 @@ namespace Vow_win_ski
                 Disc.InitDisc();
         }
 
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Uruchamianie systemu...");
-            DisplayLogo();
-            InitSystemResources(args);
+            try
+            {
+                Console.WriteLine("Uruchamianie systemu...");
+                DisplayLogo();
+                InitSystemResources(args);
 
-            Shell.GetShell.OpenShell();
+                Shell.GetShell.OpenShell();
+            }
+            catch (Exception e)
+            {
+                Console.BufferHeight = 25;
+                Console.BackgroundColor = ConsoleColor.DarkBlue;
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + ("Coś się popsuło :(".Length / 2)) + "}", "Coś się popsuło :("));
+                Console.WriteLine();
+                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (e.GetType().ToString().Length / 2)) + "}", e.GetType().ToString()));
+                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (e.Message.Length / 2)) + "}", e.Message));
+                Console.Read();
+                Console.ResetColor();
+                Console.Clear();
+            }
         }
 
         static void DisplayLogo()
