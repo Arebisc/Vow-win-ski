@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Media;
 using System.Threading;
 using Vow_win_ski.MemoryModule;
 using Vow_win_ski.CPU;
@@ -15,7 +16,7 @@ namespace Vow_win_ski
             //wstawiać inity here
             Thread.Sleep(500);
             LockersHolder.InitLockers();
-            Thread.Sleep(500); 
+            Thread.Sleep(500);
             PipeServer.InitServer();
             Thread.Sleep(500);
             if (args.Length > 0)
@@ -55,7 +56,7 @@ namespace Vow_win_ski
         }
 
         static void DisplayLogo()
-        {
+        {           
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
             Thread.Sleep(100);

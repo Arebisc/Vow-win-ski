@@ -33,8 +33,10 @@ namespace Vow_win_ski.CPU
             }
         }
 
-        public void InterpretOrder(string order)
+        public void InterpretOrder()
         {
+            var order = GetOrderFromMemory(Scheduler.GetInstance.GetRunningPCB());
+
             if (order.EndsWith(":"))
             {
                 order.Trim(':');

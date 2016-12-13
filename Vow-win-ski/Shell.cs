@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Media;
 using Vow_win_ski.FileSystem;
 using Vow_win_ski.IPC;
 using Vow_win_ski.MemoryModule;
@@ -81,7 +82,7 @@ namespace Vow_win_ski
                         break;
                     case "QUIT":
                         exit = true;
-                        PipeServer.GetServer.Exit();
+                        PipeServer.GetServer.Exit();                      
                         break;
                     //===================================================
                     case "SRP":
