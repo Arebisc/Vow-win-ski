@@ -27,7 +27,7 @@ namespace Vow_win_ski
             DisplayLogo();
             InitSystemResources(args);
 
-            //Shell.GetShell.OpenShell();
+            Shell.GetShell.OpenShell();
         }
 
         static void DisplayLogo()

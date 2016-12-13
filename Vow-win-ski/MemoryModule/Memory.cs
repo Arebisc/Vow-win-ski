@@ -407,6 +407,11 @@ namespace Vow_win_ski.MemoryModule
             }
         }
 
+        public void DisplayFifoQueue()
+        {
+            _fifoQueue.DisplayQueue();
+        }
+
         public void TestFillMemory(PCB testProcessData)
         {
             string data= "abcdefghijklmnop" +

@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Vow_win_ski.Processes
 {
-    class Lockers
+    public class Lockers
     {
         private byte open = 0;
-        Queue<Vow_win_ski.Processes.PCB> waiting;
-        private int id;
+        List<Vow_win_ski.Processes.PCB> waiting;
+        private string Name;
         PCB proces;
 
-        Lockers()
+        public Lockers()
         {
-            waiting = new Queue<PCB>();
+            waiting = new List<PCB>();
         }
 
         public void Lock(PCB Proces)
@@ -23,41 +23,61 @@ namespace Vow_win_ski.Processes
             if (Check())
             {
                 proces = Proces;
-                this.id = proces.PID;
+                this.Name = proces.Name;
                 open = 1;
                 proces.WaitForScheduling();
             }
             else
             {
-                waiting.Enqueue(proces);
+                waiting.Add(proces);
                 proces.WaitForScheduling();
             }
         }
 
-        public void Unlock(PCB Proces)
+        public void Unlock(string name)
         {
             if (!Check())
             {
                 if (waiting.Count() > 1)
                 {
-                    if (Check(Proces))
+                    if (Check(name))
                     {
-                        proces = waiting.Dequeue();
+                        foreach(var i in waiting)
+                        {
+                            if (name == i.Name)
+                            {
+                                proces = i;
+                                break;
+                            }
+                        }
                         proces.StopWaiting();
-                        Proces.ReceiverMessageLock = 1;
-                        this.id = proces.PID;
+                        this.Name = proces.Name;
                     }
                 }
                 else if (waiting.Count() == 1)
                 {
-                    if (Check(Proces))
+                    if (Check(name))
                     {
-                        proces = waiting.Dequeue();
+                        foreach (var i in waiting)
+                        {
+                            if (name == i.Name)
+                            {
+                                proces = i;
+                                break;
+                            }
+                        }
                         proces.StopWaiting();
-                        Proces.ReceiverMessageLock = 1;
                         open = 0;
                     }
                 }
+            }
+        }
+
+        public void Show()
+        {
+            foreach (var i in waiting)
+            {
+                Console.WriteLine(i.PID + "\t" + i.Name);
             }
         }
 
@@ -69,9 +89,9 @@ namespace Vow_win_ski.Processes
                 return false;
         }
 
-        public bool Check(PCB Proces)
+        public bool Check(string name)
         {
-            if (this.id == Proces.PID)
+            if (this.Name == name)
                 return true;
             else
                 return false;

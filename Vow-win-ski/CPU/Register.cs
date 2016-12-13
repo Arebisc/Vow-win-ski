@@ -46,6 +46,15 @@ namespace Vow_win_ski.CPU
 
         public Register() { }
 
+        public Register(int a, int b, int c, int d)
+            : this()
+        {
+            A = a;
+            B = b;
+            C = c;
+            D = d;
+        }
+
         public Register(int a, int b, int c, int d, int instructionPointer)
             : this()
         {
@@ -64,6 +73,18 @@ namespace Vow_win_ski.CPU
             C = register.C;
             D = register.D;
             InstructionPointer = register.InstructionPointer;
+        }
+
+        public override string ToString()
+        {
+            String result = String.Format("A: {0}; B: {1}; C: {2}; D: {3}", A, B, C, D);
+
+            return result;
+        }
+
+        public void PrintRegisters()
+        {
+            Console.WriteLine(this.ToString());
         }
     }
 }
