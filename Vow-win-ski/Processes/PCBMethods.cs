@@ -273,24 +273,15 @@ namespace Vow_win_ski.Processes
 
         public void Send(string receivername, string message)
         {
-            throw new NotImplementedException();
-
-            //byte id = receiver.PID;
-            //if(receiver.Lock == 0) {
-            //        client._send(id, message);
-            //} else {
-            //    Unlock(receiver);
-            //    cliend._send(id, message);
-            //}
+            //ProcLock.Unlock(receivername); 
+            client._send(receivername, message);
         }
 
         void Receive()
         {
-            throw new NotImplementedException();
-
             if (client._receive() == false)
             {
-                //Lock(this);
+                //ProcLock.Lock(this);
             }
         }
 
