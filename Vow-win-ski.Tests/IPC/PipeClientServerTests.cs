@@ -14,6 +14,8 @@ namespace Vow_win_ski.Tests.IPC
     {
         [Test]
         [TestCase("Testowa Wiadomosc")]
+        [TestCase("Testowa Wiadomosc")]
+        [TestCase("Testowa Wiadomosc")]
         public void Can_Read_Message(string message)
         {
             PipeServer.InitServer();
