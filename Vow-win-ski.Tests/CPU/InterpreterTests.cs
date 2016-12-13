@@ -1,6 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Vow_win_ski.CPU;
 using Vow_win_ski.Processes;
+using Vow_win_ski.MemoryModule;
 
 namespace Vow_win_ski.Tests.CPU
 {
@@ -86,6 +88,34 @@ namespace Vow_win_ski.Tests.CPU
             var interpreter = Interpreter.GetInstance;
             string orderSecondArgument = interpreter.GetOrderSecondArgument(order);
             Assert.AreEqual(orderSecondArgument, result);
+        }
+
+        [Test]
+        public void Get_GetOrderFromMemory()
+        {
+            string memoryContent = "AD A,4\n" +
+                                   "MV A,B\n" +
+                                   "MF NowyPlik\n" +
+                                   "WR NowyPlik,A\n";
+            string resultOrder = String.Empty;
+
+            var pcb = new PCB("testowy", 5);
+            Memory.GetInstance.AllocateMemory(pcb, memoryContent);
+
+            resultOrder = Interpreter.GetInstance.GetOrderFromMemory(pcb);
+            Assert.IsTrue(resultOrder == "AD A,4");
+
+            resultOrder = Interpreter.GetInstance.GetOrderFromMemory(pcb);
+            Assert.IsTrue(resultOrder == "MV A,B");
+
+            resultOrder = Interpreter.GetInstance.GetOrderFromMemory(pcb);
+            Assert.IsTrue(resultOrder == "MF NowyPlik");
+
+            resultOrder = Interpreter.GetInstance.GetOrderFromMemory(pcb);
+            Assert.IsTrue(resultOrder == "WR NowyPlik,A");
+
+            resultOrder = Interpreter.GetInstance.GetOrderFromMemory(pcb);
+            Assert.IsTrue(resultOrder == "");
         }
     }
 }
