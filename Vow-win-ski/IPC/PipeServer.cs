@@ -10,7 +10,7 @@ using System.IO;
 
 namespace Vow_win_ski.IPC
 {
-    class PipeServer
+    public class PipeServer
     {
         private static PipeServer _instance;
         private NamedPipeServerStream Server;

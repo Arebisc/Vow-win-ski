@@ -9,7 +9,7 @@ using Vow_win_ski.MemoryModule;
 
 namespace Vow_win_ski.IPC
 {
-    class PipeClient
+    public class PipeClient
     {
         private NamedPipeClientStream client;
         private StreamString strString;
