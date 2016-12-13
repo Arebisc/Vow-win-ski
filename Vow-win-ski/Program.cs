@@ -12,6 +12,7 @@ namespace Vow_win_ski
         static void InitSystemResources(string[] args)
         {
             //wstawiać inity here
+            LockersHolder.InitLockers();
 
             PipeServer.InitServer();
 

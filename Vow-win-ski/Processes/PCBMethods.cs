@@ -1,4 +1,5 @@
 ﻿using System;
+using Vow_win_ski.CPU;
 
 namespace Vow_win_ski.Processes
 {
@@ -15,9 +16,7 @@ namespace Vow_win_ski.Processes
         /// 1 - proces oczekuje na zamkniecie
         /// 2 - jeśli zamykany przez inny proces, nie podano procesu zamykającego
         /// </returns>
-        public int TerminateProcess(ReasonOfProcessTerminating Reason, PCB ClosingProcess = null, int ExitCode = 0)
-        {
-            throw new NotImplementedException();
+        public int TerminateProcess(ReasonOfProcessTerminating Reason, PCB ClosingProcess = null, int ExitCode = 0) {
 
             if (Reason == ReasonOfProcessTerminating.KilledByOther && ClosingProcess == null)
             {
@@ -63,6 +62,7 @@ namespace Vow_win_ski.Processes
 
                 Console.WriteLine("Zakonczono proces " + this.ToString() + ".");
                 Console.WriteLine("Powod zamkniecia: " + ReasonString);
+                Console.WriteLine("Kod wyjscia procesu: " + ExitCode.ToString());
                 this.RemoveProcess();
                 return 0;
 
@@ -72,9 +72,14 @@ namespace Vow_win_ski.Processes
                 WaitingForStopping = true;
                 Console.WriteLine("Oczekiwanie na zamkniecie procesu: " + this.ToString() + ".");
                 Console.WriteLine("Proces zostanie zamkniety po przejsciu do stanu Running.");
+                Console.WriteLine("Kod wyjscia procesu: " + ExitCode.ToString());
                 Console.WriteLine("Powod zamkniecia: " + ReasonString);
 
                 //Zablokuj proces zamykający
+                if (Reason == ReasonOfProcessTerminating.KilledByOther) {
+                    this.ClosingProcess = ClosingProcess;
+                    StopperLock.Lock(ClosingProcess);
+                }
 
                 return 1;
             }
@@ -114,9 +119,7 @@ namespace Vow_win_ski.Processes
         /// <returns>
         /// 0 - uruchomiono     1 - stan inny niż Ready     2 - proces został zakończony
         /// </returns>
-        public int RunReadyProcess()
-        {
-            throw new NotImplementedException();
+        public int RunReadyProcess() {
 
             if (State == ProcessState.Ready)
             {
@@ -124,6 +127,10 @@ namespace Vow_win_ski.Processes
                 if (WaitingForStopping)
                 {
                     //odblokuj proces zamykający
+                    if(ClosingProcess != null) {
+                        StopperLock.Unlock(this.Name);
+                        ClosingProcess = null;
+                    }
 
                     Console.WriteLine("Odblokowano proces oczekujacy na zamkniecie biezacego procesu: ");
 
@@ -273,24 +280,15 @@ namespace Vow_win_ski.Processes
 
         public void Send(string receivername, string message)
         {
-            throw new NotImplementedException();
-
-            //byte id = receiver.PID;
-            //if(receiver.Lock == 0) {
-            //        client._send(id, message);
-            //} else {
-            //    Unlock(receiver);
-            //    cliend._send(id, message);
-            //}
+            LockersHolder.ProcLock.Unlock(receivername);
+            client._send(receivername, message);
         }
 
         void Receive()
         {
-            throw new NotImplementedException();
-
             if (client._receive() == false)
             {
-                //Lock(this);
+               LockersHolder.ProcLock.Lock(this);
             }
         }
 
