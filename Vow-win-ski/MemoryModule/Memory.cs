@@ -462,8 +462,13 @@ namespace Vow_win_ski.MemoryModule
 
         public void PlaceMessage(string message)
         {
+            if (message.Length > 32)
+            {
+                message = message.Take(2*FramesSize).ToString();
+            }
             //wpisanie dlugosci wiadomosci
             _messageLength = message.Length;
+            
  
             //dane do zapelnienia nieuzywanej ramki
             //wprowadzenie tylko do jednej strony

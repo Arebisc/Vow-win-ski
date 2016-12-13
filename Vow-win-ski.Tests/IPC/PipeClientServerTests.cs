@@ -14,6 +14,8 @@ namespace Vow_win_ski.Tests.IPC
     {
         [Test]
         [TestCase("Testowa Wiadomosc")]
+        [TestCase("Testowa Wiadomosc")]
+        [TestCase("Testowa Wiadomosc")]
         public void Can_Read_Message(string message)
         {
             PipeServer.InitServer();
@@ -27,7 +29,10 @@ namespace Vow_win_ski.Tests.IPC
             client2.Connect();
             bool response = client2._receive();
 
+
             client2.Disconnect();
+
+            PipeServer.GetServer.Exit();
 
             Assert.IsTrue(response);
             Assert.AreEqual(message,Memory.GetInstance.ReadMessage());
