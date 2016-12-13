@@ -73,5 +73,11 @@ namespace Vow_win_ski.CPU
                 .Aggregate((elem1, elem2) => 
                     (elem1.CurrentPriority < elem2.CurrentPriority ? elem1 : elem2));
         }
+
+        public PCB GetRunningPCB()
+        {
+            return WaitingForProcessor
+                .SingleOrDefault(x => x.State == ProcessState.Running);
+        }
     }
 }

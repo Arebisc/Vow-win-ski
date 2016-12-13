@@ -278,7 +278,7 @@ namespace Vow_win_ski.Processes
             client._send(receivername, message);
         }
 
-        void Receive()
+        public void Receive()
         {
             if (client._receive() == false)
             {

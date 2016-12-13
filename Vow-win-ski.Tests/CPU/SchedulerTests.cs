@@ -30,5 +30,27 @@ namespace Vow_win_ski.Tests.CPU
 
             Assert.AreEqual(pcb4, scheduler.PriorityAlgorithm());
         }
+
+        [Test]
+        public void Check_GetRunningPCB()
+        {
+            var scheduler = Scheduler.GetInstance;
+            var pcb1 = new PCB("first", 4);
+            var pcb2 = new PCB("second", 3);
+            var pcb3 = new PCB("third", 7);
+            var pcb4 = new PCB("last", 1)
+            {
+                State = ProcessState.Running
+            };
+            var pcb5 = new PCB("latest", 5);
+
+            scheduler.AddProcess(pcb1);
+            scheduler.AddProcess(pcb2);
+            scheduler.AddProcess(pcb3);
+            scheduler.AddProcess(pcb4);
+            scheduler.AddProcess(pcb5);
+
+            Assert.AreEqual(scheduler.GetRunningPCB(), pcb4);
+        }
     }
 }

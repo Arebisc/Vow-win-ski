@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Vow_win_ski.Processes;
 
 namespace Vow_win_ski.CPU
 {
@@ -237,13 +238,13 @@ namespace Vow_win_ski.CPU
         private void XSOrder(string processName, string communicate)
         {
             Console.WriteLine("Rozkaz XS z parametrem " + processName + " " + communicate);
-            //throw new NotImplementedException();
+            Scheduler.GetInstance.GetRunningPCB().Send(processName, communicate);
         }
 
         private void XROrder()
         {
             Console.WriteLine("Rozkaz XR");
-            //throw new NotImplementedException();
+            Scheduler.GetInstance.GetRunningPCB().Receive();
         }
 
         private void XDOrder(string processName)
