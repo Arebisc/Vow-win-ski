@@ -8,17 +8,19 @@ using Vow_win_ski.Processes;
 
 namespace Vow_win_ski.CPU
 {
-    public sealed class InitLock
+    public sealed class LockersHolder
     {
-        private static volatile InitLock _instance;
+        private static volatile LockersHolder _instance;
         private static readonly object SyncRoot = new object();
-        private static Lockers MemoLock;
-        private static Lockers ProcLock;
+        public static Lockers MemoLock;
+        public static Lockers ProcLock;
 
-        private InitLock()
+        private LockersHolder()
         {
             Lockers MemoLock = new Lockers();
             Lockers ProcLock = new Lockers();
         }
+
+        public static LockersHolder GetInstance => _instance;
     }
 }
