@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Media;
 using Vow_win_ski.FileSystem;
 using Vow_win_ski.IPC;
 using Vow_win_ski.MemoryModule;
@@ -82,6 +83,8 @@ namespace Vow_win_ski
                     case "QUIT":
                         exit = true;
                         PipeServer.GetServer.Exit();
+                        SoundPlayer systemsound = new SoundPlayer(@"start.wav");
+                        systemsound.PlaySync();                      
                         break;
                     //===================================================
                     case "SRP":

@@ -57,6 +57,7 @@
     <Compile Include="CPU\InterpreterTests.cs" />
     <Compile Include="CPU\SchedulerTests.cs" />
     <Compile Include="FileSystem\FileSystemTests.cs" />
+    <Compile Include="IPC\PipeClientServerTests.cs" />
     <Compile Include="MemoryModule\FrameTests.cs" />
     <Compile Include="MemoryModule\FreeFramesListTests.cs" />
     <Compile Include="MemoryModule\MemoryTests.cs" />
@@ -73,6 +74,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
