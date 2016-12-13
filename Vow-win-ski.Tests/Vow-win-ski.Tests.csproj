@@ -56,6 +56,10 @@
   <ItemGroup>
     <Compile Include="CPU\InterpreterTests.cs" />
     <Compile Include="CPU\SchedulerTests.cs" />
+    <Compile Include="MemoryModule\FrameTests.cs" />
+    <Compile Include="MemoryModule\FreeFramesListTests.cs" />
+    <Compile Include="MemoryModule\MemoryTests.cs" />
+    <Compile Include="MemoryModule\QueueTests.cs" />
     <Compile Include="Processes\PCBTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -68,6 +72,7 @@
       <Name>Vow-win-ski</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

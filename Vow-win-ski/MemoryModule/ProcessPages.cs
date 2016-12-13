@@ -8,13 +8,14 @@ namespace Vow_win_ski.MemoryModule
     {
         public int Id;
         public int PagesCount;
-        private List<Page> TakenPages;
+        public List<Page> TakenPages;
 
         public delegate char GetCharDelegate(int id,int number);
         public GetCharDelegate GetChar;
 
         public delegate void ChangeByteDelegate(int id, int number, char data);
         public ChangeByteDelegate ChangeByteDel;
+
 
         public ProcessPages(int id,int framesCount)
         {
@@ -29,6 +30,7 @@ namespace Vow_win_ski.MemoryModule
         {
             TakenPages[pageNumber].SetNumber(frameNumber);
             TakenPages[pageNumber].VaildInVaild = true;
+            TakenPages[pageNumber].IsModified = false;
         }
 
         public void RemoveFrame(int frameNumber)
@@ -38,6 +40,7 @@ namespace Vow_win_ski.MemoryModule
                 if (page.GetFrameNumber() == frameNumber)
                 {
                     page.VaildInVaild = false;
+                    page.IsModified = false;
                 }
             }
         }
@@ -68,6 +71,11 @@ namespace Vow_win_ski.MemoryModule
         public void ChangeByte(int index, char data)
         {
             ChangeByteDel(Id, index, data);
+        }
+        
+        public void SetModified(int pageNumber)
+        {
+            TakenPages[pageNumber].IsModified = true;
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Vow_win_ski.CPU;
 using Vow_win_ski.Processes;
+using Assert = NUnit.Framework.Assert;
 
 namespace Vow_win_ski.Tests.CPU
 {
@@ -9,11 +11,24 @@ namespace Vow_win_ski.Tests.CPU
     {
         [Test]
         [TestCase("HLT", "HLT")]
-        [TestCase("XC ProcessName,fileName", "XC")]
+        [TestCase("XC ProcessName,FileName", "XC")]
+        [TestCase("XD ProcessName", "XD")]
         [TestCase("XR", "XR")]
+        [TestCase("XS ProcessName,Communicate", "XS")]
+        [TestCase("XY Name", "XY")]
+        [TestCase("XZ Name", "XZ")]
+        [TestCase("AD A,B", "AD")]
+        [TestCase("SB B,C", "SB")]
+        [TestCase("MU C,D", "MU")]
+        [TestCase("JM Etykieta", "JM")]
         [TestCase("Etykieta:", "Etykieta:")]
-        [TestCase("MF Name", "MF")]
-        [TestCase("XS Name,To jest komunikat", "XS")]
+        [TestCase("MV A,B", "MV")]
+        [TestCase("MN A,4", "MN")]
+        [TestCase("MF FileName", "MF")]
+        [TestCase("WF FileName,Content", "WF")]
+        [TestCase("WR FileName,A", "WR")]
+        [TestCase("DF FileName", "DF")]
+        [TestCase("PO A", "PO")]
         public void Get_GetOrderName_Splitted(string order, string result)
         {
             var interpreter = Interpreter.GetInstance;
@@ -22,9 +37,25 @@ namespace Vow_win_ski.Tests.CPU
         }
 
         [Test]
-        [TestCase("XC ProcessName,fileName", "ProcessName")]
-        [TestCase("MF Name", "Name")]
-        [TestCase("XS Name,To jest komunikat", "Name")]
+        [TestCase("HLT", "")]
+        [TestCase("XC ProcessName,FileName", "ProcessName")]
+        [TestCase("XD ProcessName", "ProcessName")]
+        [TestCase("XR", "")]
+        [TestCase("XS ProcessName,Communicate", "ProcessName")]
+        [TestCase("XY Name", "Name")]
+        [TestCase("XZ Name", "Name")]
+        [TestCase("AD A,B", "A")]
+        [TestCase("SB B,C", "B")]
+        [TestCase("MU C,D", "C")]
+        [TestCase("JM Etykieta", "Etykieta")]
+        [TestCase("Etykieta:", "")]
+        [TestCase("MV A,B", "A")]
+        [TestCase("MN A,4", "A")]
+        [TestCase("MF FileName", "FileName")]
+        [TestCase("WF FileName,Content", "FileName")]
+        [TestCase("WR FileName,A", "FileName")]
+        [TestCase("DF FileName", "FileName")]
+        [TestCase("PO A", "A")]
         public void Get_GetFirstOrderArgument_Splitted(string order, string result)
         {
             var interpreter = Interpreter.GetInstance;
@@ -33,8 +64,25 @@ namespace Vow_win_ski.Tests.CPU
         }
 
         [Test]
-        [TestCase("XC ProcessName,fileName", "fileName")]
-        [TestCase("XS Name,To jest komunikat", "To jest komunikat")]
+        [TestCase("HLT", "")]
+        [TestCase("XC ProcessName,FileName", "FileName")]
+        [TestCase("XD ProcessName", "")]
+        [TestCase("XR", "")]
+        [TestCase("XS ProcessName,Communicate", "Communicate")]
+        [TestCase("XY Name", "")]
+        [TestCase("XZ Name", "")]
+        [TestCase("AD A,B", "B")]
+        [TestCase("SB B,C", "C")]
+        [TestCase("MU C,D", "D")]
+        [TestCase("JM Etykieta", "")]
+        [TestCase("Etykieta:", "")]
+        [TestCase("MV A,B", "B")]
+        [TestCase("MN A,4", "4")]
+        [TestCase("MF FileName", "")]
+        [TestCase("WF FileName,Content", "Content")]
+        [TestCase("WR FileName,A", "A")]
+        [TestCase("DF FileName", "")]
+        [TestCase("PO A", "")]
         public void Get_GetOrderSecondArgument_Splitted(string order, string result)
         {
             var interpreter = Interpreter.GetInstance;

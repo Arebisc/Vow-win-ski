@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
+using System.Text;
 using Vow_win_ski.Processes;
 
 namespace Vow_win_ski.MemoryModule
@@ -9,6 +11,7 @@ namespace Vow_win_ski.MemoryModule
     {
         private const int FramesCount = 16;
         private const int FramesSize = 16;
+        private int _messageLength;
         private ExchangeFile _exchangeFile;
         private FifoQueue _fifoQueue;
         private PhysicalMemory _physicalMemory;
@@ -23,7 +26,7 @@ namespace Vow_win_ski.MemoryModule
             _exchangeFile = new ExchangeFile();
             _fifoQueue = new FifoQueue();
             _physicalMemory = new PhysicalMemory(FramesCount, FramesSize);
-            _freeFramesList = new FreeFramesList(FramesCount);
+            _freeFramesList = new FreeFramesList(FramesCount-2);
             ProcessPages = new List<ProcessPages>();
         }
 
@@ -43,6 +46,42 @@ namespace Vow_win_ski.MemoryModule
                 }
                 return _instance;
             }
+        }
+
+        private void RemoveFrame(int id, int frameNumber)
+        {
+            foreach (ProcessPages processPages in ProcessPages)
+            {
+                if (processPages.Id == id)
+                {
+                    foreach (Page page in processPages.TakenPages)
+                    {
+                        if (page.GetFrameNumber() == frameNumber)
+                        {
+                            page.VaildInVaild = false;
+                            if (page.IsModified)
+                            {
+                                UploadChanges(id, frameNumber,
+                                    processPages.TakenPages.IndexOf(page));
+                            }
+                            break;
+                        }
+                    }
+                    processPages.RemoveFrame(frameNumber);
+                   
+                    break;
+                }
+            }
+        }
+
+        public void UploadChanges(int id, int frameNumber, int pageNumber)
+        {
+            //pobranie danych z danej ramki
+            Frame tempdata = _physicalMemory.GetFrame(frameNumber);
+            char[] data = tempdata.ReadFrame();
+
+            //wpisanie ich do pliku wymiany
+            _exchangeFile.UpdateData(id, pageNumber, data);
         }
 
         private char GetByte(int id, int index)
@@ -65,13 +104,7 @@ namespace Vow_win_ski.MemoryModule
                     //pobranie najstarszego numeru ramki
                     var indexprocessdata = _fifoQueue.RemoveFrame();
                     //przypisanie do tablicy stron z ktorego pobrano ramke ze juz nie ma jej w pamieci
-                    foreach (ProcessPages processPages in ProcessPages)
-                    {
-                        if (processPages.Id == indexprocessdata.Id)
-                        {
-                            processPages.RemoveFrame(indexprocessdata.FrameNumber);
-                        }
-                    }
+                    RemoveFrame(indexprocessdata.Id,indexprocessdata.FrameNumber);
                     //dodanie ramki do list
                     _freeFramesList.AddToList(indexprocessdata.FrameNumber);
                     //pobranie z listy wolnych ramek najstarszej ramki
@@ -153,13 +186,17 @@ namespace Vow_win_ski.MemoryModule
             //sprawdzenie czy mozna dodac pierwsza strone do pamieci
             if (_freeFramesList.FreeFramesCount >= 1)
             {
+                //przypisanie indexu ramki do ktorej zostanie wprowadzona strona
                 int index = _freeFramesList.RemoveFromList();
+                //dodanie numeru ramki do kolejki 
                 _fifoQueue.AddFrame(new FrameData()
                 {
                     FrameNumber = index,
                     Id = processData.PID
                 });
+                //wprowadzenie 0 strony do pamieci fizycznej
                 _physicalMemory.SetFrame(index, frames[0].ReadFrame());
+                //wprowadzenie do tablicy stron ze strona 0 znajduje sie w danym miejscu
                 foreach (ProcessPages process in ProcessPages)
                 {
                     if (process.Id == processData.PID)
@@ -168,33 +205,36 @@ namespace Vow_win_ski.MemoryModule
             }
             else
             {
+                //zdjecie z kolejki ramki w ktorej znajduje sie najstarsza strona
                 var indexprocessdata = _fifoQueue.RemoveFrame();
-                foreach (ProcessPages processPages in ProcessPages)
-                {
-                    if (processPages.Id == indexprocessdata.Id)
-                    {
-                        processPages.RemoveFrame(indexprocessdata.FrameNumber);
-                    }
-                }
+                //wpisanie do tablicy stron ze dana strona zostala zdjeta
+                RemoveFrame(indexprocessdata.Id,indexprocessdata.FrameNumber);
+                //dodanie do listy wolnych ramek
                 _freeFramesList.AddToList(indexprocessdata.FrameNumber);
+                //zabranie ze listy wolnych ramek pierwszej wolnej ramki
                 int index = _freeFramesList.RemoveFromList();
+                //dodanie strony do kolejki 
                 _fifoQueue.AddFrame(new FrameData()
                 {
                     FrameNumber = index,
                     Id = processData.PID
                 });
-                _physicalMemory.SetFrame(indexprocessdata.FrameNumber, frames[0].ReadFrame());
+                //wprowadzenie do pamieci fizycznej danej strony
+                _physicalMemory.SetFrame(index, frames[0].ReadFrame());
+                //wpisanie do tablicy stron ze dana strona znajduje sie w pamieci
                 foreach (var processPage in ProcessPages)
                 {
                     if (processPage.Id == processData.PID)
-                        processPage.AddFrame(0, indexprocessdata.FrameNumber);
+                        processPage.AddFrame(0, index);
                 }
             }
         }
 
         public void RemoveFromMemory(PCB processData)
         {
+            //tablica ramek do ktorych zostaly wpisane strony
             int[] frames = null;
+            //przypisanie do nich wartosci
             for (int i = 0; i < ProcessPages.Count; i++)
             {
                 if (ProcessPages[i].Id == processData.PID)
@@ -204,15 +244,20 @@ namespace Vow_win_ski.MemoryModule
                     break;
                 }
             }
+            //zabezpieczenie przed exceptionem
             if (frames != null)
             {
+                //wprowadzenie zwolnionych ramek do listy wolnych ramek
+                //oczyszczenie ramek w pamieci fizycznej
                 foreach (var frame in frames)
                 {
                     _freeFramesList.AddToList(frame);
                     _physicalMemory.GetFrame(frame).ClearFrame();
                 }
             }
+            //usuniecie z kolejki procesu
             _fifoQueue.RemoveChoosenProcess(processData.PID);
+            //usuniecie danych z pliku wymiany
             _exchangeFile.RemoveFromMemory(processData.PID);
         }
 
@@ -227,7 +272,9 @@ namespace Vow_win_ski.MemoryModule
             if (process.IsPageInMemory(pages))
             {
                 //Zwrocenie danego bajtu
+                process.SetModified(pages);
                 _physicalMemory.GetFrame(process.ReadFrameNumber(pages)).ChangeByte(offset, data);
+
             }
             else
             {
@@ -236,13 +283,7 @@ namespace Vow_win_ski.MemoryModule
                     //pobranie najstarszego numeru ramki
                     var indexprocessdata = _fifoQueue.RemoveFrame();
                     //przypisanie do tablicy stron z ktorego pobrano ramke ze juz nie ma jej w pamieci
-                    foreach (ProcessPages processPages in ProcessPages)
-                    {
-                        if (processPages.Id == indexprocessdata.Id)
-                        {
-                            processPages.RemoveFrame(indexprocessdata.FrameNumber);
-                        }
-                    }
+                    RemoveFrame(indexprocessdata.Id,indexprocessdata.FrameNumber);
                     //dodanie ramki do list
                     _freeFramesList.AddToList(indexprocessdata.FrameNumber);
                     //pobranie z listy wolnych ramek najstarszej ramki
@@ -259,9 +300,13 @@ namespace Vow_win_ski.MemoryModule
                     foreach (var processPage in ProcessPages)
                     {
                         if (processPage.Id == id)
+                        {
                             processPage.AddFrame(pages, newFrameIndex);
+                            processPage.SetModified(pages);
+                        }
                     }
                     //zwrocenie bajtu
+
                     _physicalMemory.GetFrame(newFrameIndex).ChangeByte(offset, data);
                 }
                 else
@@ -280,12 +325,14 @@ namespace Vow_win_ski.MemoryModule
                     foreach (var processPage in ProcessPages)
                     {
                         if (processPage.Id == id)
+                        {
                             processPage.AddFrame(pages, newFrameIndex);
+                            //ustawienie ze ramka byla modyfikowana
+                            processPage.SetModified(pages);
+                        }
                     }
                     //zwrocenie bajtu
                     _physicalMemory.GetFrame(newFrameIndex).ChangeByte(offset, data);
-
-
                 }
             }
         }
@@ -325,6 +372,10 @@ namespace Vow_win_ski.MemoryModule
                     Console.WriteLine("Zawarość ramki nr: "+number);
                     _physicalMemory.GetFrame(pages.ReadFrameNumber(number)).ShowFrame();
                 }
+                else
+                {
+                   Console.WriteLine("Danej strony nie ma w pamięci.");
+                }
 
             }
             catch (Exception)
@@ -358,7 +409,6 @@ namespace Vow_win_ski.MemoryModule
 
         public void TestFillMemory(PCB testProcessData)
         {
-            const int ProcessId = 1;
             string data= "abcdefghijklmnop" +
                          "rstuvwxyzabcdefg" +
                          "hijklmnoprstuvwx" +
@@ -372,23 +422,26 @@ namespace Vow_win_ski.MemoryModule
                          "klmnoprstuvwxyza" +
                          "bcdefghijklmnopr" +
                          "stuvwxyzabcdefgh" +
-                         "ijklmnoprstuvwxy" +
-                         "zabcdefghijklmno" +
-                         "prstuvwxyzabcdef";
+                         "ijklmnoprstuvwxy";
             AllocateMemory(testProcessData,data);
-            for (int i = 0; i < FramesCount; i++)
+            for (int i = 0; i < FramesCount-2; i++)
             {
-                GetByte(ProcessId, i*FramesSize);
+                testProcessData.MemoryBlocks.ReadByte(i*FramesSize);
             }
             
         }
 
         public void TestCleanMemory()
         {
+            //przejscie po liscie list stron procesow
             for (int i = 0; i < ProcessPages.Count; i++)
             {
+                //przypisanie zajetych ramek przez dany proces
                 var frames = ProcessPages[i].ReadFrameNumbers();
 
+                //jezeli nie zajmuje nic przejdz dalej
+                if (frames == null) continue;
+                //usuniecie danych ramek ze wszyskich miejsc
                 foreach (var frame in frames)
                 {
                     _freeFramesList.AddToList(frame);
@@ -397,7 +450,50 @@ namespace Vow_win_ski.MemoryModule
                     _exchangeFile.RemoveFromMemory(ProcessPages[i].Id);
                 }
             }
+            //wyczyszczenie listy procesow
             ProcessPages = new List<ProcessPages>();
         }
+
+        public void PlaceMessage(string message)
+        {
+            //wpisanie dlugosci wiadomosci
+            _messageLength = message.Length;
+ 
+            //dane do zapelnienia nieuzywanej ramki
+            //wprowadzenie tylko do jednej strony
+            if (_messageLength < 16)
+            {
+                _physicalMemory.SetFrame(FramesCount - 2,
+                    message.Take(_messageLength).ToArray());
+                _physicalMemory.GetFrame(FramesCount-1).ClearFrame();
+                Console.WriteLine(message.Take(_messageLength).ToArray());
+
+            }
+            //wprowadzenie do 2 stron
+            else
+            {
+                _physicalMemory.SetFrame(FramesCount - 2,
+                    message.Take(16).ToArray());
+                _physicalMemory.SetFrame(FramesCount - 1,
+                    message.Skip(16).Take(_messageLength - 16).ToArray());
+                Console.WriteLine(message.Take(16).ToArray());
+                Console.WriteLine(message.Skip(16).Take(_messageLength - 16).ToArray());
+            }
+        }
+
+        public string ReadMessage()
+        {
+            string temp = new string(_physicalMemory.GetFrame(FramesCount - 2).ReadFrame());
+            string temp1 = new string(_physicalMemory.GetFrame(FramesCount - 1).ReadFrame());
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(temp);
+            stringBuilder.Append(temp1);
+          
+            return stringBuilder.ToString();
+
+        }
+
+
     }
 }

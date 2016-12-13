@@ -2,9 +2,11 @@
 using Vow_win_ski.IPC;
 using Vow_win_ski.MemoryModule;
 
-namespace Vow_win_ski.Processes{
+namespace Vow_win_ski.Processes
+{
 
-    public enum ProcessState {
+    public enum ProcessState
+    {
         New,
 
         /// <summary>
@@ -23,7 +25,8 @@ namespace Vow_win_ski.Processes{
     }
 
 
-    public partial class PCB {
+    public partial class PCB
+    {
         /// <remarks>0 - najwyższy priorytet, 7 - najniższy</remarks>
         public int CurrentPriority = 7;
 
@@ -43,8 +46,10 @@ namespace Vow_win_ski.Processes{
         /// </summary>
         private int _PID = 0;
 
-        public byte PID {
-            get {
+        public byte PID
+        {
+            get
+            {
                 return (byte)_PID;
             }
         }
@@ -52,8 +57,10 @@ namespace Vow_win_ski.Processes{
         public ProcessState State = ProcessState.Terminated;
 
         public int InstructionCounter = 0;
-            
+
         public ProcessPages MemoryBlocks = null;
+
+        public int MaxMemory = 0;
 
         /// <summary>
         /// 1, jeśli proces został uśpiony z powodu oczekiwania na wiadomość

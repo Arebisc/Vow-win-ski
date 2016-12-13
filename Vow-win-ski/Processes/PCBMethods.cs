@@ -1,8 +1,10 @@
 ﻿using System;
 
-namespace Vow_win_ski.Processes {
+namespace Vow_win_ski.Processes
+{
 
-    public partial class PCB {
+    public partial class PCB
+    {
 
         /// <summary>
         /// Zamyka proces (stan = terminated)
@@ -15,41 +17,44 @@ namespace Vow_win_ski.Processes {
         /// </returns>
         public int TerminateProcess(ReasonOfProcessTerminating Reason, PCB ClosingProcess = null, int ExitCode = 0) {
 
-            if(Reason == ReasonOfProcessTerminating.KilledByOther && ClosingProcess == null) {
+            if (Reason == ReasonOfProcessTerminating.KilledByOther && ClosingProcess == null)
+            {
                 Console.WriteLine("Blad zamykania procesu: nie podano procesu zamykajacego.");
                 return 2;
             }
 
             string ReasonString = "(brak powodu)";
 
-            switch(Reason){
-            case ReasonOfProcessTerminating.Ended:
-                ReasonString = "Proces sie zakonczyl.";
-                break;
+            switch (Reason)
+            {
+                case ReasonOfProcessTerminating.Ended:
+                    ReasonString = "Proces sie zakonczyl.";
+                    break;
 
-            case ReasonOfProcessTerminating.ThrownError:
-                ReasonString = "Wystapil blad w procesie.";
-                break;
+                case ReasonOfProcessTerminating.ThrownError:
+                    ReasonString = "Wystapil blad w procesie.";
+                    break;
 
-            case ReasonOfProcessTerminating.UserClosed:
-                ReasonString = "Proces zostal zakmniety przez uzytkownika.";
-                break;
+                case ReasonOfProcessTerminating.UserClosed:
+                    ReasonString = "Proces zostal zakmniety przez uzytkownika.";
+                    break;
 
-            case ReasonOfProcessTerminating.CriticalError:
-                ReasonString = "Program spowodowal wystapienie bledu krytycznego i zostal zamkniety przez system.";
-                break;
+                case ReasonOfProcessTerminating.CriticalError:
+                    ReasonString = "Program spowodowal wystapienie bledu krytycznego i zostal zamkniety przez system.";
+                    break;
 
-            case ReasonOfProcessTerminating.KilledByOther:
-                ReasonString = "Proces zostal zamkniety przez proces " + ClosingProcess.ToString() + ".";
-                break;
+                case ReasonOfProcessTerminating.KilledByOther:
+                    ReasonString = "Proces zostal zamkniety przez proces " + ClosingProcess.ToString() + ".";
+                    break;
 
-            case ReasonOfProcessTerminating.ClosingSystem:
-                ReasonString = "Proces zostal zamkniety z powodu zamykania systemu.";
-                break;
+                case ReasonOfProcessTerminating.ClosingSystem:
+                    ReasonString = "Proces zostal zamkniety z powodu zamykania systemu.";
+                    break;
             }
 
 
-            if (State == ProcessState.Running) {
+            if (State == ProcessState.Running)
+            {
                 State = ProcessState.Terminated;
                 client.Disconnect();
                 CPU.Scheduler.GetInstance.RemoveProcess(this);
@@ -60,7 +65,9 @@ namespace Vow_win_ski.Processes {
                 this.RemoveProcess();
                 return 0;
 
-            } else {
+            }
+            else
+            {
                 WaitingForStopping = true;
                 Console.WriteLine("Oczekiwanie na zamkniecie procesu: " + this.ToString() + ".");
                 Console.WriteLine("Proces zostanie zamkniety po przejsciu do stanu Running.");
@@ -74,7 +81,7 @@ namespace Vow_win_ski.Processes {
                 }
 
                 return 1;
-            }            
+            }
 
         }
 
@@ -86,16 +93,20 @@ namespace Vow_win_ski.Processes {
         /// 0 - uruchomiono proces
         /// 2 - błąd: proces ma stan inny niż New
         /// </returns>
-        public int RunNewProcess() {
+        public int RunNewProcess()
+        {
 
-            if (State == ProcessState.New) {
+            if (State == ProcessState.New)
+            {
                 State = ProcessState.Ready;
                 Console.WriteLine("Uruchomiono proces " + this.ToString() + ".");
 
                 CPU.Scheduler.GetInstance.AddProcess(this);
                 return 0;
 
-            } else {
+            }
+            else
+            {
                 Console.WriteLine("Blad uruchamiania procesu: Proces musi miec stan New. [" + this.ToString() + "]");
                 return 2;
             }
@@ -109,10 +120,11 @@ namespace Vow_win_ski.Processes {
         /// </returns>
         public int RunReadyProcess() {
 
-            if(State == ProcessState.Ready) {
+            if (State == ProcessState.Ready)
+            {
 
-                if (WaitingForStopping) {
-
+                if (WaitingForStopping)
+                {
                     //odblokuj proces zamykający
                     if(ClosingProcess != null) {
                         StopperLock.Unlock(ClosingProcess);
@@ -128,20 +140,25 @@ namespace Vow_win_ski.Processes {
                     this.RemoveProcess();
                     return 2;
 
-                } else {
+                }
+                else
+                {
                     State = ProcessState.Running;
                     Console.WriteLine("Uruchomiono proces czekajacy na procesor: " + this.ToString() + ".");
 
                     client.Connect();
 
-                    if (ReceiverMessageLock == 1) {
+                    if (ReceiverMessageLock == 1)
+                    {
                         Receive();
                     }
 
                     return 0;
                 }
 
-            } else {
+            }
+            else
+            {
                 Console.WriteLine("Blad uruchamiania czekajacego procesu: Proces ma stan inny niz Ready: " + this.ToString() + ".");
                 return 1;
             }
@@ -149,9 +166,11 @@ namespace Vow_win_ski.Processes {
 
         /// <remarks>Running -> Waiting</remarks>
         /// <returns>0 - proces przeszedł w stan oczekiwania, 1 - proces ma stan inny niż Running</returns>
-        public int WaitForSomething() {
+        public int WaitForSomething()
+        {
 
-            if (State == ProcessState.Running) {
+            if (State == ProcessState.Running)
+            {
                 State = ProcessState.Waiting;
                 client.Disconnect();
                 CPU.Scheduler.GetInstance.RemoveProcess(this);
@@ -159,7 +178,9 @@ namespace Vow_win_ski.Processes {
                 Console.WriteLine("Proces " + this.ToString() + " przeszedl w stan oczekiwania na odblokowanie.");
                 return 0;
 
-            } else {
+            }
+            else
+            {
                 Console.WriteLine("Nie udalo sie wstrzymac procesu. Proces ma stan inny niz Running: " + this.ToString() + ".");
                 return 1;
             }
@@ -167,15 +188,19 @@ namespace Vow_win_ski.Processes {
 
         /// <remarks>Waiting -> Ready</remarks>
         /// <returns>0 - proces przeszedł na Ready, 1 - stan inny niż Waiting</returns>
-        public int StopWaiting() {
+        public int StopWaiting()
+        {
 
-            if (State == ProcessState.Waiting) {
+            if (State == ProcessState.Waiting)
+            {
                 State = ProcessState.Ready;
                 CPU.Scheduler.GetInstance.AddProcess(this);
 
                 Console.WriteLine("Proces " + this.ToString() + " przeszedl w stan oczekiwania na przydzial procesora.");
                 return 0;
-            } else {
+            }
+            else
+            {
 
                 Console.WriteLine("Nie udalo sie odblokowac procesu. Proces ma stan inny niz Waiting: " + this.ToString() + ".");
                 return 1;
@@ -184,48 +209,58 @@ namespace Vow_win_ski.Processes {
 
         /// <remarks>Running -> Ready</remarks>
         /// <returns>0 - proces przeszedł na Ready, 1 - proces ma stan inny niż Running</returns>
-        public int WaitForScheduling() {
-            if (State == ProcessState.Running) {
+        public int WaitForScheduling()
+        {
+            if (State == ProcessState.Running)
+            {
                 State = ProcessState.Ready;
                 client.Disconnect();
 
-                Console.WriteLine("Przerwano realizacje przez procesor procesu: " + this.ToString() + ".");                
+                Console.WriteLine("Przerwano realizacje przez procesor procesu: " + this.ToString() + ".");
                 return 0;
 
-            } else {
+            }
+            else
+            {
 
                 Console.WriteLine("Blad przerywania procesu: Proces ma stan inny niz Running: " + this.ToString() + ".");
                 return 1;
             }
         }
-        
+
         /// <summary>Usuwa proces, który musi najpierw zostać zatrzymany przez TerminateProcess</summary>
         /// <returns>
         /// 0 - usunięto proces
         /// 2 - błąd: przed usunięciem procesu należy go zatrzymać
         /// </returns>
         /// <remarks>Usunięcie procesu - XD</remarks>
-        public int RemoveProcess() {
+        public int RemoveProcess()
+        {
 
-            if (this.State == ProcessState.Terminated) {
+            if (this.State == ProcessState.Terminated)
+            {
                 MemoryModule.Memory.GetInstance.RemoveFromMemory(this);
                 _CreatedPCBs.Remove(this);
 
                 Console.WriteLine("Usunieto proces " + this.ToString() + ".");
                 return 0;
 
-            } else {
+            }
+            else
+            {
                 Console.WriteLine("Blad usuwania procesu: Proces nie zostal zatrzymany przed usunieciem: " + this.ToString() + ".");
                 return 2;
             }
 
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return "[" + PID.ToString() + "] " + Name + ", stan=" + State.ToString() + ", priorytet=" + CurrentPriority.ToString();
         }
 
-        public void PrintAllFields() {
+        public void PrintAllFields()
+        {
             Console.WriteLine("Zawartosc bloku PCB procesu:");
             Console.WriteLine("PID: " + PID.ToString());
             Console.WriteLine("Nazwa: " + Name);
@@ -242,7 +277,8 @@ namespace Vow_win_ski.Processes {
             Console.WriteLine();
         }
 
-        public void Send(string receivername, string message) {
+        public void Send(string receivername, string message)
+        {
             throw new NotImplementedException();
 
             //byte id = receiver.PID;
@@ -254,31 +290,38 @@ namespace Vow_win_ski.Processes {
             //}
         }
 
-        void Receive() {
+        void Receive()
+        {
             throw new NotImplementedException();
 
-            if (client._receive() == false) {
+            if (client._receive() == false)
+            {
                 //Lock(this);
             }
         }
 
-        public static bool operator ==(PCB a, PCB b) {
-            if (System.Object.ReferenceEquals(a, b)) {
+        public static bool operator ==(PCB a, PCB b)
+        {
+            if (System.Object.ReferenceEquals(a, b))
+            {
                 return true;
             }
 
-            if (((object)a == null) || ((object)b == null)) {
+            if (((object)a == null) || ((object)b == null))
+            {
                 return false;
             }
 
             return a.Name == b.Name;
         }
 
-        public static bool operator !=(PCB a, PCB b) {
+        public static bool operator !=(PCB a, PCB b)
+        {
             return !(a == b);
         }
 
-        public override bool Equals(object other) {
+        public override bool Equals(object other)
+        {
             return this == (PCB)other;
         }
 

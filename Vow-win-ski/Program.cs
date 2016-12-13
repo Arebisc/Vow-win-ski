@@ -1,5 +1,7 @@
 ﻿using System;
 using Vow_win_ski.MemoryModule;
+using System.Threading;
+using Moq;
 using Vow_win_ski.CPU;
 using Vow_win_ski.FileSystem;
 using Vow_win_ski.IPC;
@@ -27,7 +29,7 @@ namespace Vow_win_ski
             DisplayLogo();
             InitSystemResources(args);
 
-            Shell.GetShell.OpenShell();
+            //Shell.GetShell.OpenShell();
         }
 
         static void DisplayLogo()

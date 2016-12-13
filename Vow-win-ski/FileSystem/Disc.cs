@@ -14,7 +14,7 @@ namespace Vow_win_ski.FileSystem
 {
     class Disc
     {
-        private static volatile Disc _instance;
+        private static Disc _instance;
 
         private readonly int _blockSize = 32;
         private static int _numberOfBlocks;
@@ -117,13 +117,13 @@ namespace Vow_win_ski.FileSystem
         }
             
         //=================================================================================================================================
-        public void CreateFile(string nameForNewFile, string data)
+        public bool CreateFile(string nameForNewFile, string data)
         {
 
             if (data.Any(d => d > 255))
             {
                 Console.WriteLine("Błąd: dane zawierają niedozwolony znak");
-                return;
+                return false;
             }
 
             int newFileSize = data.Length;
@@ -131,7 +131,7 @@ namespace Vow_win_ski.FileSystem
             if(_rootFolder.FilesInDirectory.Any(file => file.FileName == nameForNewFile))
             { 
                 Console.WriteLine("Błąd: Plik \"" + nameForNewFile + "\" już istnieje");
-                return;
+                return false;
             }
 
             if (nameForNewFile.Length == 0 || nameForNewFile.Length > 15 || nameForNewFile.Contains("\\") || nameForNewFile.Contains("/") || nameForNewFile.Contains("\t") || nameForNewFile == "root")
@@ -139,7 +139,7 @@ namespace Vow_win_ski.FileSystem
                 Console.WriteLine("Błąd: Nieprawidłowa nazwa pliku");
                 Console.WriteLine("Nazwa pliku musi składać się z 1 do 15 znaków i nie może zawierać:");
                 Console.WriteLine("'\t' '/' '\\' 'root'");
-                return;
+                return false;
             }
 
             int blocksneeded = newFileSize / _blockSize + 1;
@@ -148,7 +148,7 @@ namespace Vow_win_ski.FileSystem
             {
                 Console.WriteLine("Błąd: Przekroczono maksymalny rozmiar pliku");
                 Console.WriteLine("Wymagany rozmiar: " + newFileSize +" B\tMaksymalny dozwolony rozmiar: "+ _blockSize*_blockSize + " B");
-                return;
+                return false;
             }
 
             int freeBlocks = (from bool bit in _occupiedBlocksArray where !bit select bit).Count();
@@ -156,7 +156,7 @@ namespace Vow_win_ski.FileSystem
             {
                 Console.WriteLine("Za mało wolnych bloków by utworzyć nowy plik");
                 Console.WriteLine("Wymagany: " + blocksneeded + "\tDostępne: " + freeBlocks);
-                return;
+                return false;
             }
 
             int[] blocksToBeOccupied = new int[blocksneeded];
@@ -197,6 +197,7 @@ namespace Vow_win_ski.FileSystem
 
             _rootFolder.FilesInDirectory.Add(new File(nameForNewFile, newFileSize, blocksToBeOccupied[0]));
             Console.WriteLine("Nowy plik \"" + nameForNewFile + "\" został utworzony w folderze root\\");
+            return true;
         }
         //=================================================================================================================================
 
@@ -231,12 +232,12 @@ namespace Vow_win_ski.FileSystem
         }
         //=================================================================================================================================
 
-        public void DeleteFile(string filenameToDelete)
+        public bool DeleteFile(string filenameToDelete)
         {            
             if (_rootFolder.FilesInDirectory.All(x => x.FileName != filenameToDelete))
             {
                 Console.WriteLine("Błąd: Wskazany plik \"" + filenameToDelete + "\" nie istnieje w folderze root\\");
-                return;
+                return false;
             }
             File fileToDelete = _rootFolder.FilesInDirectory.Single(x => x.FileName == filenameToDelete);
 
@@ -249,22 +250,23 @@ namespace Vow_win_ski.FileSystem
             _rootFolder.FilesInDirectory.RemoveAll(x => x.FileName == filenameToDelete);
 
             Console.WriteLine("Plik \"" + filenameToDelete + "\" został usunięty");
+            return true;
         }
         //=================================================================================================================================
 
-        public void AppendToFile(string filenameToAppend, string data)
+        public bool AppendToFile(string filenameToAppend, string data)
         {
             if (_rootFolder.FilesInDirectory.All(x => x.FileName != filenameToAppend))
             {
                 Console.WriteLine("Błąd: Wskazany plik \"" + filenameToAppend + "\" nie istnieje w folderze root\\");
-                return;
+                return false;
             }
             File fileToAppend = _rootFolder.FilesInDirectory.Single(x => x.FileName == filenameToAppend);
 
             if (data.Any(d => d > 255))
             {
                 Console.WriteLine("Błąd: dane zawierają niedozwolony znak");
-                return;
+                return false;
             }
 
             int allBytesToAppend = data.Length;
@@ -278,7 +280,7 @@ namespace Vow_win_ski.FileSystem
             {
                 Console.WriteLine("Błąd: Za mało wolnych bloków by dopisać dane do pliku");
                 Console.WriteLine("Wymagane: " + blocksNeeded + "\tDostępne: " + freeBlocks);
-                return;
+                return false;
             }
 
             int freePointers = 32;
@@ -290,8 +292,8 @@ namespace Vow_win_ski.FileSystem
             if (blocksNeeded > freePointers)
             {
                 Console.WriteLine("Błąd: Przekroczono maksymalny rozmiar pliku");
-                Console.WriteLine("Wymagany rozmiar: " + fileToAppend.FileSize + data.Length + " B\tMaksymalny dozwolony rozmiar: " + _blockSize * 32 + " B");
-                return;
+                Console.WriteLine("Wymagany rozmiar: " + fileToAppend.FileSize + data.Length + " B\tMaksymalny dozwolony rozmiar: " + _blockSize * _blockSize + " B");
+                return false;
             }
 
             int[] blocksToBeOccupied = new int[blocksNeeded];
@@ -309,7 +311,7 @@ namespace Vow_win_ski.FileSystem
             }
 
             //fills index block
-            int inBlockPointer = 32 - freePointers;
+            int inBlockPointer = _blockSize - freePointers;
             foreach (var b in blocksToBeOccupied)
             {
                 _blocks[fileToAppend.DataBlockPointer].BlockData[inBlockPointer] = Convert.ToByte(b);
@@ -319,7 +321,7 @@ namespace Vow_win_ski.FileSystem
             if (fileToAppend.FileSize%32 != 0)
             {
                 inBlockPointer = fileToAppend.FileSize%32;
-                while (inBlockPointer < 32 && data.Length > 0)
+                while (inBlockPointer < _blockSize && data.Length > 0)
                 {
                     _blocks[_blocks[fileToAppend.DataBlockPointer].BlockData[31 - freePointers]].BlockData[inBlockPointer]
                         = Convert.ToByte(data[0]);
@@ -332,7 +334,7 @@ namespace Vow_win_ski.FileSystem
             int blockPointer = 0;
             while (data != "")
             {
-                if (inBlockPointer == 32)
+                if (inBlockPointer == _blockSize)
                 {
                     inBlockPointer = 0;
                     blockPointer++;
@@ -344,6 +346,7 @@ namespace Vow_win_ski.FileSystem
             }
             fileToAppend.Append(allBytesToAppend);
             Console.WriteLine(allBytesToAppend + " B zostało dopisane do pliku \"" + filenameToAppend + "\"");
+            return true;
         }
 
         //=================================================================================================================================

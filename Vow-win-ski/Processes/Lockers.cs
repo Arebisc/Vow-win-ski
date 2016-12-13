@@ -13,7 +13,10 @@ namespace Vow_win_ski.Processes
         private int id;
         PCB proces;
 
-
+        Lockers()
+        {
+            waiting = new Queue<PCB>();
+        }
 
         public void Lock(PCB Proces)
         {
@@ -22,12 +25,12 @@ namespace Vow_win_ski.Processes
                 proces = Proces;
                 this.id = proces.PID;
                 open = 1;
-                proces.State = Vow_win_ski.Processes.ProcessState.Waiting;
+                proces.WaitForScheduling();
             }
             else
             {
                 waiting.Enqueue(proces);
-                proces.State = Vow_win_ski.Processes.ProcessState.Waiting;
+                proces.WaitForScheduling();
             }
         }
 
@@ -40,7 +43,7 @@ namespace Vow_win_ski.Processes
                     if (Check(Proces))
                     {
                         proces = waiting.Dequeue();
-                        proces.State = Vow_win_ski.Processes.ProcessState.Ready;
+                        proces.StopWaiting();
                         Proces.ReceiverMessageLock = 1;
                         this.id = proces.PID;
                     }
@@ -50,7 +53,7 @@ namespace Vow_win_ski.Processes
                     if (Check(Proces))
                     {
                         proces = waiting.Dequeue();
-                        proces.State = Vow_win_ski.Processes.ProcessState.Ready;
+                        proces.StopWaiting();
                         Proces.ReceiverMessageLock = 1;
                         open = 0;
                     }
