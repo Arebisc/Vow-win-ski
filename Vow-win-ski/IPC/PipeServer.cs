@@ -19,8 +19,6 @@ namespace Vow_win_ski.IPC
         private StreamString strString;
         private Thread thread;
         private string[] message;
-
-
       
 
         public static void InitServer()
@@ -33,9 +31,6 @@ namespace Vow_win_ski.IPC
         }
 
         public static PipeServer GetServer => _instance;
-
-
-
 
 
         //===================================================================================================================================

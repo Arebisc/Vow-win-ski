@@ -14,7 +14,7 @@ namespace Vow_win_ski
             //wstawiać inity here
 
            PipeServer.InitServer();
-
+           
             if (args.Length > 0)
                 Disc.InitDisc(args[0]);
             else
