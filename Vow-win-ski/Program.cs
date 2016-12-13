@@ -28,12 +28,11 @@ namespace Vow_win_ski
 
         static void Main(string[] args)
         {
-            try
-            {
                 Console.WriteLine("Uruchamianie systemu...");
                 DisplayLogo();
                 InitSystemResources(args);
-
+            try
+            { 
                 Shell.GetShell.OpenShell();
             }
             catch (Exception e)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Media;
+using Vow_win_ski.CPU;
 using Vow_win_ski.FileSystem;
 using Vow_win_ski.IPC;
 using Vow_win_ski.MemoryModule;
@@ -78,7 +79,7 @@ namespace Vow_win_ski
                         ShowHelp();
                         break;
                     case "EX":
-                        throw new NotImplementedException();
+                        Interpreter.GetInstance.InterpretOrder();
                         break;
                     case "QUIT":
                         exit = true;
