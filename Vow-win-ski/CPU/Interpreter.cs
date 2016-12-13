@@ -105,6 +105,31 @@ namespace Vow_win_ski.CPU
             }
         }
 
+        public string GetOrderFromMemory(PCB runningPCB)
+        {
+            var order = String.Empty;
+            int iterator = 0;
+
+            for (int i = 0; i < runningPCB.InstructionCounter; i++)
+            {
+                while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' && iterator <= runningPCB.MaxMemory)
+                {
+                    iterator++;
+                }
+                iterator++;
+            }
+
+            while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' &&  iterator <= runningPCB.MaxMemory)
+            {
+                order += runningPCB.MemoryBlocks.ReadByte(iterator);
+                iterator++;
+            }
+            iterator++;
+            runningPCB.InstructionCounter++;
+
+            return order;
+        }
+
         public string GetOrderName(string order)
         {
             string orderName = String.Empty;
