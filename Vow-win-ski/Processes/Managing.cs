@@ -99,12 +99,6 @@ namespace Vow_win_ski.Processes
 
             client = new PipeClient(Name);
 
-
-            //Ilość wymaganej pamięci (pierwsza linia)
-            //string CountOfMemory_str = Program.Split('\n')[0].Split(',')[1].Trim();
-            //int CountOfMemory_int = Convert.ToInt32(CountOfMemory_str.Remove(CountOfMemory_str.Length - 1, 1)); //usun litere K
-            //Console.WriteLine("Wczytano z pliku " + ProgramFilePath + " kod programu dla procesu " + this.ToString());
-
             Memory.GetInstance.AllocateMemory(this, Program);
 
             _CreatedPCBs.AddLast(this);

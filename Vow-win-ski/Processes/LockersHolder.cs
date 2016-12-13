@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using Vow_win_ski.Processes;
 
-namespace Vow_win_ski.CPU
+namespace Vow_win_ski.Processes
 {
     public sealed class LockersHolder
     {
