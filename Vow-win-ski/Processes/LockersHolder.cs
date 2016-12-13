@@ -9,7 +9,6 @@ namespace Vow_win_ski.Processes
     public sealed class LockersHolder
     {
         private static volatile LockersHolder _instance;
-        private static readonly object SyncRoot = new object();
         public static Lockers MemoLock;
         public static Lockers ProcLock;
 
