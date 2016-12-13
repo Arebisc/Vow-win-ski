@@ -14,7 +14,6 @@ namespace Vow_win_ski.Processes {
         /// 2 - jeśli zamykany przez inny proces, nie podano procesu zamykającego
         /// </returns>
         public int TerminateProcess(ReasonOfProcessTerminating Reason, PCB ClosingProcess = null, int ExitCode = 0) {
-            throw new NotImplementedException();
 
             if(Reason == ReasonOfProcessTerminating.KilledByOther && ClosingProcess == null) {
                 Console.WriteLine("Blad zamykania procesu: nie podano procesu zamykajacego.");
@@ -57,6 +56,7 @@ namespace Vow_win_ski.Processes {
 
                 Console.WriteLine("Zakonczono proces " + this.ToString() + ".");
                 Console.WriteLine("Powod zamkniecia: " + ReasonString);
+                Console.WriteLine("Kod wyjscia procesu: " + ExitCode.ToString());
                 this.RemoveProcess();
                 return 0;
 
@@ -64,9 +64,14 @@ namespace Vow_win_ski.Processes {
                 WaitingForStopping = true;
                 Console.WriteLine("Oczekiwanie na zamkniecie procesu: " + this.ToString() + ".");
                 Console.WriteLine("Proces zostanie zamkniety po przejsciu do stanu Running.");
+                Console.WriteLine("Kod wyjscia procesu: " + ExitCode.ToString());
                 Console.WriteLine("Powod zamkniecia: " + ReasonString);
 
                 //Zablokuj proces zamykający
+                if (Reason == ReasonOfProcessTerminating.KilledByOther) {
+                    this.ClosingProcess = ClosingProcess;
+                    StopperLock.Lock(ClosingProcess);
+                }
 
                 return 1;
             }            
@@ -103,12 +108,16 @@ namespace Vow_win_ski.Processes {
         /// 0 - uruchomiono     1 - stan inny niż Ready     2 - proces został zakończony
         /// </returns>
         public int RunReadyProcess() {
-            throw new NotImplementedException();
 
             if(State == ProcessState.Ready) {
 
                 if (WaitingForStopping) {
+
                     //odblokuj proces zamykający
+                    if(ClosingProcess != null) {
+                        StopperLock.Unlock(ClosingProcess);
+                        ClosingProcess = null;
+                    }
 
                     Console.WriteLine("Odblokowano proces oczekujacy na zamkniecie biezacego procesu: ");
 

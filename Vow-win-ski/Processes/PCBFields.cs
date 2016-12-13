@@ -61,11 +61,16 @@ namespace Vow_win_ski.Processes{
         public int ReceiverMessageLock = 0;
 
         /// <summary>
-        /// Semafor oczekiwania na zatrzymanie - jeśli zatrzymywany proces
+        /// Zamek oczekiwania na zatrzymanie - jeśli zatrzymywany proces
         /// ma stan inny niż Running, proces zatrzymujący blokuje się
-        /// pod tym semaforem i odblokowuje dopiero po zamknięciu procesu
+        /// pod tym zamkiem i odblokowuje dopiero po zamknięciu procesu
         /// </summary>
-        public object StopperLock = null;
+        Lockers StopperLock = new Lockers();
+
+        /// <summary>
+        /// Proces zamykający ten proces
+        /// </summary>
+        PCB ClosingProcess = null;
 
         /// <summary>
         /// True, jeśli podczas zamykania procesu proces miał stan inny niż Running
