@@ -16,7 +16,7 @@ namespace Vow_win_ski.Tests.Processes
         [Test]
         [TestCase("first", 1, "first", 2)]
         [TestCase("second", 2, "second", 2)]
-        [TestCase("second", 3, "second", 2)]
+        [TestCase("third", 3, "third", 2)]
         public void PCB_CheckEquatable(string firstName, int firstPriority, string secondName, int secondPriority)
         {
             var firstPcb = new PCB(firstName, firstPriority);
