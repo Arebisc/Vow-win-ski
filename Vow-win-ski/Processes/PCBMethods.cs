@@ -127,7 +127,7 @@ namespace Vow_win_ski.Processes
                 {
                     //odblokuj proces zamykający
                     if(ClosingProcess != null) {
-                        StopperLock.Unlock(ClosingProcess);
+                        StopperLock.Unlock(this.Name);
                         ClosingProcess = null;
                     }
 
