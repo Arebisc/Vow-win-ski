@@ -1,6 +1,5 @@
 ﻿using System;
 using Vow_win_ski.MemoryModule;
-using System.Threading;
 using Vow_win_ski.CPU;
 using Vow_win_ski.FileSystem;
 using Vow_win_ski.IPC;
@@ -13,8 +12,8 @@ namespace Vow_win_ski
         static void InitSystemResources(string[] args)
         {
             //wstawiać inity here
-            
-            var Server = new PipeServer();
+
+           PipeServer.InitServer();
 
             if (args.Length > 0)
                 Disc.InitDisc(args[0]);

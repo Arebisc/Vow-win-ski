@@ -12,13 +12,32 @@ namespace Vow_win_ski.IPC
 {
     class PipeServer
     {
+        private static PipeServer _instance;
         private NamedPipeServerStream Server;
         private List<Message> Messages;
         private List<Message> History;
         private StreamString strString;
         private Thread thread;
         private string[] message;
- 
+
+
+      
+
+        public static void InitServer()
+        {
+            if (_instance == null)
+            {
+                _instance = new PipeServer();
+            }
+            
+        }
+
+        public static PipeServer GetServer => _instance;
+
+
+
+
+
         //===================================================================================================================================
         private const string receiver = "0";
         private const string sender = "1";
