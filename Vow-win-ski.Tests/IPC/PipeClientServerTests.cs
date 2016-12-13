@@ -27,7 +27,10 @@ namespace Vow_win_ski.Tests.IPC
             client2.Connect();
             bool response = client2._receive();
 
+
             client2.Disconnect();
+
+            PipeServer.GetServer.Exit();
 
             Assert.IsTrue(response);
             Assert.AreEqual(message,Memory.GetInstance.ReadMessage());
