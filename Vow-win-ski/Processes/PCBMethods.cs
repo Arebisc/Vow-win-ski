@@ -280,7 +280,7 @@ namespace Vow_win_ski.Processes
 
         public void Send(string receivername, string message)
         {
-           // LockersHolder.ProcLock.Unlock(receivername);
+            LockersHolder.ProcLock.Unlock(receivername);
             client._send(receivername, message);
         }
 
@@ -288,7 +288,7 @@ namespace Vow_win_ski.Processes
         {
             if (client._receive() == false)
             {
-              // LockersHolder.ProcLock.Lock(this);
+               LockersHolder.ProcLock.Lock(this);
             }
         }
 
