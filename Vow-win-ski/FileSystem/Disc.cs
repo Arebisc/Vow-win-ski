@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Vow_win_ski.FileSystem
 {
-    class Disc
+    public class Disc
     {
         private static Disc _instance;
 
