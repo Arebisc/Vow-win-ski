@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Media;
+using System.Threading;
 using Vow_win_ski.CPU;
 using Vow_win_ski.FileSystem;
 using Vow_win_ski.IPC;
@@ -82,9 +83,14 @@ namespace Vow_win_ski
                         Interpreter.GetInstance.InterpretOrder();
                         break;
                     case "QUIT":
+                        SoundPlayer sp2 = new SoundPlayer("start.wav");
+                        sp2.Play();
+                        Thread.Sleep(2500);
                         exit = true;
                         PipeServer.GetServer.Exit();                      
                         break;
+                    case "BS":
+                        throw new Exception("Wyjątek wywołany przez użytkownika");
                     //===================================================
                     case "SRP":
                         CPU.Scheduler.GetInstance.PrintList();

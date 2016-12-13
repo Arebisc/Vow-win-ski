@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Media;
 using System.Threading;
 using Vow_win_ski.MemoryModule;
@@ -13,7 +14,6 @@ namespace Vow_win_ski
     {
         static void InitSystemResources(string[] args)
         {
-            //wstawiać inity here
             Thread.Sleep(500);
             LockersHolder.InitLockers();
             Thread.Sleep(500);
@@ -28,15 +28,19 @@ namespace Vow_win_ski
 
         static void Main(string[] args)
         {
-                Console.WriteLine("Uruchamianie systemu...");
-                DisplayLogo();
-                InitSystemResources(args);
+            Console.WriteLine("Uruchamianie systemu...");
+            Directory.SetCurrentDirectory(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).ToString()).ToString());
+
+            DisplayLogo();
+            InitSystemResources(args);
             try
             { 
                 Shell.GetShell.OpenShell();
             }
             catch (Exception e)
             {
+                SoundPlayer sp = new SoundPlayer("spin.wav");
+                sp.PlayLooping();
                 PipeServer.GetServer.Exit();
                 Console.BufferHeight = 25;
                 Console.BackgroundColor = ConsoleColor.DarkBlue;
@@ -55,7 +59,9 @@ namespace Vow_win_ski
         }
 
         static void DisplayLogo()
-        {           
+        {
+            SoundPlayer sp1 = new SoundPlayer("close.wav");
+            sp1.Play();
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
             Thread.Sleep(100);
