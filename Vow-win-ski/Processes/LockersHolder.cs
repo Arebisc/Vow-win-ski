@@ -15,6 +15,11 @@ namespace Vow_win_ski.CPU
         public static Lockers MemoLock;
         public static Lockers ProcLock;
 
+        public static void InitLockers()
+        {
+            _instance = new LockersHolder();
+        }
+
         private LockersHolder()
         {
             Lockers MemoLock = new Lockers();
