@@ -55,9 +55,7 @@ namespace Vow_win_ski
         }
 
         static void DisplayLogo()
-        {
-            SoundPlayer systemsound = new SoundPlayer(@"end.wav");
-            systemsound.Play();
+        {           
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
             Thread.Sleep(100);

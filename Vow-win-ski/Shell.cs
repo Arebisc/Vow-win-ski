@@ -83,9 +83,7 @@ namespace Vow_win_ski
                         break;
                     case "QUIT":
                         exit = true;
-                        PipeServer.GetServer.Exit();
-                        SoundPlayer systemsound = new SoundPlayer(@"start.wav");
-                        systemsound.PlaySync();                      
+                        PipeServer.GetServer.Exit();                      
                         break;
                     //===================================================
                     case "SRP":
