@@ -10,7 +10,7 @@ namespace Vow_win_ski.Processes
     public class Lockers
     {
         private byte open = 0;
-        List<Vow_win_ski.Processes.PCB> waiting;
+        private List<Vow_win_ski.Processes.PCB> waiting;
         private string Name;
         PCB proces;
 
@@ -31,7 +31,7 @@ namespace Vow_win_ski.Processes
             }
             else
             {
-                waiting.Add(proces);
+                waiting.Add(Proces);
                 proces.WaitForScheduling();
                 Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
             }
