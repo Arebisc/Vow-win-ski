@@ -96,7 +96,8 @@ namespace Vow_win_ski.Tests.CPU
             string memoryContent = "AD A,4\n" +
                                    "MV A,B\n" +
                                    "MF NowyPlik\n" +
-                                   "WR NowyPlik,A\n";
+                                   "WR NowyPlik,A\n" +
+                                   "HLT";
             string resultOrder = String.Empty;
 
             var pcb = new PCB("testowy", 5);
@@ -113,6 +114,9 @@ namespace Vow_win_ski.Tests.CPU
 
             resultOrder = Interpreter.GetInstance.GetOrderFromMemory(pcb);
             Assert.IsTrue(resultOrder == "WR NowyPlik,A");
+
+            resultOrder = Interpreter.GetInstance.GetOrderFromMemory(pcb);
+            Assert.IsTrue(resultOrder == "HLT");
 
             resultOrder = Interpreter.GetInstance.GetOrderFromMemory(pcb);
             Assert.IsTrue(resultOrder == "");

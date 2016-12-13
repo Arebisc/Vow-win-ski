@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Vow_win_ski.FileSystem;
 using Vow_win_ski.Processes;
 
 namespace Vow_win_ski.CPU
@@ -181,31 +182,36 @@ namespace Vow_win_ski.CPU
         private void POOrder(string register)
         {
             Console.WriteLine("Rozkaz PO z parametrem " + register);
-            //throw new NotImplementedException();
+            
+            Console.WriteLine(register);
         }
 
         private void DFOrder(string fileName)
         {
             Console.WriteLine("Rozkaz DF z parametrem " + " " + fileName);
-            //throw new NotImplementedException();
+
+            Disc.GetDisc.DeleteFile(fileName);
         }
 
         private void WROrder(string fileName, string register)
         {
             Console.WriteLine("Rozkaz WR z parametrem " + fileName + " " + register);
-            //throw new NotImplementedException();
+
+            Disc.GetDisc.AppendToFile(fileName, register);
         }
 
         private void WFOrder(string fileName, string content)
         {
             Console.WriteLine("Rozkaz WF z parametrem " + fileName + " " + content);
-            //throw new NotImplementedException();
+
+            Disc.GetDisc.AppendToFile(fileName, content);
         }
 
         private void MFOrder(string fileName)
         {
             Console.WriteLine("Rozkaz MF z parametrem " + " " + fileName);
-            //throw new NotImplementedException();
+
+            Disc.GetDisc.CreateFile(fileName, String.Empty);
         }
 
         private void MNOrder(string register, int number)
@@ -289,7 +295,6 @@ namespace Vow_win_ski.CPU
         private void HLTOrder()
         {
             Console.WriteLine("Rozkaz HLT");
-            //throw new NotImplementedException();
         }
     }
 }
