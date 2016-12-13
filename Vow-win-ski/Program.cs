@@ -29,7 +29,14 @@ namespace Vow_win_ski
             DisplayLogo();
             InitSystemResources(args);
 
-            //Shell.GetShell.OpenShell();
+            Shell.GetShell.OpenShell();
+
+            var pcb = new PCB();
+
+            Memory.GetInstance.AllocateMemory(pcb,"MN A,4");
+
+            pcb.MemoryBlocks.ReadByte(0);
+            pcb.MemoryBlocks.ReadByte(1);
         }
 
         static void DisplayLogo()

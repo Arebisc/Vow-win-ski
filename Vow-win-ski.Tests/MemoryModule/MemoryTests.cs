@@ -73,7 +73,7 @@ namespace Vow_win_ski.Tests.MemoryModule
         }
 
         [Test]
-        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaa",1,'z')]
+        [TestCase("a\naaaaaaaaaaaaaaaaaaaaaaaaa",1,'\n')]
         [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaa",16,'z')]
         [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaa",20,'z')]
         [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaa",15,'z')]
