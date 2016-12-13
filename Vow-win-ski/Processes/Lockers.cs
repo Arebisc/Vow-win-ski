@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vow_win_ski.CPU;
 
 namespace Vow_win_ski.Processes
 {
@@ -26,11 +27,13 @@ namespace Vow_win_ski.Processes
                 this.Name = proces.Name;
                 open = 1;
                 proces.WaitForScheduling();
+                Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
             }
             else
             {
                 waiting.Add(proces);
                 proces.WaitForScheduling();
+                Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
             }
         }
 
