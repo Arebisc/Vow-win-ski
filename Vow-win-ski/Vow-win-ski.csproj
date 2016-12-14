@@ -95,6 +95,11 @@
   <ItemGroup>
     <Folder Include="bin\Debug\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="close.wav" />
+    <Content Include="spin.wav" />
+    <Content Include="start.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
