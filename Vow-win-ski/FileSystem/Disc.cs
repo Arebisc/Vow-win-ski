@@ -21,7 +21,7 @@ namespace Vow_win_ski.FileSystem
         private Block[] _blocks;
         private BitArray _occupiedBlocksArray;
         private Folder _rootFolder;
-        
+
 
         public static void InitDisc(string numberOfBlocks)
         {
@@ -63,7 +63,7 @@ namespace Vow_win_ski.FileSystem
         }
 
         //=================================================================================================================================
-      
+
         public void ShowDirectory()
         {
             Console.WriteLine("Zawartość folderu root\\\n");
@@ -91,13 +91,15 @@ namespace Vow_win_ski.FileSystem
 
             Console.WriteLine("\nIlość bloków: " + _numberOfBlocks + "\tRozmiar bloku: " + _blockSize + " B");
             Console.WriteLine("Pojemność: " + _numberOfBlocks*_blockSize + " B");
-            Console.WriteLine("Wolne miejsce: " + freeblocks*_blockSize + " B (" + (float)freeblocks / _numberOfBlocks * 100 + "%)\tZajęte miejsce: " + occupiedblocks*_blockSize + " B (" + (float)occupiedblocks / _numberOfBlocks * 100 + "%)");
+            Console.WriteLine("Wolne miejsce: " + freeblocks*_blockSize + " B (" +
+                              (float) freeblocks/_numberOfBlocks*100 + "%)\tZajęte miejsce: " +
+                              occupiedblocks*_blockSize + " B (" + (float) occupiedblocks/_numberOfBlocks*100 + "%)");
             Console.WriteLine("Wolne bloki: " + freeblocks + "\t\tZajęte bloki: " + occupiedblocks + "\n");
 
             for (var i = 0; i < _numberOfBlocks; i++)
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("[Blok nr "+i+"]: ");
+                Console.Write("[Blok nr " + i + "]: ");
                 Console.Write(_occupiedBlocksArray[i] ? "Zajęty\n" : "Wolny\n");
                 Console.ForegroundColor = ConsoleColor.Gray;
 
@@ -115,7 +117,7 @@ namespace Vow_win_ski.FileSystem
                 }
             }
         }
-            
+
         //=================================================================================================================================
         public bool CreateFile(string nameForNewFile, string data)
         {
@@ -128,13 +130,14 @@ namespace Vow_win_ski.FileSystem
 
             int newFileSize = data.Length;
 
-            if(_rootFolder.FilesInDirectory.Any(file => file.FileName == nameForNewFile))
-            { 
+            if (_rootFolder.FilesInDirectory.Any(file => file.FileName == nameForNewFile))
+            {
                 Console.WriteLine("Błąd: Plik \"" + nameForNewFile + "\" już istnieje");
                 return false;
             }
 
-            if (nameForNewFile.Length == 0 || nameForNewFile.Length > 15 || nameForNewFile.Contains("\\") || nameForNewFile.Contains("/") || nameForNewFile.Contains("\t") || nameForNewFile == "root")
+            if (nameForNewFile.Length == 0 || nameForNewFile.Length > 15 || nameForNewFile.Contains("\\") ||
+                nameForNewFile.Contains("/") || nameForNewFile.Contains("\t") || nameForNewFile == "root")
             {
                 Console.WriteLine("Błąd: Nieprawidłowa nazwa pliku");
                 Console.WriteLine("Nazwa pliku musi składać się z 1 do 15 znaków i nie może zawierać:");
@@ -142,12 +145,13 @@ namespace Vow_win_ski.FileSystem
                 return false;
             }
 
-            int blocksneeded = newFileSize / _blockSize + 1;
+            int blocksneeded = newFileSize/_blockSize + 1;
             if (newFileSize%_blockSize > 0) blocksneeded++;
             if (blocksneeded > _blockSize + 1)
             {
                 Console.WriteLine("Błąd: Przekroczono maksymalny rozmiar pliku");
-                Console.WriteLine("Wymagany rozmiar: " + newFileSize +" B\tMaksymalny dozwolony rozmiar: "+ _blockSize*_blockSize + " B");
+                Console.WriteLine("Wymagany rozmiar: " + newFileSize + " B\tMaksymalny dozwolony rozmiar: " +
+                                  _blockSize*_blockSize + " B");
                 return false;
             }
 
@@ -199,6 +203,7 @@ namespace Vow_win_ski.FileSystem
             Console.WriteLine("Nowy plik \"" + nameForNewFile + "\" został utworzony w folderze root\\");
             return true;
         }
+
         //=================================================================================================================================
 
         public string GetFileData(string fileToOpen)
@@ -230,10 +235,11 @@ namespace Vow_win_ski.FileSystem
             }
             return Encoding.ASCII.GetString(dataList.ToArray());
         }
+
         //=================================================================================================================================
 
         public bool DeleteFile(string filenameToDelete)
-        {            
+        {
             if (_rootFolder.FilesInDirectory.All(x => x.FileName != filenameToDelete))
             {
                 Console.WriteLine("Błąd: Wskazany plik \"" + filenameToDelete + "\" nie istnieje w folderze root\\");
@@ -252,6 +258,24 @@ namespace Vow_win_ski.FileSystem
             Console.WriteLine("Plik \"" + filenameToDelete + "\" został usunięty");
             return true;
         }
+
+        //=================================================================================================================================
+
+        public bool CreateFromWindows(string nameForNewFile, string windowsPath)
+        {
+            string data;
+            try
+            {
+                data = System.IO.File.ReadAllText(windowsPath);
+            }
+            catch (Exception e)
+            {
+                Console.Write("Błąd: " + e.Message);
+                return false;
+            }
+            return CreateFile(nameForNewFile, data);
+        }
+
         //=================================================================================================================================
 
         public bool AppendToFile(string filenameToAppend, string data)

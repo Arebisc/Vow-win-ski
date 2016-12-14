@@ -119,9 +119,11 @@ namespace Vow_win_ski
                         break;
                     //===================================================
                     case "SPL":
-                        Memory.GetInstance.DisplayPageList(PCB.GetPCB(p1).PID);
+                        if (PCB.GetPCB(p1) != null)
+                            Memory.GetInstance.DisplayPageList(PCB.GetPCB(p1).PID);
                         break;
                     case "SPC":
+                        if (PCB.GetPCB(p1) == null) break;
                         int nr;
                         if (Int32.TryParse(p2, out nr))
                             Memory.GetInstance.DisplayPageContent(PCB.GetPCB(p1).PID, nr);
@@ -158,6 +160,9 @@ namespace Vow_win_ski
                         break;
                     case "CF":
                         Disc.GetDisc.CreateFile(p1, p2);
+                        break;
+                    case "CW":
+                        Disc.GetDisc.CreateFromWindows(p1, p2);
                         break;
                     case "TYPE":
                         Console.WriteLine(Disc.GetDisc.GetFileData(p1) ?? "Błąd czytania pliku");
@@ -233,6 +238,7 @@ namespace Vow_win_ski
             Console.WriteLine("--------------------------------Dysk----------------------------------");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("DIR/LS\t\t   Wyświetla listę plików");
+            Console.WriteLine("CW {nazwa} {plik}  Tworzy plik {nazwa} i wypełnia danymi z {plik} Windows");
             Console.WriteLine("CF {nazwa} [dane]  Tworzy plik {nazwa} i wypełnia [dane]");
             Console.WriteLine("APP {nazwa} [dane] Dołącza [dane] do pliku {nazwa}");
             Console.WriteLine("TYPE {nazwa}\t   Wyświetla dane z pliku {nazwa}");
