@@ -42,7 +42,7 @@ namespace Vow_win_ski
                 SoundPlayer sp = new SoundPlayer("spin.wav");
                 sp.PlayLooping();
                 PipeServer.GetServer.Exit();
-                Console.BufferHeight = 25;
+                //Console.BufferHeight = 25;
                 Console.BackgroundColor = ConsoleColor.DarkBlue;
                 Console.Clear();
                 Console.WriteLine();

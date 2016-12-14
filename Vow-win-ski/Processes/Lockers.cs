@@ -78,9 +78,16 @@ namespace Vow_win_ski.Processes
 
         public void Show()
         {
-            foreach (var i in waiting)
+            if (waiting.Count > 0)
             {
-                Console.WriteLine(i.PID + "\t" + i.Name);
+                foreach (var i in waiting)
+                {
+                    Console.WriteLine(i.PID + "\t" + i.Name);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Brak procesów pod zamkien.");
             }
         }
 
