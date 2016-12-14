@@ -42,7 +42,6 @@ namespace Vow_win_ski
                 SoundPlayer sp = new SoundPlayer("spin.wav");
                 sp.PlayLooping();
                 PipeServer.GetServer.Exit();
-                Console.WindowHeight = 25;
                 Console.BackgroundColor = ConsoleColor.DarkBlue;
                 Console.Clear();
                 Console.WriteLine();
@@ -52,6 +51,9 @@ namespace Vow_win_ski
                 Console.WriteLine();
                 Console.WriteLine(String.Format("{0," + ((Console.WindowWidth/2) + ((e.GetType() + ":").Length/2)) + "}", e.GetType() + ":"));
                 Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (e.Message.Length / 2)) + "}", e.Message));
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
                 Console.WriteLine();
                 Console.WriteLine();
                 Console.WriteLine();
