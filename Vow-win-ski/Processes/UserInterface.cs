@@ -12,12 +12,18 @@ namespace Vow_win_ski.Processes
 
         public static void CreateProcess(string Name, string Path)
         {
-            new PCB(Name, new Random().Next(0, 7), Path).RunNewProcess();
+            new PCB(Name, new Random().Next(0, 7), Path, SourceOfCode.WindowsDisc).RunNewProcess();
+        }
+
+        public static void CreateProcessFromDisc(string Name, string Path)
+        {
+            new PCB(Name, new Random().Next(0, 7), Path, SourceOfCode.SystemDisc).RunNewProcess();
         }
 
         public static void StopProcess(string Name)
         {
-            PCB.GetPCB(Name).TerminateProcess(ReasonOfProcessTerminating.UserClosed);
+            PCB pcb = PCB.GetPCB(Name);
+            if(pcb != null) pcb.TerminateProcess(ReasonOfProcessTerminating.UserClosed);
         }
 
         public static void ShowAllProcesses()
@@ -27,17 +33,20 @@ namespace Vow_win_ski.Processes
 
         public static void ShowPCB(string Name)
         {
-            PCB.GetPCB(Name).PrintAllFields();
+            PCB pcb = PCB.GetPCB(Name);
+            if (pcb != null) pcb.PrintAllFields();
         }
 
         public static void SleepProcess(string Name)
         {
-            PCB.GetPCB(Name).WaitForSomething();
+            PCB pcb = PCB.GetPCB(Name);
+            if (pcb != null) pcb.WaitForSomething();
         }
 
         public static void ResumeProcess(string Name)
         {
-            PCB.GetPCB(Name).StopWaiting();
+            PCB pcb = PCB.GetPCB(Name);
+            if (pcb != null) pcb.StopWaiting();
         }
 
     }
