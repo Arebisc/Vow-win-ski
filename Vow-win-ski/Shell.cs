@@ -85,12 +85,13 @@ namespace Vow_win_ski
                     case "QUIT":
                         SoundPlayer sp2 = new SoundPlayer("start.wav");
                         sp2.Play();
+                        Console.WriteLine("Zamykanie systemu...");
                         Thread.Sleep(2500);
                         exit = true;
                         PipeServer.GetServer.Exit();                      
                         break;
                     case "BS":
-                        throw new Exception("Wyjątek wywołany przez użytkownika");
+                        throw new Exception(p1 == "" ? "Wyjątek wywołany przez użytkownika" : p1);
                     //===================================================
                     case "SRP":
                         CPU.Scheduler.GetInstance.PrintList();
