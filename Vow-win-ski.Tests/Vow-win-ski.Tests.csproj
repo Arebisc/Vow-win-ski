@@ -61,7 +61,6 @@
     <Compile Include="CPU\InterpreterTests.cs" />
     <Compile Include="CPU\SchedulerTests.cs" />
     <Compile Include="FileSystem\FileSystemTests.cs" />
-    <Compile Include="IPC\PipeClientServerTests.cs" />
     <Compile Include="MemoryModule\FrameTests.cs" />
     <Compile Include="MemoryModule\FreeFramesListTests.cs" />
     <Compile Include="MemoryModule\MemoryTests.cs" />

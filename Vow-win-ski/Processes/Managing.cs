@@ -16,6 +16,11 @@ namespace Vow_win_ski.Processes
         ClosingSystem = 6
     }
 
+    public enum SourceOfCode
+    {
+        WindowsDisc,    //Plik z Windows
+        SystemDisc      //Dysk systemu
+    }
 
     public partial class PCB
     {
@@ -49,21 +54,36 @@ namespace Vow_win_ski.Processes
         /// <param name="Name_">Nazwa procesu, musi być unikalna</param>
         /// <param name="ProgramFilePath">Ścieżka do pliku z programem (z której zostanie wczytany kod programu)</param>
         /// <remarks>Utworzenie procesu - XC</remarks>
-        public PCB(string Name_, int Priority, string ProgramFilePath)
+        public PCB(string Name_, int Priority, string ProgramFilePath, SourceOfCode Source = SourceOfCode.WindowsDisc)
         {
 
             //Wczytaj program
             string Program;
+            this.Source = Source;
 
-            try
+            if (Source == SourceOfCode.WindowsDisc)
             {
-                Program = System.IO.File.ReadAllText(ProgramFilePath);
+
+                try
+                {
+                    Program = System.IO.File.ReadAllText(ProgramFilePath);
+                }
+                catch
+                {
+                    Console.WriteLine("Nie udalo sie utworzyc procesu: w Windows nie znaleziono pliku o nazwie " + ProgramFilePath);
+                    State = ProcessState.Terminated;
+                    return;
+                }
             }
-            catch
+            else
             {
-                Console.WriteLine("Nie udalo sie utworzyc procesu: nie znaleziono pliku o nazwie " + ProgramFilePath);
-                State = ProcessState.Terminated;
-                return;
+                Program = FileSystem.Disc.GetDisc.GetFileData(ProgramFilePath);
+                if(Program == null)
+                {
+                    Console.WriteLine("Nie udalo sie utworzyc procesu: na dysku systemu nie znaleziono pliku o nazwie " + ProgramFilePath);
+                    State = ProcessState.Terminated;
+                    return;
+                }
             }
 
             //Nazwa procesu
@@ -97,6 +117,8 @@ namespace Vow_win_ski.Processes
                 CurrentPriority = Priority;
                 StartPriority = Priority;
             }
+
+            State = ProcessState.New;
 
             client = new PipeClient(Name);
 

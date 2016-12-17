@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Media;
 using System.Threading;
 using Vow_win_ski.MemoryModule;
@@ -14,12 +15,11 @@ namespace Vow_win_ski
     {
         static void InitSystemResources(string[] args)
         {
-            //wstawiać inity here
-            Thread.Sleep(500);
+            Thread.Sleep(100);
             LockersHolder.InitLockers();
-            Thread.Sleep(500);
+            Thread.Sleep(100);
             PipeServer.InitServer();
-            Thread.Sleep(500);
+            Thread.Sleep(100);
             if (args.Length > 0)
                 Disc.InitDisc(args[0]);
             else
@@ -29,35 +29,46 @@ namespace Vow_win_ski
 
         static void Main(string[] args)
         {
-            try
-            {
-                Console.WriteLine("Uruchamianie systemu...");
-                DisplayLogo();
-                InitSystemResources(args);
+            Console.WriteLine("Uruchamianie systemu...");
+            Directory.SetCurrentDirectory(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).ToString()).ToString());
 
+            DisplayLogo();
+            InitSystemResources(args);
+            //try
+            //{ 
                 Shell.GetShell.OpenShell();
-            }
-            catch (Exception e)
-            {
-                PipeServer.GetServer.Exit();
-                Console.BufferHeight = 25;
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
-                Console.Clear();
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + ("Coś się popsuło :(".Length / 2)) + "}", "Coś się popsuło :("));
-                Console.WriteLine();
-                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (e.GetType().ToString().Length / 2)) + "}", e.GetType().ToString()));
-                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (e.Message.Length / 2)) + "}", e.Message));
-                Console.Read();
-                Console.ResetColor();
-                Console.Clear();
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    SoundPlayer sp = new SoundPlayer("spin.wav");
+            //    sp.PlayLooping();
+            //    PipeServer.GetServer.Exit();
+            //    Console.BackgroundColor = ConsoleColor.DarkBlue;
+            //    Console.Clear();
+            //    Console.WriteLine();
+            //    Console.WriteLine();
+            //    Console.WriteLine();
+            //    Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + ("Coś... coś się popsuło :(".Length / 2)) + "}", "Coś... coś się popsuło :("));
+            //    Console.WriteLine();
+            //    Console.WriteLine(String.Format("{0," + ((Console.WindowWidth/2) + ((e.GetType() + ":").Length/2)) + "}", e.GetType() + ":"));
+            //    Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (e.Message.Length / 2)) + "}", e.Message));
+            //    Console.WriteLine();
+            //    Console.WriteLine();
+            //    Console.WriteLine();
+            //    Console.WriteLine();
+            //    Console.WriteLine();
+            //    Console.WriteLine();
+            //    Console.Write(String.Format("{0," + ((Console.WindowWidth / 2) + ("Naciśnij dowolny klawisz...".Length / 2)) + "}", "Naciśnij dowolny klawisz..."));
+            //    Console.ReadKey();
+            //    Console.ResetColor();
+            //    Console.Clear();
+            //}
         }
 
         static void DisplayLogo()
-        {           
+        {
+            SoundPlayer sp1 = new SoundPlayer("close.wav");
+            sp1.Play();
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
             Thread.Sleep(100);
