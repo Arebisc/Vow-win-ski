@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Media;
 using System.Threading;
 using Vow_win_ski.MemoryModule;

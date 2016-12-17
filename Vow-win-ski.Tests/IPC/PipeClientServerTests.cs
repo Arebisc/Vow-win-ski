@@ -12,27 +12,6 @@ namespace Vow_win_ski.Tests.IPC
     [TestFixture]
     public class PipeClientServerTests
     {
-        [Test]
-        [TestCase("Testowa Wiadomosc")]
-        public void Can_Read_Message(string message)
-        {
-            PipeServer.InitServer();
-            var client = new PipeClient("TestowyNadawca");
-            var client2 = new PipeClient("TestowyOdbiorca");
-            client.Connect();
-
-
-            client._send("TestowyOdbiorca", message);
-            client.Disconnect();
-            client2.Connect();
-            bool response = client2._receive();
-
-            client2.Disconnect();
-
-            Assert.IsTrue(response);
-            Assert.AreEqual(message,Memory.GetInstance.ReadMessage());
-
-        }
 
     }
 }

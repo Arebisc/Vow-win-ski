@@ -32,7 +32,7 @@ namespace Vow_win_ski.Processes
         }
 
         /// <summary>
-        /// RUSZ TEN KONSTRUKTOR JESZCZE RAZ TO ZAPIERDOLE!!!!
+        /// RUSZ TEN KONSTRUKTOR JESZCZE RAZ TO ZABIJE!!!!
         /// </summary>
         public PCB(string name, int priority)
         {
@@ -40,6 +40,7 @@ namespace Vow_win_ski.Processes
             this.Name = name;
             this.CurrentPriority = priority;
             this.State = ProcessState.Ready;
+            this.StartPriority = 7;
         }
 
         /// <summary>
