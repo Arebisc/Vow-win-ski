@@ -77,7 +77,7 @@ namespace Vow_win_ski.CPU
         public PCB GetRunningPCB()
         {
             return WaitingForProcessor
-                .Single(x => x.State == ProcessState.Running);
+                .SingleOrDefault(x => x.State == ProcessState.Running);
         }
 
         public void AgingWaitingProcesses()
