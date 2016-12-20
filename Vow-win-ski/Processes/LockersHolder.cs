@@ -19,6 +19,7 @@ namespace Vow_win_ski.Processes
 
         private LockersHolder()
         {
+            Console.WriteLine();
             Console.WriteLine("Tworzenie mechanizmów synchronizacji LOCKS.");
             MemoLock = new Lockers();
             ProcLock = new Lockers();          
