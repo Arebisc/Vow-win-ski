@@ -6,7 +6,7 @@ SILNIA:
 ADD A,C
 JM SILNIA
 WF silniaPlik,A
-WF silniaPlik,-ID:
+WF silniaPlik,-ID
 XN procesSilnia
 WR silniaPlik,A
 XZ procesSilnia

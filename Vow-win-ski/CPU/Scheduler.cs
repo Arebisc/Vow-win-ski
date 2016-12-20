@@ -16,6 +16,7 @@ namespace Vow_win_ski.CPU
 
         private Scheduler()
         {
+
             WaitingForProcessor = new List<PCB>();
         }
 
