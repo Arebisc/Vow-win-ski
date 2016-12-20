@@ -39,14 +39,20 @@ namespace Vow_win_ski.MemoryModule
 
         public void ShowFrame()
         {
-            foreach (var field in _fields)
+            for(int i=0;i<_fields.Length;i++)
             {
-                if (field == '\n')
+                if (_fields[i] == '\r')
+                {
+                    Console.Write("\\r ");
+                }
+                else if (_fields[i] == '\n')
                 {
                     Console.Write("\\n ");
                 }
-                else 
-                    Console.Write(field+" ");
+                else
+                {
+                    Console.Write(_fields[i]+" ");
+                }
             }
             Console.WriteLine("");
         }

@@ -38,17 +38,22 @@ namespace Vow_win_ski.CPU
 
         public void InterpretOrder()
         {
-            orderCounter++;
+            if (Scheduler.GetInstance.ListEmpty())
+                return;
             if (Scheduler.GetInstance.CheckIfOtherProcessShouldGetCPU())
             {
-                Scheduler.GetInstance.RevriteRegistersFromCPU();
-                Scheduler.GetInstance.GetRunningPCB().State = ProcessState.Ready;
-                Scheduler.GetInstance.PriorityAlgorithm().State = ProcessState.Running;
+                if (Scheduler.GetInstance.GetRunningPCB() != null)
+                {
+                    Scheduler.GetInstance.RevriteRegistersFromCPU();
+                    Scheduler.GetInstance.GetRunningPCB().WaitForScheduling();
+                }
+                Scheduler.GetInstance.PriorityAlgorithm().RunReadyProcess();
                 Scheduler.GetInstance.RevriteRegistersToCPU();
                 Console.WriteLine("Przełączono CPU na process: " + Scheduler.GetInstance.GetRunningPCB().Name);
                 return;
             }
 
+            orderCounter++;
             if (orderCounter % 3 == 0)
             {
                 Scheduler.GetInstance.AgingWaitingProcesses();
@@ -57,11 +62,9 @@ namespace Vow_win_ski.CPU
 
             var order = GetOrderFromMemory(Scheduler.GetInstance.GetRunningPCB());
 
-            if (order.EndsWith(":"))
+            if (order.TrimEnd().EndsWith(":"))
             {
-                order.Trim(':');
-                Console.WriteLine("Etykieta o nazwie: " + order);
-                Scheduler.GetInstance.GetRunningPCB().InstructionCounter++;
+                Console.WriteLine("Etykieta o nazwie: " + order.TrimEnd().TrimEnd(':'));
             }
             else
             {
@@ -392,7 +395,7 @@ namespace Vow_win_ski.CPU
         {
             Console.WriteLine("Rozkaz XC z parametrem " + processName + " " + fileName);
             
-            UserInterface.CreateProcess(processName, fileName);
+            UserInterface.CreateProcessFromDisc(processName, fileName);
         }
 
         public void HLTOrder()
@@ -400,13 +403,11 @@ namespace Vow_win_ski.CPU
             Console.WriteLine("Rozkaz HLT");
             Scheduler.GetInstance.RemoveProcess(Scheduler.GetInstance.GetRunningPCB());
 
-            if (Scheduler.GetInstance.PriorityAlgorithm() != null)
+            if (!Scheduler.GetInstance.ListEmpty())
             {
-                Scheduler.GetInstance.PriorityAlgorithm().State = ProcessState.Running;
+                Scheduler.GetInstance.PriorityAlgorithm().RunReadyProcess();
                 Scheduler.GetInstance.RevriteRegistersToCPU();
             }
-                
-            else Console.WriteLine("Brak procesów do wykonywania!");
         }
     }
 }
