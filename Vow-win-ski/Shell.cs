@@ -108,6 +108,9 @@ namespace Vow_win_ski
                     case "CPP":
                         Processes.UserInterface.ChangePriority(p1, p2);
                         break;
+                    case "NPR":
+                        Processes.UserInterface.RunNewProcess(p1);
+                        break;
                     case "HP":
                         Processes.UserInterface.StopProcess(p1);
                         break;
@@ -212,9 +215,10 @@ namespace Vow_win_ski
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("-------------------------------Procesy--------------------------------");
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("CP {nazwa} {prog}  Tworzy proces {nazwa} z programu {prog} na dysku Windows");
-            Console.WriteLine("CPD {nazwa} {prog} Tworzy proces {nazwa} z programu {prog} na dysku systemu");
-            Console.WriteLine("CPP {nazwa} {priorytet} Ustawia priorytet procesowi {nazwa}");
+            Console.WriteLine("CP {nazwa} {prog}\t Tworzy proces {nazwa} z programu {prog} na dysku Windows");
+            Console.WriteLine("CPD {nazwa} {prog}\t Tworzy proces {nazwa} z programu {prog} na dysku systemu");
+            Console.WriteLine("CPP {nazwa} {priorytet}\t Ustawia priorytet procesowi {nazwa}");
+            Console.WriteLine("NPR {nazwa}\t\t Uruchom nowy proces {nazwa}");
             Console.WriteLine("HP {nazwa}\t   Zatrzymuje proces {nazwa}");
             Console.WriteLine("SAP\t\t   Wyświetla listę wszystkich procesów");
             Console.WriteLine("SPCB {nazwa}\t   Wyświetla listę PCB procesu {nazwa}");
