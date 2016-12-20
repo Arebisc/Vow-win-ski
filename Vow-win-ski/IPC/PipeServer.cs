@@ -132,6 +132,7 @@ namespace Vow_win_ski.IPC
 
         public void Show()
         {
+            Console.WriteLine("Waiting messages for receive: ");
             foreach (var x in Messages)
             {
                 Console.WriteLine(x.GetSenderId() + " to " + x.GetReceiverId() + " " + x.GetMessage());
@@ -140,6 +141,7 @@ namespace Vow_win_ski.IPC
 
         public void ShowHistory()
         {
+            Console.WriteLine("Communication history: ");
             foreach (var x in History)
             {
                 Console.WriteLine(x.GetSenderId() + " to " + x.GetReceiverId() + " " + x.GetMessage());

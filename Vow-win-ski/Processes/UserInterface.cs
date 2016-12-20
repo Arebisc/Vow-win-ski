@@ -12,12 +12,18 @@ namespace Vow_win_ski.Processes
 
         public static void CreateProcess(string Name, string Path)
         {
-            new PCB(Name, new Random().Next(0, 7), Path).RunNewProcess();
+            new PCB(Name, new Random().Next(0, 7), Path, SourceOfCode.WindowsDisc).RunNewProcess();
+        }
+
+        public static void CreateProcessFromDisc(string Name, string Path)
+        {
+            new PCB(Name, new Random().Next(0, 7), Path, SourceOfCode.SystemDisc).RunNewProcess();
         }
 
         public static void StopProcess(string Name)
         {
-            PCB.GetPCB(Name).TerminateProcess(ReasonOfProcessTerminating.UserClosed);
+            PCB pcb = PCB.GetPCB(Name);
+            if(pcb != null) pcb.TerminateProcess(ReasonOfProcessTerminating.UserClosed);
         }
 
         public static void ShowAllProcesses()
@@ -27,17 +33,46 @@ namespace Vow_win_ski.Processes
 
         public static void ShowPCB(string Name)
         {
-            PCB.GetPCB(Name).PrintAllFields();
+            PCB pcb = PCB.GetPCB(Name);
+            if (pcb != null) pcb.PrintAllFields();
         }
 
         public static void SleepProcess(string Name)
         {
-            PCB.GetPCB(Name).WaitForSomething();
+            PCB pcb = PCB.GetPCB(Name);
+            if (pcb != null) pcb.WaitForSomething();
         }
 
         public static void ResumeProcess(string Name)
         {
-            PCB.GetPCB(Name).StopWaiting();
+            PCB pcb = PCB.GetPCB(Name);
+            if (pcb != null) pcb.StopWaiting();
+        }
+
+        public static void ChangePriority(string Name, string Priority)
+        {
+
+            int NewPriority = 0;
+
+            if(!int.TryParse(Priority, out NewPriority)) {
+                Console.WriteLine("Podana wartosc nie jest liczba.");
+                return;
+            }
+            
+            if(NewPriority >= 0 && NewPriority <= 7)
+            {
+                PCB pcb = PCB.GetPCB(Name);
+                if (pcb != null)
+                {
+                    pcb.CurrentPriority = NewPriority;
+                    pcb.StartPriority = NewPriority;
+                    pcb.PriorityTime = 0;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Priorytet procesu musi miescic sie w zakresie od 0 do 7.");
+            }
         }
 
     }

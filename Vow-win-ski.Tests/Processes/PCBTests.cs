@@ -21,6 +21,5 @@ namespace Vow_win_ski.Tests.Processes
             var secondPcb = new PCB(secondName, secondPriority);
             Assert.IsTrue(firstPcb.Equals(secondPcb));
         }
-
     }
 }

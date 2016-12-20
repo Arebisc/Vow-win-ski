@@ -29,6 +29,12 @@ namespace Vow_win_ski.Tests.CPU
             scheduler.AddProcess(pcb5);
 
             Assert.AreEqual(pcb4, scheduler.PriorityAlgorithm());
+
+            scheduler.RemoveProcess(pcb1);
+            scheduler.RemoveProcess(pcb2);
+            scheduler.RemoveProcess(pcb3);
+            scheduler.RemoveProcess(pcb4);
+            scheduler.RemoveProcess(pcb5);
         }
 
         [Test]
@@ -51,6 +57,12 @@ namespace Vow_win_ski.Tests.CPU
             scheduler.AddProcess(pcb5);
 
             Assert.AreEqual(scheduler.GetRunningPCB(), pcb4);
+
+            scheduler.RemoveProcess(pcb1);
+            scheduler.RemoveProcess(pcb2);
+            scheduler.RemoveProcess(pcb3);
+            scheduler.RemoveProcess(pcb4);
+            scheduler.RemoveProcess(pcb5);
         }
     }
 }
