@@ -27,7 +27,7 @@ namespace Vow_win_ski.FileSystem
         {
             if (int.TryParse(numberOfBlocks, out _numberOfBlocks))
             {
-                if (_numberOfBlocks >= 2 || _numberOfBlocks < 255)
+                if (_numberOfBlocks >= 2 && _numberOfBlocks < 255)
                 {
                     _instance = new Disc(_numberOfBlocks);
                     return;
