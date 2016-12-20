@@ -74,7 +74,7 @@ namespace Vow_win_ski.FileSystem
             }
             foreach (var file in _rootFolder.FilesInDirectory)
             {
-                Console.WriteLine(file.FileName.PadRight(17) + file.FileSize + " B\t" + file.CreationDateTime);
+                Console.WriteLine(file.FileName.PadRight(17) + file.FileSize + " B\t" + file.CreationDateTime  + "\t" + file.DataBlockPointer);
             }
         }
 
@@ -294,11 +294,22 @@ namespace Vow_win_ski.FileSystem
             }
 
             int allBytesToAppend = data.Length;
-            //                              space available in the last block
+            int blocksNeeded = 0;
+
+            //jezeli ostatni blok jest pelny
+            if (fileToAppend.FileSize%_blockSize == 0)
+            {
+                if (allBytesToAppend > 0)
+                {
+                    blocksNeeded = 1;
+                }
+            }
+
             int bytesNeeded = data.Length - (_blockSize - fileToAppend.FileSize%_blockSize);
             if (bytesNeeded < 0) bytesNeeded = 0;
-            int blocksNeeded = bytesNeeded/_blockSize;
+            blocksNeeded += bytesNeeded/_blockSize;
             if (bytesNeeded%_blockSize > 0) blocksNeeded++;
+
             int freeBlocks = (from bool bit in _occupiedBlocksArray where !bit select bit).Count();
             if (blocksNeeded > freeBlocks)
             {
