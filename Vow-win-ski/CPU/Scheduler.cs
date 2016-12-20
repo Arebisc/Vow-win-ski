@@ -16,6 +16,7 @@ namespace Vow_win_ski.CPU
 
         private Scheduler()
         {
+
             WaitingForProcessor = new List<PCB>();
         }
 
@@ -111,10 +112,10 @@ namespace Vow_win_ski.CPU
 
         public void RevriteRegistersFromCPU()
         {
-            GetRunningPCB().Registers.A = CPU.GetInstance.Register.A;
-            GetRunningPCB().Registers.B = CPU.GetInstance.Register.B;
-            GetRunningPCB().Registers.C = CPU.GetInstance.Register.C;
-            GetRunningPCB().Registers.D = CPU.GetInstance.Register.D;
+                GetRunningPCB().Registers.A = CPU.GetInstance.Register.A;
+                GetRunningPCB().Registers.B = CPU.GetInstance.Register.B;
+                GetRunningPCB().Registers.C = CPU.GetInstance.Register.C;
+                GetRunningPCB().Registers.D = CPU.GetInstance.Register.D;
         }
 
         public void RevriteRegistersToCPU()
