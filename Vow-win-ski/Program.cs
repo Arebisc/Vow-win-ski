@@ -34,9 +34,10 @@ namespace Vow_win_ski
 
             DisplayLogo();
             InitSystemResources(args);
+
             //try
             //{ 
-                Shell.GetShell.OpenShell();
+             Shell.GetShell.OpenShell();
             //}
             //catch (Exception e)
             //{
