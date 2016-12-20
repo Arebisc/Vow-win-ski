@@ -49,7 +49,7 @@ namespace Vow_win_ski.Processes
             if (pcb != null) pcb.StopWaiting();
         }
 
-        public static void ChengePriority(string Name, string Priority)
+        public static void ChangePriority(string Name, string Priority)
         {
 
             int NewPriority = 0;
@@ -59,7 +59,7 @@ namespace Vow_win_ski.Processes
                 return;
             }
             
-            if(NewPriority < 0 || NewPriority > 7)
+            if(NewPriority >= 0 && NewPriority <= 7)
             {
                 PCB pcb = PCB.GetPCB(Name);
                 if (pcb != null)

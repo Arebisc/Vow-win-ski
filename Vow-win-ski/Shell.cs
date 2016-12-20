@@ -107,7 +107,7 @@ namespace Vow_win_ski
                         UserInterface.CreateProcessFromDisc(p1, p2);
                         break;
                     case "CPP":
-                        UserInterface.ChengePriority(p1, p2);
+                        UserInterface.ChangePriority(p1, p2);
                         break;
                     case "HP":
                         UserInterface.StopProcess(p1);
