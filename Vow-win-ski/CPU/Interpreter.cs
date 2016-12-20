@@ -401,7 +401,9 @@ namespace Vow_win_ski.CPU
         public void HLTOrder()
         {
             Console.WriteLine("Rozkaz HLT");
-            Scheduler.GetInstance.RemoveProcess(Scheduler.GetInstance.GetRunningPCB());
+            Scheduler.GetInstance.GetRunningPCB().TerminateProcess(ReasonOfProcessTerminating.Ended);
+          //  Scheduler.GetInstance.RemoveProcess(Scheduler.GetInstance.GetRunningPCB()); TU SPIERDOLONE BYŁO, ALE NAPRAWIŁEM ~ TheSensej
+          //Zostawione na pamiątkę 
 
             if (!Scheduler.GetInstance.ListEmpty())
             {
