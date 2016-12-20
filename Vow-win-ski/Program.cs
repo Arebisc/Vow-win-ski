@@ -37,36 +37,6 @@ namespace Vow_win_ski
             //try
             //{ 
                 Shell.GetShell.OpenShell();
-<<<<<<< HEAD
-            }
-            catch (Exception e)
-            {
-                SoundPlayer sp = new SoundPlayer("spin.wav");
-                sp.PlayLooping();
-                PipeServer.GetServer.Exit();
-<<<<<<< HEAD
-                //Console.BufferHeight = 25;
-=======
-                Console.WindowHeight = 25;
->>>>>>> 554ae4dfa0bf135bf91cc671e26200c84d092033
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
-                Console.Clear();
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + ("Coś... coś się popsuło :(".Length / 2)) + "}", "Coś... coś się popsuło :("));
-                Console.WriteLine();
-                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth/2) + ((e.GetType() + ":").Length/2)) + "}", e.GetType() + ":"));
-                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (e.Message.Length / 2)) + "}", e.Message));
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.Write(String.Format("{0," + ((Console.WindowWidth / 2) + ("Naciśnij dowolny klawisz...".Length / 2)) + "}", "Naciśnij dowolny klawisz..."));
-                Console.ReadKey();
-                Console.ResetColor();
-                Console.Clear();
-            }
-=======
             //}
             //catch (Exception e)
             //{
@@ -93,7 +63,6 @@ namespace Vow_win_ski
             //    Console.ResetColor();
             //    Console.Clear();
             //}
->>>>>>> 3c708f92c09e34c45326891cf2116beab45cbc85
         }
 
         static void DisplayLogo()
