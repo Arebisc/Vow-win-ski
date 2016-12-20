@@ -43,7 +43,7 @@ namespace Vow_win_ski.MemoryModule
             {
                 if (field == '\n')
                 {
-                    Console.Write(field + " ");
+                    Console.Write("\\n ");
                 }
                 else 
                     Console.Write(field+" ");
