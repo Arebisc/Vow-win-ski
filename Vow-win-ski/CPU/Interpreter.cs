@@ -45,9 +45,9 @@ namespace Vow_win_ski.CPU
                 if (Scheduler.GetInstance.GetRunningPCB() != null)
                 {
                     Scheduler.GetInstance.RevriteRegistersFromCPU();
-                    Scheduler.GetInstance.GetRunningPCB().State = ProcessState.Ready;
+                    Scheduler.GetInstance.GetRunningPCB().WaitForScheduling();
                 }
-                Scheduler.GetInstance.PriorityAlgorithm().State = ProcessState.Running;
+                Scheduler.GetInstance.PriorityAlgorithm().RunReadyProcess();
                 Scheduler.GetInstance.RevriteRegistersToCPU();
                 Console.WriteLine("Przełączono CPU na process: " + Scheduler.GetInstance.GetRunningPCB().Name);
                 return;
@@ -403,13 +403,11 @@ namespace Vow_win_ski.CPU
             Console.WriteLine("Rozkaz HLT");
             Scheduler.GetInstance.RemoveProcess(Scheduler.GetInstance.GetRunningPCB());
 
-            if (Scheduler.GetInstance.PriorityAlgorithm() != null)
+            if (!Scheduler.GetInstance.ListEmpty())
             {
-                Scheduler.GetInstance.PriorityAlgorithm().State = ProcessState.Running;
+                Scheduler.GetInstance.PriorityAlgorithm().RunReadyProcess();
                 Scheduler.GetInstance.RevriteRegistersToCPU();
             }
-                
-            else Console.WriteLine("Brak procesów do wykonywania!");
         }
     }
 }
