@@ -12,12 +12,18 @@ namespace Vow_win_ski.Processes
 
         public static void CreateProcess(string Name, string Path)
         {
-            new PCB(Name, new Random().Next(0, 7), Path, SourceOfCode.WindowsDisc).RunNewProcess();
+            new PCB(Name, new Random().Next(0, 7), Path, SourceOfCode.WindowsDisc);
         }
 
         public static void CreateProcessFromDisc(string Name, string Path)
         {
-            new PCB(Name, new Random().Next(0, 7), Path, SourceOfCode.SystemDisc).RunNewProcess();
+            new PCB(Name, new Random().Next(0, 7), Path, SourceOfCode.SystemDisc);
+        }
+
+        public static void RunNewProcess(string Name)
+        {
+            PCB pcb = PCB.GetPCB(Name);
+            if (pcb != null) pcb.RunNewProcess();
         }
 
         public static void StopProcess(string Name)
