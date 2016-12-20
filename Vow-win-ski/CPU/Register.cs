@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Vow_win_ski.CPU
 {
-    public class Register
+    public class Register : IEquatable<Register>
     {
         private int _A;
         private int _B;
         private int _C;
         private int _D;
-        private int _instructionPointer;
 
         public int A
         {
@@ -38,13 +38,13 @@ namespace Vow_win_ski.CPU
             set { _D = value; }
         }
 
-        public int InstructionPointer
+        public Register()
         {
-            get { return _instructionPointer; }
-            set { _instructionPointer = value; }
+            A = 0;
+            B = 0;
+            C = 0;
+            D = 0;
         }
-
-        public Register() { }
 
         public Register(int a, int b, int c, int d)
             : this()
@@ -55,16 +55,6 @@ namespace Vow_win_ski.CPU
             D = d;
         }
 
-        public Register(int a, int b, int c, int d, int instructionPointer)
-            : this()
-        {
-            A = a;
-            B = b;
-            C = c;
-            D = d;
-            InstructionPointer = instructionPointer;
-        }
-
         public Register(Register register)
             : this()
         {
@@ -72,7 +62,6 @@ namespace Vow_win_ski.CPU
             B = register.B;
             C = register.C;
             D = register.D;
-            InstructionPointer = register.InstructionPointer;
         }
 
         public override string ToString()
@@ -85,6 +74,51 @@ namespace Vow_win_ski.CPU
         public void PrintRegisters()
         {
             Console.WriteLine(this.ToString());
+        }
+
+        public static bool operator ==(Register a, Register b)
+        {
+            if (System.Object.ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            if (((object)a == null) || ((object)b == null))
+            {
+                return false;
+            }
+
+            if(a.A == b.A)
+                if(a.B == b.B)
+                    if(a.C == b.C)
+                        if (a.D == b.D)
+                            return true;
+            return false;
+        }
+
+        public static bool operator !=(Register a, Register b)
+        {
+            return !(a == b);
+        }
+
+        public bool Equals(Register other)
+        {
+            return this == other;
+        }
+
+        public PropertyInfo GetRegisterByName(string name)
+        {
+            return CPU.GetInstance.Register.GetType().GetProperty(name);
+        }
+
+        public int GetRegisterValueByName(string name)
+        {
+            return (int)(GetRegisterByName(name).GetValue(CPU.GetInstance.Register));
+        }
+
+        public void SetRegisterValueByName(string name, int value)
+        {
+            GetRegisterByName(name).SetValue(CPU.GetInstance.Register, value);
         }
     }
 }

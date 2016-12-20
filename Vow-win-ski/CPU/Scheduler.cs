@@ -79,5 +79,50 @@ namespace Vow_win_ski.CPU
             return WaitingForProcessor
                 .SingleOrDefault(x => x.State == ProcessState.Running);
         }
+
+        public void AgingWaitingProcesses()
+        {
+            if (WaitingForProcessor.Count != 0)
+            {
+                foreach (var pcb in WaitingForProcessor)
+                {
+                    if (pcb.CurrentPriority > 0 && pcb.State != ProcessState.Running)
+                        pcb.CurrentPriority--;
+                }
+            }
+        }
+
+        public void RejuvenationCurrentProcess()
+        {
+            if (WaitingForProcessor.Count != 0)
+            {
+                var runningPcb = GetRunningPCB();
+                if (runningPcb.CurrentPriority < runningPcb.StartPriority)
+                    runningPcb.CurrentPriority++;
+            }
+        }
+
+        public bool CheckIfOtherProcessShouldGetCPU()
+        {
+            if (GetRunningPCB() == PriorityAlgorithm())
+                return false;
+            return true;
+        }
+
+        public void RevriteRegistersFromCPU()
+        {
+            GetRunningPCB().Registers.A = CPU.GetInstance.Register.A;
+            GetRunningPCB().Registers.B = CPU.GetInstance.Register.B;
+            GetRunningPCB().Registers.C = CPU.GetInstance.Register.C;
+            GetRunningPCB().Registers.D = CPU.GetInstance.Register.D;
+        }
+
+        public void RevriteRegistersToCPU()
+        {
+            CPU.GetInstance.Register.A = GetRunningPCB().Registers.A;
+            CPU.GetInstance.Register.B = GetRunningPCB().Registers.B;
+            CPU.GetInstance.Register.C = GetRunningPCB().Registers.C;
+            CPU.GetInstance.Register.D = GetRunningPCB().Registers.D;
+        }
     }
 }

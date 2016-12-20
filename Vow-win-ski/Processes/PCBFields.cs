@@ -86,6 +86,8 @@ namespace Vow_win_ski.Processes
 
         private PipeClient client = null;
 
+        public SourceOfCode Source = SourceOfCode.WindowsDisc;
+
     }
 
 }

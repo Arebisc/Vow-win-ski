@@ -17,6 +17,8 @@ namespace Vow_win_ski.CPU
 
         private Interpreter() { }
 
+        public int orderCounter { get; private set; }
+
         public static Interpreter GetInstance
         {
             get
@@ -36,12 +38,30 @@ namespace Vow_win_ski.CPU
 
         public void InterpretOrder()
         {
+            orderCounter++;
+            if (Scheduler.GetInstance.CheckIfOtherProcessShouldGetCPU())
+            {
+                Scheduler.GetInstance.RevriteRegistersFromCPU();
+                Scheduler.GetInstance.GetRunningPCB().State = ProcessState.Ready;
+                Scheduler.GetInstance.PriorityAlgorithm().State = ProcessState.Running;
+                Scheduler.GetInstance.RevriteRegistersToCPU();
+                Console.WriteLine("Przełączono CPU na process: " + Scheduler.GetInstance.GetRunningPCB().Name);
+                return;
+            }
+
+            if (orderCounter % 3 == 0)
+            {
+                Scheduler.GetInstance.AgingWaitingProcesses();
+                Scheduler.GetInstance.RejuvenationCurrentProcess();
+            }
+
             var order = GetOrderFromMemory(Scheduler.GetInstance.GetRunningPCB());
 
             if (order.EndsWith(":"))
             {
                 order.Trim(':');
                 Console.WriteLine("Etykieta o nazwie: " + order);
+                Scheduler.GetInstance.GetRunningPCB().InstructionCounter++;
             }
             else
             {
@@ -179,122 +199,214 @@ namespace Vow_win_ski.CPU
             return result;
         }
 
-        private void POOrder(string register)
+        public void POOrder(string register)
         {
             Console.WriteLine("Rozkaz PO z parametrem " + register);
             
             Console.WriteLine(register);
         }
 
-        private void DFOrder(string fileName)
+        public void DFOrder(string fileName)
         {
             Console.WriteLine("Rozkaz DF z parametrem " + " " + fileName);
 
             Disc.GetDisc.DeleteFile(fileName);
         }
 
-        private void WROrder(string fileName, string register)
+        public void WROrder(string fileName, string register)
         {
             Console.WriteLine("Rozkaz WR z parametrem " + fileName + " " + register);
 
             Disc.GetDisc.AppendToFile(fileName, register);
         }
 
-        private void WFOrder(string fileName, string content)
+        public void WFOrder(string fileName, string content)
         {
             Console.WriteLine("Rozkaz WF z parametrem " + fileName + " " + content);
 
             Disc.GetDisc.AppendToFile(fileName, content);
         }
 
-        private void MFOrder(string fileName)
+        public void MFOrder(string fileName)
         {
             Console.WriteLine("Rozkaz MF z parametrem " + " " + fileName);
 
             Disc.GetDisc.CreateFile(fileName, String.Empty);
         }
 
-        private void MNOrder(string register, int number)
+        public void MNOrder(string register, int number)
         {
             Console.WriteLine("Rozkaz MN z parametrem " + register + " " + number);
-            //throw new NotImplementedException();
+            CPU.GetInstance.Register.SetRegisterValueByName(register, number);
         }
 
-        private void MVOrder(string register1, string register2)
+        public void MVOrder(string register1, string register2)
         {
             Console.WriteLine("Rozkaz MV z parametrem " + register1 + " " + register2);
-            //throw new NotImplementedException();
+
+            CPU.GetInstance.Register.SetRegisterValueByName(register1, 
+                CPU.GetInstance.Register.GetRegisterValueByName(register2));
         }
 
-        private void JMOrder(string tag)
+        public void JMOrder(string tag)
         {
             Console.WriteLine("Rozkaz JM z parametrem " + tag);
-            //throw new NotImplementedException();
+
+            if (CPU.GetInstance.Register.C != 0)
+            {
+                var runningPCB = Scheduler.GetInstance.GetRunningPCB();
+                runningPCB.InstructionCounter = 0;
+
+                var order = String.Empty;
+                int iterator = 0;
+                bool foundFlag = false;
+
+                while (foundFlag != true)
+                {
+                    while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' && iterator <= runningPCB.MaxMemory)
+                    {
+                        order += runningPCB.MemoryBlocks.ReadByte(iterator);
+                        iterator++;
+                    }
+                    iterator++;
+                    runningPCB.InstructionCounter++;
+
+                    if (order.TrimEnd(':') == tag)
+                        foundFlag = true;
+                    order = String.Empty;
+                }
+            }
+            CPU.GetInstance.Register.C--;
         }
 
-        private void MUOrder(string register1, string register2)
+        public void MUOrder(string register1, string register2)
         {
             Console.WriteLine("Rozkaz MV z parametrem " + register1 + " " + register2);
-            //throw new NotImplementedException();
+            if (!IsNumeric(register2))
+            {
+                var oldReg1Value = CPU.GetInstance.Register.GetRegisterValueByName(register1);
+                CPU.GetInstance.Register.SetRegisterValueByName(
+                    register1,
+                     CPU.GetInstance.Register.GetRegisterValueByName(register2) * oldReg1Value);
+            }
+            else
+            {
+                CPU.GetInstance.Register.SetRegisterValueByName(
+                    register1,
+                    CPU.GetInstance.Register.GetRegisterValueByName(register1) * Int32.Parse(register2));
+            }
         }
 
-        private void SBOrder(string register1, string register2)
+        public void SBOrder(string register1, string register2)
         {
             Console.WriteLine("Rozkaz SB z parametrem " + register1 + " " + register2);
-            //throw new NotImplementedException();
+            if (!IsNumeric(register2))
+            {
+                var oldReg1Value = CPU.GetInstance.Register.GetRegisterValueByName(register1);
+                CPU.GetInstance.Register.SetRegisterValueByName(
+                    register1,
+                     CPU.GetInstance.Register.GetRegisterValueByName(register2) - oldReg1Value);
+            }
+            else
+            {
+                CPU.GetInstance.Register.SetRegisterValueByName(
+                    register1,
+                    CPU.GetInstance.Register.GetRegisterValueByName(register1) - Int32.Parse(register2));
+            }
         }
 
-        private void ADOrder(string register1, string register2)
+        public void ADOrder(string register1, string register2)
         {
             Console.WriteLine("Rozkaz AD z parametrem " + register1 + " " + register2);
-            //throw new NotImplementedException();
+
+            if (!IsNumeric(register2))
+            {
+                var oldReg1Value = CPU.GetInstance.Register.GetRegisterValueByName(register1);
+                CPU.GetInstance.Register.SetRegisterValueByName(
+                    register1,
+                     CPU.GetInstance.Register.GetRegisterValueByName(register2) + oldReg1Value);
+            }
+            else
+            {
+                CPU.GetInstance.Register.SetRegisterValueByName(
+                    register1,
+                    CPU.GetInstance.Register.GetRegisterValueByName(register1) + Int32.Parse(register2));
+            }
+            
         }
 
-        private void XZOrder(string processName)
+        public bool IsNumeric(string text)
+        {
+            int n;
+            if(int.TryParse(text, out n))
+                return true;
+            return false;
+        }
+
+        public void XZOrder(string processName)
         {
             Console.WriteLine("Rozkaz XZ z parametrem " + processName);
-            //throw new NotImplementedException();
+
+            PCB.GetPCB(processName).TerminateProcess(ReasonOfProcessTerminating.Ended);
         }
 
-        private void XYOrder(string processName)
+        public void XYOrder(string processName)
         {
             Console.WriteLine("Rozkaz XY z parametrem " + processName);
-            //throw new NotImplementedException();
+
+            PCB.GetPCB(processName).RunNewProcess();
         }
 
-        private void XNOrder(string processName)
+        public void XNOrder(string processName)
         {
             Console.WriteLine("Rozkaz XN z parametrem " + processName);
-            //throw new NotImplementedException();
+
+            var pcbID = PCB.GetPCB(processName).PID;
+            CPU.GetInstance.Register.SetRegisterValueByName("A", pcbID);
         }
 
-        private void XSOrder(string processName, string communicate)
+        public void XSOrder(string processName, string communicate)
         {
             Console.WriteLine("Rozkaz XS z parametrem " + processName + " " + communicate);
             Scheduler.GetInstance.GetRunningPCB().Send(processName, communicate);
         }
 
-        private void XROrder()
+        public void XROrder()
         {
             Console.WriteLine("Rozkaz XR");
             Scheduler.GetInstance.GetRunningPCB().Receive();
         }
 
-        private void XDOrder(string processName)
+        public void XDOrder(string processName)
         {
             Console.WriteLine("Rozkaz XD z parametrem " + processName);
-            //throw new NotImplementedException();
+
+            var flag = PCB.GetPCB(processName).TerminateProcess(ReasonOfProcessTerminating.KilledByOther, 
+                Scheduler.GetInstance.GetRunningPCB());
+
+            if(flag == 0)
+                PCB.GetPCB(processName).RemoveProcess();
         }
 
-        private void XCOrder(string processName, string fileName)
+        public void XCOrder(string processName, string fileName)
         {
             Console.WriteLine("Rozkaz XC z parametrem " + processName + " " + fileName);
-            //throw new NotImplementedException();
+            
+            UserInterface.CreateProcess(processName, fileName);
         }
 
-        private void HLTOrder()
+        public void HLTOrder()
         {
             Console.WriteLine("Rozkaz HLT");
+            Scheduler.GetInstance.RemoveProcess(Scheduler.GetInstance.GetRunningPCB());
+
+            if (Scheduler.GetInstance.PriorityAlgorithm() != null)
+            {
+                Scheduler.GetInstance.PriorityAlgorithm().State = ProcessState.Running;
+                Scheduler.GetInstance.RevriteRegistersToCPU();
+            }
+                
+            else Console.WriteLine("Brak procesów do wykonywania!");
         }
     }
 }
