@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vow_win_ski.IPC
 {
-    class Message
+    public class Message
     {
         private string senderId;
         private string receiverId;
