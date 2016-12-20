@@ -1,0 +1,14 @@
+MF silniaPlik
+XC procesSilnia,silniaPlik
+XY procesSilnia
+MN C,5
+SILNIA:
+ADD A,C
+JM SILNIA
+WF silniaPlik,A
+WF silniaPlik,-ID:
+XN procesSilnia
+WR silniaPlik,A
+XZ procesSilnia
+XD procesSilnia
+HLT

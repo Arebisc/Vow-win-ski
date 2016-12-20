@@ -85,46 +85,47 @@ namespace Vow_win_ski
                     case "QUIT":
                         SoundPlayer sp2 = new SoundPlayer("start.wav");
                         sp2.Play();
+                        Console.WriteLine("Zamykanie systemu...");
                         Thread.Sleep(2500);
                         exit = true;
-                        PipeServer.GetServer.Exit();                      
+                        PipeServer.GetServer.Exit();
                         break;
                     case "BS":
-                        throw new Exception("Wyjątek wywołany przez użytkownika");
+                        throw new Exception(p1 == "" ? "Wyjątek wywołany przez użytkownika" : p1);
                     //===================================================
                     case "SRP":
-                        CPU.Scheduler.GetInstance.PrintList();
+                        Scheduler.GetInstance.PrintList();
                         break;
                     case "SRG":
                         CPU.CPU.GetInstance.Register.PrintRegisters();
                         break;
                     //===================================================
                     case "CP":
-                        Processes.UserInterface.CreateProcess(p1, p2);
+                        UserInterface.CreateProcess(p1, p2);
                         break;
                     case "CPD":
-                        Processes.UserInterface.CreateProcessFromDisc(p1, p2);
+                        UserInterface.CreateProcessFromDisc(p1, p2);
                         break;
                     case "CPP":
-                        Processes.UserInterface.ChangePriority(p1, p2);
+                        UserInterface.ChangePriority(p1, p2);
                         break;
                     case "NPR":
                         Processes.UserInterface.RunNewProcess(p1);
                         break;
                     case "HP":
-                        Processes.UserInterface.StopProcess(p1);
+                        UserInterface.StopProcess(p1);
                         break;
                     case "SAP":
-                        Processes.UserInterface.ShowAllProcesses();
+                        UserInterface.ShowAllProcesses();
                         break;
                     case "SPCB":
-                        Processes.UserInterface.ShowPCB(p1);
+                        UserInterface.ShowPCB(p1);
                         break;
                     case "WP":
-                        Processes.UserInterface.SleepProcess(p1);
+                        UserInterface.SleepProcess(p1);
                         break;
                     case "RP":
-                        Processes.UserInterface.ResumeProcess(p1);
+                        UserInterface.ResumeProcess(p1);
                         break;
                     //===================================================
                     case "SPL":
