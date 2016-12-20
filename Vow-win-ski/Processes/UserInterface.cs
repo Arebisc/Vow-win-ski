@@ -49,5 +49,31 @@ namespace Vow_win_ski.Processes
             if (pcb != null) pcb.StopWaiting();
         }
 
+        public static void ChengePriority(string Name, string Priority)
+        {
+
+            int NewPriority = 0;
+
+            if(!int.TryParse(Priority, out NewPriority)) {
+                Console.WriteLine("Podana wartosc nie jest liczba.");
+                return;
+            }
+            
+            if(NewPriority < 0 || NewPriority > 7)
+            {
+                PCB pcb = PCB.GetPCB(Name);
+                if (pcb != null)
+                {
+                    pcb.CurrentPriority = NewPriority;
+                    pcb.StartPriority = NewPriority;
+                    pcb.PriorityTime = 0;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Priorytet procesu musi miescic sie w zakresie od 0 do 7.");
+            }
+        }
+
     }
 }

@@ -105,6 +105,9 @@ namespace Vow_win_ski
                     case "CPD":
                         Processes.UserInterface.CreateProcessFromDisc(p1, p2);
                         break;
+                    case "CPP":
+                        Processes.UserInterface.ChengePriority(p1, p2);
+                        break;
                     case "HP":
                         Processes.UserInterface.StopProcess(p1);
                         break;
@@ -211,6 +214,7 @@ namespace Vow_win_ski
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("CP {nazwa} {prog}  Tworzy proces {nazwa} z programu {prog} na dysku Windows");
             Console.WriteLine("CPD {nazwa} {prog} Tworzy proces {nazwa} z programu {prog} na dysku systemu");
+            Console.WriteLine("CPP {nazwa} {priorytet} Ustawia priorytet procesowi {nazwa}");
             Console.WriteLine("HP {nazwa}\t   Zatrzymuje proces {nazwa}");
             Console.WriteLine("SAP\t\t   Wyświetla listę wszystkich procesów");
             Console.WriteLine("SPCB {nazwa}\t   Wyświetla listę PCB procesu {nazwa}");
