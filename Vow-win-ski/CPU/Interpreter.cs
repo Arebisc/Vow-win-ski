@@ -38,17 +38,20 @@ namespace Vow_win_ski.CPU
 
         public void InterpretOrder()
         {
-            orderCounter++;
             if (Scheduler.GetInstance.CheckIfOtherProcessShouldGetCPU())
             {
-                Scheduler.GetInstance.RevriteRegistersFromCPU();
-                Scheduler.GetInstance.GetRunningPCB().State = ProcessState.Ready;
+                if (Scheduler.GetInstance.GetRunningPCB() != null)
+                {
+                    Scheduler.GetInstance.RevriteRegistersFromCPU();
+                    Scheduler.GetInstance.GetRunningPCB().State = ProcessState.Ready;
+                }
                 Scheduler.GetInstance.PriorityAlgorithm().State = ProcessState.Running;
                 Scheduler.GetInstance.RevriteRegistersToCPU();
                 Console.WriteLine("Przełączono CPU na process: " + Scheduler.GetInstance.GetRunningPCB().Name);
                 return;
             }
 
+            orderCounter++;
             if (orderCounter % 3 == 0)
             {
                 Scheduler.GetInstance.AgingWaitingProcesses();
@@ -392,7 +395,7 @@ namespace Vow_win_ski.CPU
         {
             Console.WriteLine("Rozkaz XC z parametrem " + processName + " " + fileName);
             
-            UserInterface.CreateProcess(processName, fileName);
+            UserInterface.CreateProcessFromDisc(processName, fileName);
         }
 
         public void HLTOrder()
