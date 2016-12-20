@@ -65,6 +65,8 @@
     <Compile Include="MemoryModule\FreeFramesListTests.cs" />
     <Compile Include="MemoryModule\MemoryTests.cs" />
     <Compile Include="MemoryModule\QueueTests.cs" />
+    <Compile Include="PCI\MessageTests.cs" />
+    <Compile Include="PCI\PipeClientServer.cs" />
     <Compile Include="Processes\PCBTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

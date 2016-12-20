@@ -28,6 +28,7 @@ namespace Vow_win_ski.MemoryModule
             _physicalMemory = new PhysicalMemory(FramesCount, FramesSize);
             _freeFramesList = new FreeFramesList(FramesCount-2);
             ProcessPages = new List<ProcessPages>();
+            _messageLength = 0;
         }
 
         public static Memory GetInstance
@@ -494,14 +495,21 @@ namespace Vow_win_ski.MemoryModule
 
         public string ReadMessage()
         {
-            string temp = new string(_physicalMemory.GetFrame(FramesCount - 2).ReadFrame());
-            string temp1 = new string(_physicalMemory.GetFrame(FramesCount - 1).ReadFrame());
+            if (_messageLength > 0)
+            {
+                string temp = new string(_physicalMemory.GetFrame(FramesCount - 2).ReadFrame());
+                string temp1 = new string(_physicalMemory.GetFrame(FramesCount - 1).ReadFrame());
 
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append(temp);
-            stringBuilder.Append(temp1);
-          
-            return stringBuilder.ToString();
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append(temp);
+                stringBuilder.Append(temp1);
+
+                return stringBuilder.ToString();
+            }
+            else
+            {
+                return "Nie ma jeszcze wiadomosci w pamięci.";
+            }
 
         }
 
