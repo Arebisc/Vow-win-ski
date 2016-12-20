@@ -222,7 +222,7 @@ namespace Vow_win_ski.CPU
         {
             Console.WriteLine("Rozkaz WR z parametrem " + fileName + " " + register);
 
-            Disc.GetDisc.AppendToFile(fileName, register);
+            Disc.GetDisc.AppendToFile(fileName, CPU.GetInstance.Register.GetRegisterValueByName(register).ToString());
         }
 
         public void WFOrder(string fileName, string content)
