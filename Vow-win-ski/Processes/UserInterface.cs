@@ -12,11 +12,41 @@ namespace Vow_win_ski.Processes
 
         public static void CreateProcess(string Name, string Path)
         {
+
+            Name = Name.Trim();
+            Path = Path.Trim();
+
+            if (Name == "")
+            {
+                Console.WriteLine("Nie podano nazwy procesu.");
+                return;
+            }
+            if (Path == "")
+            {
+                Console.WriteLine("Nie podano sciezki do programu.");
+                return;
+            }
+
             new PCB(Name, new Random().Next(0, 7), Path, SourceOfCode.WindowsDisc);
         }
 
         public static void CreateProcessFromDisc(string Name, string Path)
         {
+
+            Name = Name.Trim();
+            Path = Path.Trim();
+
+            if (Name == "")
+            {
+                Console.WriteLine("Nie podano nazwy procesu.");
+                return;
+            }
+            if (Path == "")
+            {
+                Console.WriteLine("Nie podano sciezki do programu.");
+                return;
+            }
+
             new PCB(Name, new Random().Next(0, 7), Path, SourceOfCode.SystemDisc);
         }
 

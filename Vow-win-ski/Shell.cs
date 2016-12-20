@@ -219,7 +219,7 @@ namespace Vow_win_ski
             Console.WriteLine("CP {nazwa} {prog}\t Tworzy proces {nazwa} z programu {prog} na dysku Windows");
             Console.WriteLine("CPD {nazwa} {prog}\t Tworzy proces {nazwa} z programu {prog} na dysku systemu");
             Console.WriteLine("CPP {nazwa} {priorytet}\t Ustawia priorytet procesowi {nazwa}");
-            Console.WriteLine("NPR {nazwa}\t\t Uruchom nowy proces {nazwa}");
+            Console.WriteLine("NPR {nazwa}\t\t Uruchamia nowy proces {nazwa}");
             Console.WriteLine("HP {nazwa}\t   Zatrzymuje proces {nazwa}");
             Console.WriteLine("SAP\t\t   Wyświetla listę wszystkich procesów");
             Console.WriteLine("SPCB {nazwa}\t   Wyświetla listę PCB procesu {nazwa}");
