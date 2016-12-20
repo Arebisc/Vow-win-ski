@@ -138,14 +138,16 @@ namespace Vow_win_ski.CPU
 
             for (int i = 0; i < runningPCB.InstructionCounter; i++)
             {
-                while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' && iterator <= runningPCB.MaxMemory)
+                while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' &&
+                        runningPCB.MemoryBlocks.ReadByte(iterator) != '\r')
                 {
                     iterator++;
                 }
                 iterator++;
             }
 
-            while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' &&  iterator <= runningPCB.MaxMemory)
+            while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' &&
+                        runningPCB.MemoryBlocks.ReadByte(iterator) != '\r')
             {
                 order += runningPCB.MemoryBlocks.ReadByte(iterator);
                 iterator++;
@@ -266,7 +268,8 @@ namespace Vow_win_ski.CPU
 
                 while (foundFlag != true)
                 {
-                    while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' && iterator <= runningPCB.MaxMemory)
+                    while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' && 
+                        runningPCB.MemoryBlocks.ReadByte(iterator) != '\r')
                     {
                         order += runningPCB.MemoryBlocks.ReadByte(iterator);
                         iterator++;
@@ -274,7 +277,7 @@ namespace Vow_win_ski.CPU
                     iterator++;
                     runningPCB.InstructionCounter++;
 
-                    if (order.TrimEnd(':') == tag)
+                    if (order.TrimEnd().TrimEnd(':') == tag)
                         foundFlag = true;
                     order = String.Empty;
                 }
