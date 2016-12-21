@@ -1,16 +1,13 @@
 MF arytmetykaPlik
-XC procesArytmetyka,arytmetykaPlik
-XY procesArytmetyka
 MN A,3
 MN B,6
-ADD A,C
+AD A,B
 WF arytmetykaPlik,Wynik3+6=
-WF arytmetykaPlik,A
+WR arytmetykaPlik,A
 MU B,A
 WF arytmetykaPlik,Wynik6*9=
-WF arytmetykaPlik,B
+WR arytmetykaPlik,B
 SB B,A
 WF arytmetykaPlik,Wynik45-9=
-WF arytmetykaPlik,B
-XZ procesArytmetyka
+WR arytmetykaPlik,B
 HLT

@@ -12,11 +12,10 @@ namespace Vow_win_ski.CPU
     {
         private static volatile Scheduler _instance;
         private static readonly object SyncRoot = new object();
-        private static List<PCB> WaitingForProcessor;
+        private List<PCB> WaitingForProcessor;
 
         private Scheduler()
         {
-
             WaitingForProcessor = new List<PCB>();
         }
 
@@ -36,7 +35,15 @@ namespace Vow_win_ski.CPU
                 return _instance;
             }
         }
-        
+
+        public bool ListEmpty()
+        {
+            if (WaitingForProcessor.Count != 0)
+                return false;
+            Console.WriteLine("Brak procesów do wykonania!");
+            return true;
+        }
+
         public void AddProcess(PCB process)
         {
             WaitingForProcessor.Add(process);
@@ -70,9 +77,11 @@ namespace Vow_win_ski.CPU
 
         public PCB PriorityAlgorithm()
         {
-            return WaitingForProcessor
-                .Aggregate((elem1, elem2) => 
+            var process = WaitingForProcessor
+                .Aggregate((elem1, elem2) =>
                     (elem1.CurrentPriority < elem2.CurrentPriority ? elem1 : elem2));
+
+            return process;
         }
 
         public PCB GetRunningPCB()
