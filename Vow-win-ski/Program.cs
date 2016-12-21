@@ -20,6 +20,8 @@ namespace Vow_win_ski
             Thread.Sleep(100);
             PipeServer.InitServer();
             Thread.Sleep(100);
+            PCB.CreateIdleProcess();
+            Thread.Sleep(100);
             if (args.Length > 0)
                 Disc.InitDisc(args[0]);
             else

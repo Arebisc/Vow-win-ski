@@ -26,14 +26,15 @@ namespace Vow_win_ski.Processes
                 proces = Proces;
                 this.Name = proces.Name;
                 open = 1;
-                proces.WaitForScheduling();
-                Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
+                proces.WaitForSomething();
+            //    Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
+            // Na pamiątkę
             }
             else
             {
                 waiting.Add(Proces);
-                proces.WaitForScheduling();
-                Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
+                proces.WaitForSomething();
+            //    Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
             }
         }
 
@@ -41,7 +42,7 @@ namespace Vow_win_ski.Processes
         {
             if (!Check())
             {
-                if (waiting.Count() > 1)
+                if (waiting.Count() > 0)
                 {
                     if (Check(name))
                     {
@@ -57,7 +58,7 @@ namespace Vow_win_ski.Processes
                         this.Name = proces.Name;
                     }
                 }
-                else if (waiting.Count() == 1)
+                else if (waiting.Count() == 0)
                 {
                     if (Check(name))
                     {

@@ -31,7 +31,6 @@ namespace Vow_win_ski.CPU
                             _instance = new Interpreter();
                     }
                 }
-
                 return _instance;
             }
         }
@@ -138,19 +137,29 @@ namespace Vow_win_ski.CPU
 
             for (int i = 0; i < runningPCB.InstructionCounter; i++)
             {
-                while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' && iterator <= runningPCB.MaxMemory)
+                while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' &&
+                        runningPCB.MemoryBlocks.ReadByte(iterator) != '\r' &&
+                        iterator <= runningPCB.MaxMemory)
                 {
                     iterator++;
                 }
-                iterator++;
+                if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\r')
+                    iterator++;
+                if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\n')
+                    iterator++;
             }
 
-            while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' &&  iterator <= runningPCB.MaxMemory)
+            while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' &&
+                        runningPCB.MemoryBlocks.ReadByte(iterator) != '\r' &&
+                        iterator <= runningPCB.MaxMemory)
             {
                 order += runningPCB.MemoryBlocks.ReadByte(iterator);
                 iterator++;
             }
-            iterator++;
+            if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\r')
+                iterator++;
+            if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\n')
+                iterator++;
             runningPCB.InstructionCounter++;
 
             return order;
@@ -220,7 +229,7 @@ namespace Vow_win_ski.CPU
         {
             Console.WriteLine("Rozkaz WR z parametrem " + fileName + " " + register);
 
-            Disc.GetDisc.AppendToFile(fileName, register);
+            Disc.GetDisc.AppendToFile(fileName, CPU.GetInstance.Register.GetRegisterValueByName(register).ToString());
         }
 
         public void WFOrder(string fileName, string content)
@@ -257,6 +266,7 @@ namespace Vow_win_ski.CPU
 
             if (CPU.GetInstance.Register.C != 0)
             {
+                CPU.GetInstance.Register.C--;
                 var runningPCB = Scheduler.GetInstance.GetRunningPCB();
                 runningPCB.InstructionCounter = 0;
 
@@ -266,20 +276,25 @@ namespace Vow_win_ski.CPU
 
                 while (foundFlag != true)
                 {
-                    while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' && iterator <= runningPCB.MaxMemory)
+                    while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' && 
+                        runningPCB.MemoryBlocks.ReadByte(iterator) != '\r' &&
+                        iterator <= runningPCB.MaxMemory)
                     {
                         order += runningPCB.MemoryBlocks.ReadByte(iterator);
                         iterator++;
                     }
-                    iterator++;
+
+                    if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\r')
+                        iterator++;
+                    if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\n')
+                        iterator++;
                     runningPCB.InstructionCounter++;
 
-                    if (order.TrimEnd(':') == tag)
+                    if (order.TrimEnd().TrimEnd(':') == tag)
                         foundFlag = true;
                     order = String.Empty;
                 }
             }
-            CPU.GetInstance.Register.C--;
         }
 
         public void MUOrder(string register1, string register2)
@@ -401,7 +416,9 @@ namespace Vow_win_ski.CPU
         public void HLTOrder()
         {
             Console.WriteLine("Rozkaz HLT");
-            Scheduler.GetInstance.RemoveProcess(Scheduler.GetInstance.GetRunningPCB());
+            Scheduler.GetInstance.GetRunningPCB().TerminateProcess(ReasonOfProcessTerminating.Ended);
+          //  Scheduler.GetInstance.RemoveProcess(Scheduler.GetInstance.GetRunningPCB()); TU SPIERDOLONE BYŁO, ALE NAPRAWIŁEM ~ TheSensej
+          //Zostawione na pamiątkę 
 
             if (!Scheduler.GetInstance.ListEmpty())
             {
