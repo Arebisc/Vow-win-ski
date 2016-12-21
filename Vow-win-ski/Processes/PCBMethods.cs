@@ -168,10 +168,7 @@ namespace Vow_win_ski.Processes
 
                     client.Connect();
 
-                    if (ReceiverMessageLock == 1) {
-                        Receive();
-                        ReceiverMessageLock = 0;
-                    }
+                 
 
                     return 0;
                 }
@@ -239,8 +236,9 @@ namespace Vow_win_ski.Processes
         {
             if (State == ProcessState.Running)
             {
-                State = ProcessState.Ready;
                 client.Disconnect();
+                State = ProcessState.Ready;
+                
 
                 Console.WriteLine("Przerwano realizacje przez procesor procesu: " + this.ToString() + ".");
                 return 0;
