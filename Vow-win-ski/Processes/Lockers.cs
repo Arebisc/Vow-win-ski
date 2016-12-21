@@ -42,7 +42,7 @@ namespace Vow_win_ski.Processes
         {
             if (!Check())
             {
-                if (waiting.Count() > 1)
+                if (waiting.Count() > 0)
                 {
                     if (Check(name))
                     {
@@ -58,7 +58,7 @@ namespace Vow_win_ski.Processes
                         this.Name = proces.Name;
                     }
                 }
-                else if (waiting.Count() == 1)
+                else if (waiting.Count() == 0)
                 {
                     if (Check(name))
                     {
