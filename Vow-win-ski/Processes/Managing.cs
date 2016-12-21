@@ -135,6 +135,7 @@ namespace Vow_win_ski.Processes
             Idle._PID = 0;
             Idle.StartPriority = 8;
             Idle.CurrentPriority = 8;
+            Idle.Registers.C = -1;
             Idle.RunNewProcess();
             return Idle;
         }
