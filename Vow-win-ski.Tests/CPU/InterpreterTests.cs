@@ -116,7 +116,7 @@ namespace Vow_win_ski.Tests.CPU
                                    "HLT";
             string resultOrder = String.Empty;
 
-            var pcb = new PCB("testowy", 5);
+            var pcb = new PCB("testowy_getOrder", 5);
             Memory.GetInstance.AllocateMemory(pcb, memoryContent);
 
             resultOrder = Interpreter.GetInstance.GetOrderFromMemory(pcb);
@@ -150,9 +150,9 @@ namespace Vow_win_ski.Tests.CPU
                                    "Etykieta:\n" +
                                    "MU A,2\n" +
                                    "JM Etykieta\n" +
-                                   "HLT\n";
+                                   "HLT";
 
-            var pcb = new PCB("testowy", 5)
+            var pcb = new PCB("testowy_jmInstruction", 5)
             {
                 State = ProcessState.Running
             };
@@ -163,9 +163,8 @@ namespace Vow_win_ski.Tests.CPU
             {
                 Interpreter.GetInstance.InterpretOrder();
             }
-
-            Assert.AreEqual(CentralProcessingUnit.GetInstance.Register.A, 8);
             Scheduler.GetInstance.RemoveProcess(pcb);
+            Assert.AreEqual(CentralProcessingUnit.GetInstance.Register.A, 16);
         }
 
         [Test]

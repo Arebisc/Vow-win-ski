@@ -16,11 +16,11 @@ namespace Vow_win_ski.Tests.CPU
         public void Check_PriorityAlgoritm()
         {
             var scheduler = Scheduler.GetInstance;
-            var pcb1 = new PCB("first", 4);
-            var pcb2 = new PCB("second", 3);
-            var pcb3 = new PCB("third", 7);
-            var pcb4 = new PCB("last", 1);
-            var pcb5 = new PCB("latest", 5);
+            var pcb1 = new PCB("first_pa", 4);
+            var pcb2 = new PCB("second_pa", 3);
+            var pcb3 = new PCB("third_pa", 7);
+            var pcb4 = new PCB("last_pa", 1);
+            var pcb5 = new PCB("latest_pa", 5);
 
             scheduler.AddProcess(pcb1);
             scheduler.AddProcess(pcb2);
@@ -41,14 +41,14 @@ namespace Vow_win_ski.Tests.CPU
         public void Check_GetRunningPCB()
         {
             var scheduler = Scheduler.GetInstance;
-            var pcb1 = new PCB("first", 4);
-            var pcb2 = new PCB("second", 3);
-            var pcb3 = new PCB("third", 7);
-            var pcb4 = new PCB("last", 1)
+            var pcb1 = new PCB("first_grpcb", 4);
+            var pcb2 = new PCB("second_grpcb", 3);
+            var pcb3 = new PCB("third_grpcb", 7);
+            var pcb4 = new PCB("last_grpcb", 1)
             {
                 State = ProcessState.Running
             };
-            var pcb5 = new PCB("latest", 5);
+            var pcb5 = new PCB("latest_grpcb", 5);
 
             scheduler.AddProcess(pcb1);
             scheduler.AddProcess(pcb2);
