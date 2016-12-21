@@ -36,7 +36,7 @@ namespace Vow_win_ski.CPU
         }
 
         public void InterpretOrder()
-        {
+        {   
             if (Scheduler.GetInstance.ListEmpty())
                 return;
             if (Scheduler.GetInstance.CheckIfOtherProcessShouldGetCPU())
@@ -264,10 +264,9 @@ namespace Vow_win_ski.CPU
         {
             Console.WriteLine("Rozkaz JM z parametrem " + tag);
 
-            CPU.GetInstance.Register.C--;
-
             if (CPU.GetInstance.Register.C != 0)
             {
+                CPU.GetInstance.Register.C--;
                 var runningPCB = Scheduler.GetInstance.GetRunningPCB();
                 runningPCB.InstructionCounter = 0;
 

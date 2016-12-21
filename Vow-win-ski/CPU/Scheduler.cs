@@ -38,9 +38,8 @@ namespace Vow_win_ski.CPU
 
         public bool ListEmpty()
         {
-            if (WaitingForProcessor.Count != 0)
+            if (WaitingForProcessor.Count > 1)
                 return false;
-            Console.WriteLine("Brak procesów do wykonania!");
             return true;
         }
 
