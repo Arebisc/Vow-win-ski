@@ -129,6 +129,16 @@ namespace Vow_win_ski.Processes
             Console.WriteLine("Utworzono proces: " + this.ToString());
         }
 
+        public static PCB CreateIdleProcess(){
+            Console.WriteLine("Tworzenie procesu bezczynnosci systemu...");
+            PCB Idle = new PCB("ProcesBezczynnosci", 7, "idle.txt", SourceOfCode.WindowsDisc);
+            Idle._PID = 0;
+            Idle.StartPriority = 8;
+            Idle.CurrentPriority = 8;
+            Idle.RunNewProcess();
+            return Idle;
+        }
+
         /// <summary>Zwraca blok kontrolny procesu o podanym identyfikatorze</summary>
         /// <remarks>Znalezienie bloku PCB o danej nazwie - XN</remarks>
         public static PCB GetPCB(int PID)

@@ -26,6 +26,7 @@ namespace Vow_win_ski.Processes
         /// 0 - zamknięto proces
         /// 1 - proces oczekuje na zamkniecie
         /// 2 - jeśli zamykany przez inny proces, nie podano procesu zamykającego
+        /// 3 - próba zamknięcia procesu systemowego
         /// </returns>
         public int TerminateProcess(ReasonOfProcessTerminating Reason, PCB ClosingProcess = null, int ExitCode = 0) {
 
@@ -33,6 +34,12 @@ namespace Vow_win_ski.Processes
             {
                 Console.WriteLine("Blad zamykania procesu: nie podano procesu zamykajacego.");
                 return 2;
+            }
+
+            if(PID == 0)
+            {
+                Console.WriteLine("Nie mozna zamknac procesu systemowego.");
+                return 3;
             }
 
             string ReasonString = "(brak powodu)";
@@ -177,9 +184,15 @@ namespace Vow_win_ski.Processes
         }
 
         /// <remarks>Running -> Waiting</remarks>
-        /// <returns>0 - proces przeszedł w stan oczekiwania, 1 - proces ma stan inny niż Running</returns>
+        /// <returns>0 - proces przeszedł w stan oczekiwania, 1 - proces ma stan inny niż Running, 3 - proces jest procesem systemowym</returns>
         public int WaitForSomething()
         {
+
+            if(PID == 0)
+            {
+                Console.WriteLine("Nie mozna uspic procesu; proces jest procesem systemowym.");
+                return 3;
+            }
 
             if (State == ProcessState.Running)
             {
@@ -244,10 +257,17 @@ namespace Vow_win_ski.Processes
         /// <returns>
         /// 0 - usunięto proces
         /// 2 - błąd: przed usunięciem procesu należy go zatrzymać
+        /// 3 - próba zamknięcia procesu systemowego
         /// </returns>
         /// <remarks>Usunięcie procesu - XD</remarks>
         public int RemoveProcess()
         {
+
+            if(PID == 0)
+            {
+                Console.WriteLine("Nie mozna usunac procesu systemowego.");
+                return 3;
+            }
 
             if (this.State == ProcessState.Terminated)
             {
