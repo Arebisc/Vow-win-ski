@@ -37,7 +37,7 @@ namespace Vow_win_ski.CPU
         }
 
         public void InterpretOrder()
-        {
+        {   
             if (Scheduler.GetInstance.ListEmpty())
                 return;
             if (Scheduler.GetInstance.CheckIfOtherProcessShouldGetCPU())

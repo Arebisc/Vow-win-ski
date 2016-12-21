@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Media;
 using System.Threading;
+using Castle.Core.Internal;
 using Vow_win_ski.CPU;
 using Vow_win_ski.FileSystem;
 using Vow_win_ski.IPC;
@@ -80,7 +81,13 @@ namespace Vow_win_ski
                         ShowHelp();
                         break;
                     case "EX":
-                        Interpreter.GetInstance.InterpretOrder();
+                        if (p1 == "-all")
+                        {
+                            while (!Scheduler.GetInstance.ListEmpty())
+                                Interpreter.GetInstance.InterpretOrder();
+                        }
+                        else
+                            Interpreter.GetInstance.InterpretOrder();
                         break;
                     case "QUIT":
                         SoundPlayer sp2 = new SoundPlayer("start.wav");
@@ -204,7 +211,7 @@ namespace Vow_win_ski
             Console.WriteLine("-------------------------------Ogólne---------------------------------");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("HELP\t\t   Wyświetla tę listę");
-            Console.WriteLine("EX\t\t   Wykonuje kolejny rozkaz");
+            Console.WriteLine("EX [-all]\t   Wykonuje kolejny rozkaz, [-all] - wszystkie procesy");
             Console.WriteLine("QUIT\t\t   Zamyka system");
 
             Console.ForegroundColor = ConsoleColor.White;
