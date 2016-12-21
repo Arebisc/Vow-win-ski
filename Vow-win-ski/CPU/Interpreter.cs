@@ -17,8 +17,6 @@ namespace Vow_win_ski.CPU
 
         private Interpreter() { }
 
-        public int orderCounter { get; private set; }
-
         public static Interpreter GetInstance
         {
             get
@@ -52,12 +50,9 @@ namespace Vow_win_ski.CPU
                 return;
             }
 
-            orderCounter++;
-            if (orderCounter % 3 == 0)
-            {
-                Scheduler.GetInstance.AgingWaitingProcesses();
-                Scheduler.GetInstance.RejuvenationCurrentProcess();
-            }
+            Scheduler.GetInstance.AgingPriorityTime();
+            Scheduler.GetInstance.RejuvenationCurrentProcess();
+            Scheduler.GetInstance.AgingProcessPriority();
 
             var order = GetOrderFromMemory(Scheduler.GetInstance.GetRunningPCB());
 

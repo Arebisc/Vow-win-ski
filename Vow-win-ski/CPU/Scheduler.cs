@@ -89,24 +89,36 @@ namespace Vow_win_ski.CPU
                 .SingleOrDefault(x => x.State == ProcessState.Running);
         }
 
-        public void AgingWaitingProcesses()
+        public void AgingPriorityTime()
         {
-            if (WaitingForProcessor.Count != 0)
+            if (!ListEmpty())
             {
                 foreach (var pcb in WaitingForProcessor)
                 {
-                    if (pcb.CurrentPriority > 0 && pcb.State != ProcessState.Running)
-                        pcb.CurrentPriority--;
+                    if (pcb.State != ProcessState.Running && !pcb.IsIdleProcess())
+                        pcb.PriorityTime++;
+                }
+            }
+        }
+
+        public void AgingProcessPriority()
+        {
+            if (!ListEmpty())
+            {
+                foreach (var pcb in WaitingForProcessor)
+                {
+                    if (pcb.PriorityTime % 3 == 0 && pcb.State != ProcessState.Running && !pcb.IsIdleProcess())
+                        pcb.CurrentPriority++;
                 }
             }
         }
 
         public void RejuvenationCurrentProcess()
         {
-            if (WaitingForProcessor.Count != 0)
+            if (!ListEmpty())
             {
                 var runningPcb = GetRunningPCB();
-                if (runningPcb.CurrentPriority < runningPcb.StartPriority)
+                if (runningPcb.CurrentPriority < runningPcb.StartPriority && !runningPcb.IsIdleProcess())
                     runningPcb.CurrentPriority++;
             }
         }
