@@ -27,14 +27,13 @@ namespace Vow_win_ski.Processes
                 this.Name = proces.Name;
                 open = 1;
                 proces.WaitForSomething();
-            //    Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
-            // Na pamiątkę
+                Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
             }
             else
             {
                 waiting.Add(Proces);
                 proces.WaitForSomething();
-            //    Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
+                Scheduler.GetInstance.GetRunningPCB().InstructionCounter--;
             }
         }
 

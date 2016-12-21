@@ -39,6 +39,7 @@ namespace Vow_win_ski.Processes
         /// <summary>
         /// RUSZ TEN KONSTRUKTOR JESZCZE RAZ TO ZABIJE!!!!
         /// </summary>
+        /// <remarks>WAL SIE</remarks>
         public PCB(string name, int priority)
         {
             _PID = ++_NextPID;
@@ -126,6 +127,16 @@ namespace Vow_win_ski.Processes
 
             _CreatedPCBs.AddLast(this);
             Console.WriteLine("Utworzono proces: " + this.ToString());
+        }
+
+        public static PCB CreateIdleProcess(){
+            Console.WriteLine("Tworzenie procesu bezczynnosci systemu...");
+            PCB Idle = new PCB("ProcesBezczynnosci", 7, "idle.txt", SourceOfCode.WindowsDisc);
+            Idle._PID = 0;
+            Idle.StartPriority = 8;
+            Idle.CurrentPriority = 8;
+            Idle.RunNewProcess();
+            return Idle;
         }
 
         /// <summary>Zwraca blok kontrolny procesu o podanym identyfikatorze</summary>
