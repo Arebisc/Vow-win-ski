@@ -12,7 +12,6 @@ namespace Vow_win_ski.Processes
 
         public static void CreateProcess(string Name, string Path)
         {
-
             Name = Name.Trim();
             Path = Path.Trim();
 
