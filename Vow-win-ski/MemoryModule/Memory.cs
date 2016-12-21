@@ -254,7 +254,7 @@ namespace Vow_win_ski.MemoryModule
                 foreach (var frame in frames)
                 {
                     _freeFramesList.AddToList(frame);
-                    _physicalMemory.GetFrame(frame).ClearFrame();
+                    //_physicalMemory.GetFrame(frame).ClearFrame();
                 }
             }
             //usuniecie z kolejki procesu
@@ -478,7 +478,7 @@ namespace Vow_win_ski.MemoryModule
                 _physicalMemory.SetFrame(FramesCount - 2,
                     message.Take(_messageLength).ToArray());
                 _physicalMemory.GetFrame(FramesCount-1).ClearFrame();
-                Console.WriteLine(message.Take(_messageLength).ToArray());
+               // Console.WriteLine(message.Take(_messageLength).ToArray());
 
             }
             //wprowadzenie do 2 stron
@@ -488,8 +488,8 @@ namespace Vow_win_ski.MemoryModule
                     message.Take(16).ToArray());
                 _physicalMemory.SetFrame(FramesCount - 1,
                     message.Skip(16).Take(_messageLength - 16).ToArray());
-                Console.WriteLine(message.Take(16).ToArray());
-                Console.WriteLine(message.Skip(16).Take(_messageLength - 16).ToArray());
+              //  Console.WriteLine(message.Take(16).ToArray());
+               // Console.WriteLine(message.Skip(16).Take(_messageLength - 16).ToArray());
             }
         }
 
