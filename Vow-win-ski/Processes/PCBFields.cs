@@ -32,7 +32,7 @@ namespace Vow_win_ski.Processes
 
         public int StartPriority = 7;
 
-        public int PriorityTime = 0;
+        public int PriorityTime = 1;
 
         public Register Registers = new Register();
 
