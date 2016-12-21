@@ -1,2 +1,2 @@
-XS odbiorca siema
+XS odbiorca,siema
 HLT
