@@ -26,7 +26,7 @@ namespace Vow_win_ski.Processes
     {
 
         private static LinkedList<PCB> _CreatedPCBs = new LinkedList<PCB>();
-        private static int _NextPID = 1;
+        private static int _NextPID = -1;
 
         /// <summary>
         /// Pusty konstruktor do testow
@@ -135,6 +135,7 @@ namespace Vow_win_ski.Processes
             Idle._PID = 0;
             Idle.StartPriority = 8;
             Idle.CurrentPriority = 8;
+            Idle.Registers.C = -1;
             Idle.RunNewProcess();
             return Idle;
         }

@@ -153,6 +153,7 @@ namespace Vow_win_ski.Processes
                     Console.WriteLine("Odblokowano proces oczekujacy na zamkniecie biezacego procesu: ");
 
                     State = ProcessState.Terminated;
+                    client.Disconnect();
                     CPU.Scheduler.GetInstance.RemoveProcess(this);
                     Console.WriteLine("Zamknieto czekajacy na zamkniecie proces wchodzacy do stanu Running: " + this.ToString() + ".");
 
@@ -167,10 +168,7 @@ namespace Vow_win_ski.Processes
 
                     client.Connect();
 
-                    if (ReceiverMessageLock == 1) {
-                        Receive();
-                        ReceiverMessageLock = 0;
-                    }
+                 
 
                     return 0;
                 }
@@ -238,8 +236,9 @@ namespace Vow_win_ski.Processes
         {
             if (State == ProcessState.Running)
             {
-                State = ProcessState.Ready;
                 client.Disconnect();
+                State = ProcessState.Ready;
+                
 
                 Console.WriteLine("Przerwano realizacje przez procesor procesu: " + this.ToString() + ".");
                 return 0;
@@ -284,6 +283,11 @@ namespace Vow_win_ski.Processes
                 return 2;
             }
 
+        }
+
+        public bool IsIdleProcess()
+        {
+            return _PID == 0;
         }
 
         public override string ToString()
