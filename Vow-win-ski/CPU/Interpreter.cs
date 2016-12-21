@@ -17,8 +17,6 @@ namespace Vow_win_ski.CPU
 
         private Interpreter() { }
 
-        public int orderCounter { get; private set; }
-
         public static Interpreter GetInstance
         {
             get
