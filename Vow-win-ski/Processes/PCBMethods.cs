@@ -4,6 +4,17 @@ using Vow_win_ski.CPU;
 namespace Vow_win_ski.Processes
 {
 
+    /*
+    Przejścia stanu
+    New->Ready              RunNewProcess
+    Ready->Running          RunReadyProcess //jeśli zwróciło 2, proces jest zamknięty, bierz następny
+    Running->Ready          WaitForScheduling
+    Running->Waiting        WaitForSomething
+    Waiting->Ready          StopWaiting
+    ...->Terminated         TerminateProcess
+    usunięcie z Terminated  RemoveProcess
+    */
+
     public partial class PCB
     {
 
@@ -149,9 +160,9 @@ namespace Vow_win_ski.Processes
 
                     client.Connect();
 
-                    if (ReceiverMessageLock == 1)
-                    {
+                    if (ReceiverMessageLock == 1) {
                         Receive();
+                        ReceiverMessageLock = 0;
                     }
 
                     return 0;
@@ -289,6 +300,7 @@ namespace Vow_win_ski.Processes
             if (client._receive() == false)
             {
                LockersHolder.ProcLock.Lock(this);
+                ReceiverMessageLock = 1;
             }
         }
 

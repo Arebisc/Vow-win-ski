@@ -39,6 +39,7 @@ namespace Vow_win_ski.Processes
         /// <summary>
         /// RUSZ TEN KONSTRUKTOR JESZCZE RAZ TO ZABIJE!!!!
         /// </summary>
+        /// <remarks>WAL SIE</remarks>
         public PCB(string name, int priority)
         {
             _PID = ++_NextPID;
