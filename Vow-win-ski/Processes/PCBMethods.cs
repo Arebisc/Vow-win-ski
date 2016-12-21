@@ -135,6 +135,7 @@ namespace Vow_win_ski.Processes
                     Console.WriteLine("Odblokowano proces oczekujacy na zamkniecie biezacego procesu: ");
 
                     State = ProcessState.Terminated;
+                    client.Disconnect();
                     CPU.Scheduler.GetInstance.RemoveProcess(this);
                     Console.WriteLine("Zamknieto czekajacy na zamkniecie proces wchodzacy do stanu Running: " + this.ToString() + ".");
 
