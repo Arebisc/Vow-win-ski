@@ -143,7 +143,10 @@ namespace Vow_win_ski.CPU
                 {
                     iterator++;
                 }
-                iterator++;
+                if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\r')
+                    iterator++;
+                if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\n')
+                    iterator++;
             }
 
             while (runningPCB.MemoryBlocks.ReadByte(iterator) != '\n' &&
@@ -153,7 +156,10 @@ namespace Vow_win_ski.CPU
                 order += runningPCB.MemoryBlocks.ReadByte(iterator);
                 iterator++;
             }
-            iterator++;
+            if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\r')
+                iterator++;
+            if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\n')
+                iterator++;
             runningPCB.InstructionCounter++;
 
             return order;
@@ -258,6 +264,8 @@ namespace Vow_win_ski.CPU
         {
             Console.WriteLine("Rozkaz JM z parametrem " + tag);
 
+            CPU.GetInstance.Register.C--;
+
             if (CPU.GetInstance.Register.C != 0)
             {
                 var runningPCB = Scheduler.GetInstance.GetRunningPCB();
@@ -276,7 +284,11 @@ namespace Vow_win_ski.CPU
                         order += runningPCB.MemoryBlocks.ReadByte(iterator);
                         iterator++;
                     }
-                    iterator++;
+
+                    if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\r')
+                        iterator++;
+                    if (runningPCB.MemoryBlocks.ReadByte(iterator) == '\n')
+                        iterator++;
                     runningPCB.InstructionCounter++;
 
                     if (order.TrimEnd().TrimEnd(':') == tag)
@@ -284,7 +296,6 @@ namespace Vow_win_ski.CPU
                     order = String.Empty;
                 }
             }
-            CPU.GetInstance.Register.C--;
         }
 
         public void MUOrder(string register1, string register2)
