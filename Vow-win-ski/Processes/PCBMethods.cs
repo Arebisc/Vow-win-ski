@@ -214,7 +214,7 @@ namespace Vow_win_ski.Processes
         {
             if (State == ProcessState.Running)
             {
-                State = ProcessState.Waiting;
+                State = ProcessState.Ready;
                 client.Disconnect();
 
                 Console.WriteLine("Przerwano realizacje przez procesor procesu: " + this.ToString() + ".");
