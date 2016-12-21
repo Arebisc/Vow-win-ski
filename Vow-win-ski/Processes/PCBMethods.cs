@@ -285,6 +285,11 @@ namespace Vow_win_ski.Processes
 
         }
 
+        public bool IsIdleProcess()
+        {
+            return _PID == 0;
+        }
+
         public override string ToString()
         {
             return "[" + PID.ToString() + "] " + Name + ", stan=" + State.ToString() + ", priorytet=" + CurrentPriority.ToString();
