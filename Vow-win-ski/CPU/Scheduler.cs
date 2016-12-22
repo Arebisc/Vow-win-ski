@@ -142,10 +142,6 @@ namespace Vow_win_ski.CPU
                         Console.WriteLine("Odmłodzono process: " + runningPcb.Name);
                     }
                 }
-                else
-                {
-                    return;
-                }
             }
         }
 
