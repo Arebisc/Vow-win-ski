@@ -45,7 +45,6 @@ namespace Vow_win_ski
             //{
             //    SoundPlayer sp = new SoundPlayer("spin.wav");
             //    sp.PlayLooping();
-            //    PipeServer.GetServer.Exit();
             //    Console.BackgroundColor = ConsoleColor.DarkBlue;
             //    Console.Clear();
             //    Console.WriteLine();
