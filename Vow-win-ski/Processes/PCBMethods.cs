@@ -302,7 +302,7 @@ namespace Vow_win_ski.Processes
             Console.WriteLine("Nazwa: " + Name);
             Console.WriteLine("Priorytet: " + CurrentPriority.ToString());
             Console.WriteLine("Poczatkowy priorytet: " + StartPriority.ToString());
-            Console.WriteLine("Czas posiadania obecnego priorytetu: " + PriorityTime.ToString());
+            Console.WriteLine("Czas posiadania obecnego priorytetu: " + WaitingForProcessorTime.ToString());
             Console.WriteLine("Rejestry: " + Registers.ToString());
             Console.WriteLine("Stan: " + State.ToString());
             Console.WriteLine("Licznik instrukcji: " + InstructionCounter.ToString());

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Vow_win_ski.Processes;
@@ -89,14 +88,14 @@ namespace Vow_win_ski.CPU
                 .SingleOrDefault(x => x.State == ProcessState.Running);
         }
 
-        public void AgingPriorityTime()
+        public void AgingWaitingForProcesorTime()
         {
             if (!ListEmpty())
             {
                 foreach (var pcb in WaitingForProcessor)
                 {
                     if (pcb.State != ProcessState.Running && !pcb.IsIdleProcess())
-                        pcb.PriorityTime++;
+                        pcb.WaitingForProcessorTime++;
                 }
             }
         }
@@ -107,13 +106,12 @@ namespace Vow_win_ski.CPU
             {
                 foreach (var pcb in WaitingForProcessor)
                 {
-                    if (pcb.PriorityTime % 3 == 0 && pcb.State != ProcessState.Running &&
-                        !pcb.IsIdleProcess() && pcb.StartPriority > pcb.CurrentPriority)
+                    if (pcb.WaitingForProcessorTime % 3 == 0 && pcb.State != ProcessState.Running &&
+                        !pcb.IsIdleProcess() && pcb.CurrentPriority + 1 >= 0)
                     {
                         pcb.CurrentPriority--;
                         Console.WriteLine("Postarzono proces: " + pcb.Name);
                     }
-                        
                 }
             }
         }
@@ -123,7 +121,8 @@ namespace Vow_win_ski.CPU
             if (!ListEmpty())
             {
                 var runningPcb = GetRunningPCB();
-                if (runningPcb.CurrentPriority < runningPcb.StartPriority && !runningPcb.IsIdleProcess())
+                if (runningPcb.CurrentPriority < runningPcb.StartPriority &&
+                     !runningPcb.IsIdleProcess() && CPU.GetInstance.OrderTime % 3 == 0)
                 {
                     runningPcb.CurrentPriority++;
                     Console.WriteLine("Odmłodzono process: " + runningPcb.Name);
@@ -153,6 +152,16 @@ namespace Vow_win_ski.CPU
             CPU.GetInstance.Register.B = GetRunningPCB().Registers.B;
             CPU.GetInstance.Register.C = GetRunningPCB().Registers.C;
             CPU.GetInstance.Register.D = GetRunningPCB().Registers.D;
+        }
+
+        public void SwitchCPUForOtherProcess()
+        {
+            CPU.GetInstance.OrderTime = 1;
+            RevriteRegistersFromCPU();
+            GetInstance.GetRunningPCB().WaitForScheduling();
+            GetInstance.PriorityAlgorithm().RunReadyProcess();
+            GetRunningPCB().WaitingForProcessorTime = 1;
+            RevriteRegistersToCPU();
         }
     }
 }
