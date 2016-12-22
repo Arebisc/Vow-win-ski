@@ -128,7 +128,8 @@ namespace Vow_win_ski.Processes
             Console.WriteLine("Utworzono proces: " + this.ToString());
         }
 
-        public static PCB CreateIdleProcess(){
+        public static PCB CreateIdleProcess()
+        {
             Console.WriteLine("Tworzenie procesu bezczynnosci systemu...");
             PCB Idle = new PCB("ProcesBezczynnosci", 7, "idle.txt", SourceOfCode.WindowsDisc);
             Idle._PID = 0;

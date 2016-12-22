@@ -1,3 +1,4 @@
+MN C,-1
 idle:
 JM idle
 HLT
