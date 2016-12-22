@@ -39,7 +39,7 @@ namespace Vow_win_ski
 
             //try
             //{ 
-             Shell.GetShell.OpenShell();
+            Shell.GetShell.OpenShell();
             //}
             //catch (Exception e)
             //{

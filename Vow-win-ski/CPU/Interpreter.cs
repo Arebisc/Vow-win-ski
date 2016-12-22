@@ -47,6 +47,7 @@ namespace Vow_win_ski.CPU
                     Scheduler.GetInstance.RevriteRegistersToCPU();
                 }
                 Console.WriteLine("Przełączono CPU na process: " + Scheduler.GetInstance.GetRunningPCB().Name);
+                Scheduler.GetInstance.NegatedAgingWaitingForProcesorTime();
                 return;
             }
 
@@ -120,11 +121,7 @@ namespace Vow_win_ski.CPU
                         break;
                 }
             }
-
-            Scheduler.GetInstance.AgingWaitingForProcesorTime();
-            Scheduler.GetInstance.RejuvenationCurrentProcess();
-            Scheduler.GetInstance.AgingProcessPriority();
-            CPU.GetInstance.OrderTime++;
+            SchedulerMenager();
         }
 
         public string GetOrderFromMemory(PCB runningPCB)
@@ -422,6 +419,14 @@ namespace Vow_win_ski.CPU
                 Scheduler.GetInstance.PriorityAlgorithm().RunReadyProcess();
                 Scheduler.GetInstance.RevriteRegistersToCPU();
             }
+        }
+
+        public void SchedulerMenager()
+        {
+            Scheduler.GetInstance.AgingWaitingForProcesorTime();
+            Scheduler.GetInstance.RejuvenationCurrentProcess();
+            Scheduler.GetInstance.AgingProcessPriority();
+            CPU.GetInstance.OrderTime++;
         }
     }
 }

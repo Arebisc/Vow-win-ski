@@ -100,6 +100,18 @@ namespace Vow_win_ski.CPU
             }
         }
 
+        public void NegatedAgingWaitingForProcesorTime()
+        {
+            if (!ListEmpty())
+            {
+                foreach (var pcb in WaitingForProcessor)
+                {
+                    if (pcb.State != ProcessState.Running && !pcb.IsIdleProcess())
+                        pcb.WaitingForProcessorTime--;
+                }
+            }
+        }
+
         public void AgingProcessPriority()
         {
             if (!ListEmpty())
@@ -107,7 +119,7 @@ namespace Vow_win_ski.CPU
                 foreach (var pcb in WaitingForProcessor)
                 {
                     if (pcb.WaitingForProcessorTime % 3 == 0 && pcb.State != ProcessState.Running &&
-                        !pcb.IsIdleProcess() && pcb.CurrentPriority + 1 >= 0)
+                        !pcb.IsIdleProcess() && pcb.CurrentPriority - 1 >= 0)
                     {
                         pcb.CurrentPriority--;
                         Console.WriteLine("Postarzono proces: " + pcb.Name);
@@ -127,7 +139,6 @@ namespace Vow_win_ski.CPU
                     runningPcb.CurrentPriority++;
                     Console.WriteLine("Odmłodzono process: " + runningPcb.Name);
                 }
-                    
             }
         }
 
