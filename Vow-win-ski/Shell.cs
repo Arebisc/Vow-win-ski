@@ -73,7 +73,6 @@ namespace Vow_win_ski
                         Console.WriteLine("Zamykanie systemu...");
                         Thread.Sleep(2500);
                         exit = true;
-                        PipeServer.GetServer.Exit();
                         break;
                     case "BS":
                         throw new Exception(p1 == "" ? "Wyjątek wywołany przez użytkownika" : p1);

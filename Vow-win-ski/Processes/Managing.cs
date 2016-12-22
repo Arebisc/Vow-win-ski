@@ -121,7 +121,6 @@ namespace Vow_win_ski.Processes
 
             State = ProcessState.New;
 
-            client = new PipeClient(Name);
 
             Memory.GetInstance.AllocateMemory(this, Program);
 

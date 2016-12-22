@@ -84,7 +84,7 @@ namespace Vow_win_ski.Processes
         /// </summary>
         private bool WaitingForStopping = false;
 
-        private PipeClient client = null;
+        //private PipeClient client = null;
 
         public SourceOfCode Source = SourceOfCode.WindowsDisc;
 

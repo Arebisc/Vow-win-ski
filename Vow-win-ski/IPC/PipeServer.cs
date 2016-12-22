@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.IO.Pipes;
 using System.IO;
+using Castle.Core.Internal;
 
 
 namespace Vow_win_ski.IPC
@@ -13,13 +14,8 @@ namespace Vow_win_ski.IPC
     public class PipeServer
     {
         private static PipeServer _instance;
-        private NamedPipeServerStream Server;
         private List<Message> Messages;
         private List<Message> History;
-        private StreamString strString;
-        private Thread thread;
-        private string[] message;
-        private bool exit = false;
 
 
         public static void InitServer()
@@ -30,105 +26,20 @@ namespace Vow_win_ski.IPC
             }
 
         }
-
         public static PipeServer GetServer => _instance;
 
-
-        //===================================================================================================================================
-        private const string receiver = "0";
-        private const string sender = "1";
-        private const string disconnecter = "2";
-        //===================================================================================================================================
         public PipeServer()
         {
-            Server = new NamedPipeServerStream("SERWER", PipeDirection.InOut);
             Console.WriteLine("Tworzenie Serwera IPC.");
-            Start();
+            Build();
         }
-        //===================================================================================================================================
+
         public void Build()
         {
             Messages = new List<Message>();
             History = new List<Message>();
-            strString = new StreamString(Server);
         }
-        //===================================================================================================================================
-        public void ServerReceiver()
-        {
-            string receive = strString.ReadString();
-
-            if (receive != null)
-            {
-                message = receive.Split(';');
-            }
-        }
-        //===================================================================================================================================
-        public void StoreMessage()
-        {
-            Messages.Add(new Message(message[1], message[2], message[3]));
-            History.Add(new Message(message[1], message[2], message[3]));
-        }
-        //===================================================================================================================================
-        public void Switch()
-        {
-            switch (message[0])
-            {
-                case receiver:
-                    StoreMessage();
-                    break;
-                case sender:
-                    ServerWriter(message[3]);
-                    break;
-                case disconnecter:
-                    Server.Disconnect();
-                    break;
-            }
-        }
-        //===================================================================================================================================
-
-        public void ServerWriter(string receiverId)
-        {
-            if (Messages.All(x => x.GetReceiverId() != receiverId))
-            {
-                Server.WriteByte(0);
-            }
-            else
-            {
-                Server.WriteByte(1);
-                for (int i = 0; i < Messages.Count; i++)
-                {
-                    if (Messages[i].GetReceiverId() != receiverId) continue;
-                    strString.WriteString(Messages[i].GetMessage() + ";" + Messages[i].GetSenderId());
-                    Messages.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-        //===================================================================================================================================
-        public void ServerInit()
-        {
-            Build();
-            while (!exit)
-            {
-                if (Server.IsConnected)
-                {
-                    ServerReceiver();
-                    Switch();
-                }
-                else
-                {
-                    Server.WaitForConnection();
-                }
-
-            }
-        }
-        //===================================================================================================================================
-        public void Start()
-        {
-            thread = new Thread(ServerInit);
-            thread.Start();
-        }
-        //===================================================================================================================================
+     
 
         public void Show()
         {
@@ -147,16 +58,26 @@ namespace Vow_win_ski.IPC
                 Console.WriteLine(x.GetSenderId() + " to " + x.GetReceiverId() + " " + x.GetMessage());
             }
         }
+      
 
-        public void Exit()
+        public void SendMessage(string message, string receiver, string sender)
         {
-            exit = true;
-            if (!Server.IsConnected)
-            {
-                PipeClient terminator = new PipeClient("terminator");
-                terminator.Connect();
-            }
+            Messages.Add(new Message(message, receiver, sender));
+            History.Add(new Message(message, receiver, sender));
+        }
 
+
+        public bool ReadMessage(string receiver)
+        {
+            if (Messages.All(x => x.GetReceiverId() != receiver))
+            {
+                return false;
+            }
+            else
+            {              
+                Messages.Remove(Messages.Find(x => x.GetReceiverId() == receiver).PrintMessage());
+                return true;
+            }
         }
     }
 }
