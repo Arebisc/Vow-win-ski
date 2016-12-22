@@ -38,8 +38,8 @@ namespace Vow_win_ski
             InitSystemResources(args);
 
             //try
-            //{ 
-            Shell.GetShell.OpenShell();
+            //{
+                Shell.GetShell.OpenShell();
             //}
             //catch (Exception e)
             //{
@@ -52,7 +52,7 @@ namespace Vow_win_ski
             //    Console.WriteLine();
             //    Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + ("Coś... coś się popsuło :(".Length / 2)) + "}", "Coś... coś się popsuło :("));
             //    Console.WriteLine();
-            //    Console.WriteLine(String.Format("{0," + ((Console.WindowWidth/2) + ((e.GetType() + ":").Length/2)) + "}", e.GetType() + ":"));
+            //    Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + ((e.GetType() + ":").Length / 2)) + "}", e.GetType() + ":"));
             //    Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (e.Message.Length / 2)) + "}", e.Message));
             //    Console.WriteLine();
             //    Console.WriteLine();

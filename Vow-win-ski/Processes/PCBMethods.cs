@@ -315,8 +315,6 @@ namespace Vow_win_ski.Processes
 
         public void Receive()
         {
-            
-            
             if (PipeServer.GetServer.ReadMessage(Name) == false)
             {
                LockersHolder.ProcLock.Lock(this);
