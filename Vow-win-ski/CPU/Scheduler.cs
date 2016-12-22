@@ -132,12 +132,19 @@ namespace Vow_win_ski.CPU
         {
             if (!ListEmpty())
             {
-                var runningPcb = GetRunningPCB();
-                if (runningPcb.CurrentPriority < runningPcb.StartPriority &&
-                     !runningPcb.IsIdleProcess() && CPU.GetInstance.OrderTime % 3 == 0 && runningPcb != null)
+                if (GetRunningPCB() != null)
                 {
-                    runningPcb.CurrentPriority++;
-                    Console.WriteLine("Odmłodzono process: " + runningPcb.Name);
+                    var runningPcb = GetRunningPCB();
+                    if (runningPcb.CurrentPriority < runningPcb.StartPriority &&
+                        !runningPcb.IsIdleProcess() && CPU.GetInstance.OrderTime%3 == 0 )
+                    {
+                        runningPcb.CurrentPriority++;
+                        Console.WriteLine("Odmłodzono process: " + runningPcb.Name);
+                    }
+                }
+                else
+                {
+                    return;
                 }
             }
         }
