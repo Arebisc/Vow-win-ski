@@ -101,7 +101,7 @@ namespace Vow_win_ski.Processes
                 {
                     pcb.CurrentPriority = NewPriority;
                     pcb.StartPriority = NewPriority;
-                    pcb.PriorityTime = 0;
+                    pcb.WaitingForProcessorTime = 0;
                 }
             }
             else

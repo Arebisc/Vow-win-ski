@@ -1,5 +1,7 @@
 ﻿using System;
+using Vow_win_ski;
 using Vow_win_ski.CPU;
+using Vow_win_ski.IPC;
 
 namespace Vow_win_ski.Processes
 {
@@ -75,7 +77,6 @@ namespace Vow_win_ski.Processes
             if (State == ProcessState.Running)
             {
                 State = ProcessState.Terminated;
-                client.Disconnect();
                 CPU.Scheduler.GetInstance.RemoveProcess(this);
 
                 Console.WriteLine("Zakonczono proces " + this.ToString() + ".");
@@ -153,7 +154,6 @@ namespace Vow_win_ski.Processes
                     Console.WriteLine("Odblokowano proces oczekujacy na zamkniecie biezacego procesu: ");
 
                     State = ProcessState.Terminated;
-                    client.Disconnect();
                     CPU.Scheduler.GetInstance.RemoveProcess(this);
                     Console.WriteLine("Zamknieto czekajacy na zamkniecie proces wchodzacy do stanu Running: " + this.ToString() + ".");
 
@@ -165,9 +165,6 @@ namespace Vow_win_ski.Processes
                 {
                     State = ProcessState.Running;
                     Console.WriteLine("Uruchomiono proces czekajacy na procesor: " + this.ToString() + ".");
-
-                    client.Connect();
-
                  
 
                     return 0;
@@ -195,7 +192,6 @@ namespace Vow_win_ski.Processes
             if (State == ProcessState.Running)
             {
                 State = ProcessState.Waiting;
-                client.Disconnect();
                 CPU.Scheduler.GetInstance.RemoveProcess(this);
 
                 Console.WriteLine("Proces " + this.ToString() + " przeszedl w stan oczekiwania na odblokowanie.");
@@ -236,7 +232,6 @@ namespace Vow_win_ski.Processes
         {
             if (State == ProcessState.Running)
             {
-                client.Disconnect();
                 State = ProcessState.Ready;
                 
 
@@ -302,29 +297,27 @@ namespace Vow_win_ski.Processes
             Console.WriteLine("Nazwa: " + Name);
             Console.WriteLine("Priorytet: " + CurrentPriority.ToString());
             Console.WriteLine("Poczatkowy priorytet: " + StartPriority.ToString());
-            Console.WriteLine("Czas posiadania obecnego priorytetu: " + PriorityTime.ToString());
+            Console.WriteLine("Czas posiadania obecnego priorytetu: " + WaitingForProcessorTime.ToString());
             Console.WriteLine("Rejestry: " + Registers.ToString());
             Console.WriteLine("Stan: " + State.ToString());
             Console.WriteLine("Licznik instrukcji: " + InstructionCounter.ToString());
             Console.WriteLine("Strony pamieci: " + MemoryBlocks.ToString());
             Console.WriteLine("Zamek odbioru wiadomosci: " + ReceiverMessageLock.ToString());
             Console.WriteLine("Oczekiwanie na zamkniecie: " + WaitingForStopping.ToString());
-            Console.WriteLine("Klient odbioru wiadomosci: " + client.ToString());
             Console.WriteLine();
         }
 
         public void Send(string receivername, string message)
         {
             LockersHolder.ProcLock.Unlock(receivername);
-            client._send(receivername, message);
+            PipeServer.GetServer.SendMessage(message,receivername,Name);
         }
 
         public void Receive()
         {
-            if (client._receive() == false)
+            if (PipeServer.GetServer.ReadMessage(Name) == false)
             {
                LockersHolder.ProcLock.Lock(this);
-                ReceiverMessageLock = 1;
             }
         }
 

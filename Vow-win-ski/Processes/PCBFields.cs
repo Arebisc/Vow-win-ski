@@ -32,7 +32,7 @@ namespace Vow_win_ski.Processes
 
         public int StartPriority = 7;
 
-        public int PriorityTime = 1;
+        public int WaitingForProcessorTime = 1;
 
         public Register Registers = new Register();
 
@@ -84,7 +84,7 @@ namespace Vow_win_ski.Processes
         /// </summary>
         private bool WaitingForStopping = false;
 
-        private PipeClient client = null;
+        //private PipeClient client = null;
 
         public SourceOfCode Source = SourceOfCode.WindowsDisc;
 
