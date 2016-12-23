@@ -94,7 +94,12 @@ namespace Vow_win_ski
                         UserInterface.ChangePriority(p1, p2);
                         break;
                     case "NPR":
-                        UserInterface.RunNewProcess(p1);
+                        if (p1 == "-all")
+                        {
+                            //TODO
+                        }
+                        else
+                            UserInterface.RunNewProcess(p1);
                         break;
                     case "HP":
                         UserInterface.StopProcess(p1);

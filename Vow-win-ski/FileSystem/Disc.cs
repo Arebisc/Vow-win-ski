@@ -72,9 +72,11 @@ namespace Vow_win_ski.FileSystem
                 Console.WriteLine("Folder jest pusty.");
                 return;
             }
+
+            Console.WriteLine("Nazwa pliku".PadRight(17) + "Rozmiar\t" + "Data utworzenia\t\t" + "Nr bloku indeksowego");
             foreach (var file in _rootFolder.FilesInDirectory)
             {
-                Console.WriteLine(file.FileName.PadRight(17) + file.FileSize + " B\t" + file.CreationDateTime  + "\t" + file.DataBlockPointer);
+                Console.WriteLine(file.FileName.PadRight(17) + file.FileSize + " B\t\t" + file.CreationDateTime  + "\t" + file.DataBlockPointer);
             }
         }
 
