@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Vow_win_ski.IPC;
 using Vow_win_ski.MemoryModule;
 
@@ -191,6 +192,16 @@ namespace Vow_win_ski.Processes
 
             Console.WriteLine();
 
+        }
+
+        public static void RunAllNewProcesses()
+        {
+            LinkedList<PCB>.Enumerator en = _CreatedPCBs.GetEnumerator();
+
+            while (en.MoveNext())
+            {
+                if (en.Current.State == ProcessState.New) en.Current.RunNewProcess();
+            }
         }
 
         private bool IsProcessNameUsed(string Name)

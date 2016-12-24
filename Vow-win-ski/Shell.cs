@@ -96,7 +96,7 @@ namespace Vow_win_ski
                     case "NPR":
                         if (p1 == "-all")
                         {
-                            //TODO
+                            PCB.RunAllNewProcesses();
                         }
                         else
                             UserInterface.RunNewProcess(p1);
@@ -193,7 +193,7 @@ namespace Vow_win_ski
             Console.WriteLine("-------------------------------Ogólne---------------------------------");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("HELP\t\t   Wyświetla tę listę");
-            Console.WriteLine("EX [-all]\t   Wykonuje kolejny rozkaz, [-all] - wszystkie procesy");
+            Console.WriteLine("EX [-all]\t   Wykonuje kolejny rozkaz, [-all] - wszystkie rozkazy");
             Console.WriteLine("QUIT\t\t   Zamyka system");
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -208,7 +208,7 @@ namespace Vow_win_ski
             Console.WriteLine("CP {nazwa} {prog}  Tworzy proces {nazwa} z programu {prog} na dysku Windows");
             Console.WriteLine("CPD {nazwa} {prog} Tworzy proces {nazwa} z programu {prog} na dysku systemu");
             Console.WriteLine("CPP {nazwa} {pr}   Ustawia priorytet procesu {nazwa} na {pr}");
-            Console.WriteLine("NPR {nazwa}\t   Uruchom nowy proces {nazwa}");
+            Console.WriteLine("NPR {nazwa/\"-all\"} Uruchom nowy proces {nazwa}, {-all} - wszystkie procesy");
             Console.WriteLine("HP {nazwa}\t   Zatrzymuje proces {nazwa}");
             Console.WriteLine("SAP\t\t   Wyświetla listę wszystkich procesów");
             Console.WriteLine("SPCB {nazwa}\t   Wyświetla listę PCB procesu {nazwa}");
