@@ -293,17 +293,18 @@ namespace Vow_win_ski.Processes
         public void PrintAllFields()
         {
             Console.WriteLine("Zawartosc bloku PCB procesu:");
-            Console.WriteLine("PID: " + PID.ToString());
+            Console.WriteLine("PID: " + PID);
             Console.WriteLine("Nazwa: " + Name);
-            Console.WriteLine("Priorytet: " + CurrentPriority.ToString());
-            Console.WriteLine("Poczatkowy priorytet: " + StartPriority.ToString());
-            Console.WriteLine("Czas posiadania obecnego priorytetu: " + WaitingForProcessorTime.ToString());
+            Console.WriteLine("Priorytet: " + CurrentPriority);
+            Console.WriteLine("Poczatkowy priorytet: " + StartPriority);
+            Console.WriteLine("Czas posiadania obecnego priorytetu: " + WaitingForProcessorTime);
             Console.WriteLine("Rejestry: " + Registers.ToString());
             Console.WriteLine("Stan: " + State.ToString());
-            Console.WriteLine("Licznik instrukcji: " + InstructionCounter.ToString());
-            Console.WriteLine("Strony pamieci: " + MemoryBlocks.ToString());
-            Console.WriteLine("Zamek odbioru wiadomosci: " + ReceiverMessageLock.ToString());
-            Console.WriteLine("Oczekiwanie na zamkniecie: " + WaitingForStopping.ToString());
+            Console.WriteLine("Licznik instrukcji: " + InstructionCounter);
+            Console.WriteLine("Strony pamieci: ");
+            MemoryModule.Memory.GetInstance.DisplayPageList(PID);
+            Console.WriteLine("Zamek odbioru wiadomosci: " + ReceiverMessageLock);
+            Console.WriteLine("Oczekiwanie na zamkniecie: " + WaitingForStopping);
             Console.WriteLine();
         }
 
