@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,7 +43,12 @@ namespace Vow_win_ski.CPU
                 else
                 {
                     CPU.GetInstance.OrderTime = 1;
-                    Scheduler.GetInstance.PriorityAlgorithm().RunReadyProcess();
+                    var result = Scheduler.GetInstance.PriorityAlgorithm().RunReadyProcess();
+                    if(result == 2)
+                    {
+                        Console.WriteLine("Proces został zakończony");
+                        return;
+                    }
                     Scheduler.GetInstance.GetRunningPCB().WaitingForProcessorTime = 1;
                     Scheduler.GetInstance.RevriteRegistersToCPU();
                 }
