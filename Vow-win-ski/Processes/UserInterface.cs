@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vow_win_ski.Processes
 {
@@ -51,8 +47,15 @@ namespace Vow_win_ski.Processes
 
         public static void RunNewProcess(string Name)
         {
-            PCB pcb = PCB.GetPCB(Name);
-            if (pcb != null) pcb.RunNewProcess();
+            if (Name == "-all")
+            {
+                PCB.RunAllNewProcesses();
+            }
+            else
+            {
+                PCB pcb = PCB.GetPCB(Name);
+                if (pcb != null) pcb.RunNewProcess();
+            }
         }
 
         public static void StopProcess(string Name)
@@ -101,7 +104,8 @@ namespace Vow_win_ski.Processes
                 {
                     pcb.CurrentPriority = NewPriority;
                     pcb.StartPriority = NewPriority;
-                    pcb.WaitingForProcessorTime = 0;
+                    pcb.WaitingForProcessorTime = 1;
+                    Console.WriteLine("Ustawiono nowy priorytet (" + NewPriority + ") dla procesu " + Name + ".");
                 }
             }
             else

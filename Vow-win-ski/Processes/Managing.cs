@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Vow_win_ski.IPC;
 using Vow_win_ski.MemoryModule;
 
 namespace Vow_win_ski.Processes
