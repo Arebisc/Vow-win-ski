@@ -33,5 +33,15 @@ namespace Vow_win_ski.IPC
             return senderId;
         }
         //===================================================================================================================================
+        public override string ToString()
+        {
+            return receiverId + " received from " + senderId + " : " + message;
+        }
+
+        public Message PrintMessage()
+        {
+            Console.WriteLine(ToString());
+            return this;
+        }
     }
 }

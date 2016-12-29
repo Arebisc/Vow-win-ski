@@ -26,7 +26,7 @@ namespace Vow_win_ski.Processes
     {
 
         private static LinkedList<PCB> _CreatedPCBs = new LinkedList<PCB>();
-        private static int _NextPID = 1;
+        private static int _NextPID = -1;
 
         /// <summary>
         /// Pusty konstruktor do testow
@@ -121,7 +121,6 @@ namespace Vow_win_ski.Processes
 
             State = ProcessState.New;
 
-            client = new PipeClient(Name);
 
             Memory.GetInstance.AllocateMemory(this, Program);
 
@@ -129,13 +128,15 @@ namespace Vow_win_ski.Processes
             Console.WriteLine("Utworzono proces: " + this.ToString());
         }
 
-        public static PCB CreateIdleProcess(){
+        public static PCB CreateIdleProcess()
+        {
             Console.WriteLine("Tworzenie procesu bezczynnosci systemu...");
             PCB Idle = new PCB("ProcesBezczynnosci", 7, "idle.txt", SourceOfCode.WindowsDisc);
             Idle._PID = 0;
             Idle.StartPriority = 8;
             Idle.CurrentPriority = 8;
             Idle.RunNewProcess();
+            Idle.RunReadyProcess();
             return Idle;
         }
 

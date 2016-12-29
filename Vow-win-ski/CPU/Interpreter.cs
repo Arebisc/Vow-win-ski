@@ -17,8 +17,6 @@ namespace Vow_win_ski.CPU
 
         private Interpreter() { }
 
-        public int orderCounter { get; private set; }
-
         public static Interpreter GetInstance
         {
             get
@@ -36,35 +34,27 @@ namespace Vow_win_ski.CPU
         }
 
         public void InterpretOrder()
-        {   
-            if (Scheduler.GetInstance.ListEmpty())
-                return;
+        {
             if (Scheduler.GetInstance.CheckIfOtherProcessShouldGetCPU())
             {
                 if (Scheduler.GetInstance.GetRunningPCB() != null)
+                    Scheduler.GetInstance.SwitchCPUForOtherProcess();
+                else
                 {
-                    Scheduler.GetInstance.RevriteRegistersFromCPU();
-                    Scheduler.GetInstance.GetRunningPCB().WaitForScheduling();
+                    CPU.GetInstance.OrderTime = 1;
+                    Scheduler.GetInstance.PriorityAlgorithm().RunReadyProcess();
+                    Scheduler.GetInstance.GetRunningPCB().WaitingForProcessorTime = 1;
+                    Scheduler.GetInstance.RevriteRegistersToCPU();
                 }
-                Scheduler.GetInstance.PriorityAlgorithm().RunReadyProcess();
-                Scheduler.GetInstance.RevriteRegistersToCPU();
                 Console.WriteLine("Przełączono CPU na process: " + Scheduler.GetInstance.GetRunningPCB().Name);
+                Scheduler.GetInstance.NegatedAgingWaitingForProcesorTime();
                 return;
-            }
-
-            orderCounter++;
-            if (orderCounter % 3 == 0)
-            {
-                Scheduler.GetInstance.AgingWaitingProcesses();
-                Scheduler.GetInstance.RejuvenationCurrentProcess();
             }
 
             var order = GetOrderFromMemory(Scheduler.GetInstance.GetRunningPCB());
 
             if (order.TrimEnd().EndsWith(":"))
-            {
                 Console.WriteLine("Etykieta o nazwie: " + order.TrimEnd().TrimEnd(':'));
-            }
             else
             {
                 switch (GetOrderName(order))
@@ -126,8 +116,12 @@ namespace Vow_win_ski.CPU
                     case "PO":
                         POOrder(GetOrderFirstArgument(order));
                         break;
+                    default:
+                        Console.WriteLine("Nie rozpoznano rozkazu: " + order);
+                        break;
                 }
             }
+            SchedulerMenager();
         }
 
         public string GetOrderFromMemory(PCB runningPCB)
@@ -417,14 +411,20 @@ namespace Vow_win_ski.CPU
         {
             Console.WriteLine("Rozkaz HLT");
             Scheduler.GetInstance.GetRunningPCB().TerminateProcess(ReasonOfProcessTerminating.Ended);
-          //  Scheduler.GetInstance.RemoveProcess(Scheduler.GetInstance.GetRunningPCB()); TU SPIERDOLONE BYŁO, ALE NAPRAWIŁEM ~ TheSensej
-          //Zostawione na pamiątkę 
 
             if (!Scheduler.GetInstance.ListEmpty())
             {
                 Scheduler.GetInstance.PriorityAlgorithm().RunReadyProcess();
                 Scheduler.GetInstance.RevriteRegistersToCPU();
             }
+        }
+
+        public void SchedulerMenager()
+        {
+            Scheduler.GetInstance.AgingWaitingForProcesorTime();
+            Scheduler.GetInstance.RejuvenationCurrentProcess();
+            Scheduler.GetInstance.AgingProcessPriority();
+            CPU.GetInstance.OrderTime++;
         }
     }
 }

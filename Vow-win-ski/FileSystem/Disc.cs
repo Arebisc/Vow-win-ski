@@ -110,6 +110,7 @@ namespace Vow_win_ski.FileSystem
                 temp++;
                 if (temp == mod)
                 {
+                    if (mod == _numberOfBlocks) continue;
                     temp = 0;
                     Console.Write("Naciśnij dowolny klawisz...");
                     Console.ReadKey();
@@ -159,7 +160,7 @@ namespace Vow_win_ski.FileSystem
             if (blocksneeded > freeBlocks)
             {
                 Console.WriteLine("Za mało wolnych bloków by utworzyć nowy plik");
-                Console.WriteLine("Wymagany: " + blocksneeded + "\tDostępne: " + freeBlocks);
+                Console.WriteLine("Wymagane: " + blocksneeded + "\tDostępne: " + freeBlocks);
                 return false;
             }
 

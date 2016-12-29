@@ -37,35 +37,34 @@ namespace Vow_win_ski
             DisplayLogo();
             InitSystemResources(args);
 
-            //try
-            //{ 
-             Shell.GetShell.OpenShell();
-            //}
-            //catch (Exception e)
-            //{
-            //    SoundPlayer sp = new SoundPlayer("spin.wav");
-            //    sp.PlayLooping();
-            //    PipeServer.GetServer.Exit();
-            //    Console.BackgroundColor = ConsoleColor.DarkBlue;
-            //    Console.Clear();
-            //    Console.WriteLine();
-            //    Console.WriteLine();
-            //    Console.WriteLine();
-            //    Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + ("Coś... coś się popsuło :(".Length / 2)) + "}", "Coś... coś się popsuło :("));
-            //    Console.WriteLine();
-            //    Console.WriteLine(String.Format("{0," + ((Console.WindowWidth/2) + ((e.GetType() + ":").Length/2)) + "}", e.GetType() + ":"));
-            //    Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (e.Message.Length / 2)) + "}", e.Message));
-            //    Console.WriteLine();
-            //    Console.WriteLine();
-            //    Console.WriteLine();
-            //    Console.WriteLine();
-            //    Console.WriteLine();
-            //    Console.WriteLine();
-            //    Console.Write(String.Format("{0," + ((Console.WindowWidth / 2) + ("Naciśnij dowolny klawisz...".Length / 2)) + "}", "Naciśnij dowolny klawisz..."));
-            //    Console.ReadKey();
-            //    Console.ResetColor();
-            //    Console.Clear();
-            //}
+            try
+            {
+                Shell.GetShell.OpenShell();
+            }
+            catch (Exception e)
+            {
+                SoundPlayer sp = new SoundPlayer("spin.wav");
+                sp.PlayLooping();
+                Console.BackgroundColor = ConsoleColor.DarkBlue;
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + ("Coś... coś się popsuło :(".Length / 2)) + "}", "Coś... coś się popsuło :("));
+                Console.WriteLine();
+                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + ((e.GetType() + ":").Length / 2)) + "}", e.GetType() + ":"));
+                Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (e.Message.Length / 2)) + "}", e.Message));
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.Write(String.Format("{0," + ((Console.WindowWidth / 2) + ("Naciśnij dowolny klawisz...".Length / 2)) + "}", "Naciśnij dowolny klawisz..."));
+                Console.ReadKey();
+                Console.ResetColor();
+                Console.Clear();
+            }
         }
 
         static void DisplayLogo()

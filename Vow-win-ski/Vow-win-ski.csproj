@@ -77,14 +77,12 @@
     <Compile Include="Processes\PCBMethods.cs" />
     <Compile Include="Processes\UserInterface.cs" />
     <Compile Include="IPC\Message.cs" />
-    <Compile Include="IPC\PipeClient.cs" />
     <Compile Include="IPC\PipeServer.cs" />
     <Compile Include="FileSystem\Block.cs" />
     <Compile Include="FileSystem\Disc.cs" />
     <Compile Include="Shell.cs" />
     <Compile Include="FileSystem\File.cs" />
     <Compile Include="FileSystem\Folder.cs" />
-    <Compile Include="IPC\StreamString.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -92,10 +90,10 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Folder Include="bin\Debug\" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="close.wav" />
     <Content Include="spin.wav" />

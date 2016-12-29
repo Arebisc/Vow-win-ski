@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Media;
 using System.Threading;
-using Castle.Core.Internal;
 using Vow_win_ski.CPU;
 using Vow_win_ski.FileSystem;
 using Vow_win_ski.IPC;
@@ -42,35 +42,13 @@ namespace Vow_win_ski
             {
                 Console.WriteLine();
                 Console.Write("root\\>");
-                string p1 = "";
-                string p2 = "";
-                string cmd = "";
                 string cmdline = Console.ReadLine();
 
-                var x = 0;
                 // ReSharper disable once PossibleNullReferenceException
-                for (var i = 0; i < cmdline.Length && x != 3; i++)
-                {
-                    switch (x)
-                    {
-                        case 0:
-                            if (cmdline[i] != ' ')
-                                cmd += cmdline[i];
-                            else
-                                x++;
-                            break;
-                        case 1:
-                            if (cmdline[i] != ' ')
-                                p1 += cmdline[i];
-                            else
-                                x++;
-                            break;
-                        case 2:
-                            p2 = cmdline.Substring(p1.Length + cmd.Length + 2);
-                            x++;
-                            break;
-                    }
-                }
+                string cmd = cmdline.Split(' ')[0];
+                string p1 = "";
+                if (cmdline.Contains(" ")) p1 = cmdline.Split(' ')[1];
+                string p2 = string.Join(" ", cmdline.Split(' ').Skip(2));
 
                 cmd = cmd.ToUpper();
                 switch (cmd)
@@ -95,7 +73,6 @@ namespace Vow_win_ski
                         Console.WriteLine("Zamykanie systemu...");
                         Thread.Sleep(2500);
                         exit = true;
-                        PipeServer.GetServer.Exit();
                         break;
                     case "BS":
                         throw new Exception(p1 == "" ? "Wyjątek wywołany przez użytkownika" : p1);
@@ -117,7 +94,7 @@ namespace Vow_win_ski
                         UserInterface.ChangePriority(p1, p2);
                         break;
                     case "NPR":
-                        Processes.UserInterface.RunNewProcess(p1);
+                        UserInterface.RunNewProcess(p1);
                         break;
                     case "HP":
                         UserInterface.StopProcess(p1);
