@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using Vow_win_ski.Processes;
 
@@ -93,6 +92,7 @@ namespace Vow_win_ski.MemoryModule
             //Poszukiwanie tablicy stron do danego procesu
             var process = ProcessPages.Select(x => x).SingleOrDefault(x => x.Id == id);
             //sprawdzenie czy dana strona znajduje sie w pamieci
+            // ReSharper disable once PossibleNullReferenceException
             if (process.IsPageInMemory(pages))
             {
                 //Zwrocenie danego bajtu
@@ -271,6 +271,7 @@ namespace Vow_win_ski.MemoryModule
             //Poszukiwanie tablicy stron do danego procesu
             var process = ProcessPages.Select(x => x).SingleOrDefault(x => x.Id == id);
             //sprawdzenie czy dana strona znajduje sie w pamieci
+            // ReSharper disable once PossibleNullReferenceException
             if (process.IsPageInMemory(pages))
             {
                 //Zwrocenie danego bajtu
@@ -345,6 +346,7 @@ namespace Vow_win_ski.MemoryModule
             {
                 ProcessPages pages = ProcessPages.SingleOrDefault(x => x.Id == id);
 
+                // ReSharper disable once PossibleNullReferenceException
                 for (int i = 0; i < pages.PagesCount; i++)
                 {
                     if (pages.IsPageInMemory(i))
@@ -369,6 +371,7 @@ namespace Vow_win_ski.MemoryModule
             {
                 ProcessPages pages = ProcessPages.FirstOrDefault(x => x.Id == id);
 
+                // ReSharper disable once PossibleNullReferenceException
                 if (pages.IsPageInMemory(number))
                 {
                     Console.WriteLine("Zawarość ramki nr: "+number);
@@ -404,7 +407,7 @@ namespace Vow_win_ski.MemoryModule
             Console.WriteLine("Wyświetlenie całej pamięci.");
             for (int i = 0; i < FramesCount; i++)
             {
-                Console.Write("Ramka nr "+i+": ");
+                Console.Write("Ramka nr "+(i+": ").PadRight(5));
                 _physicalMemory.ShowFrame(i);
             }
         }
