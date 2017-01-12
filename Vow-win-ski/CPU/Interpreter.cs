@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -264,9 +263,9 @@ namespace Vow_win_ski.CPU
         {
             Console.WriteLine("Rozkaz JM z parametrem " + tag);
 
+            CPU.GetInstance.Register.C--;
             if (CPU.GetInstance.Register.C != 0)
             {
-                CPU.GetInstance.Register.C--;
                 var runningPCB = Scheduler.GetInstance.GetRunningPCB();
                 runningPCB.InstructionCounter = 0;
 
