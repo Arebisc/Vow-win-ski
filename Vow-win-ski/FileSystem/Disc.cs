@@ -112,7 +112,7 @@ namespace Vow_win_ski.FileSystem
                 temp++;
                 if (temp == mod)
                 {
-                    if(mod == _numberOfBlocks) continue;
+                    if (mod == _numberOfBlocks) continue;
                     temp = 0;
                     Console.Write("Naciśnij dowolny klawisz...");
                     Console.ReadKey();

@@ -5,6 +5,6 @@ namespace Vow_win_ski.MemoryModule
     class ExchangeFileProcess
     {
         public ProcessPages TakenProcessPages;
-        public List<Frame> TakenFrames;
+        public List<AllocationUnit> TakenFrames;
     }
 }

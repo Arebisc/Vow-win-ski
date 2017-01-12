@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using Vow_win_ski.Processes;
 
@@ -78,8 +77,8 @@ namespace Vow_win_ski.MemoryModule
         public void UploadChanges(int id, int frameNumber, int pageNumber)
         {
             //pobranie danych z danej ramki
-            Frame tempdata = _physicalMemory.GetFrame(frameNumber);
-            char[] data = tempdata.ReadFrame();
+            AllocationUnit tempdata = _physicalMemory.GetFrame(frameNumber);
+            char[] data = tempdata.ReadAllocationUnit();
 
             //wpisanie ich do pliku wymiany
             _exchangeFile.UpdateData(id, pageNumber, data);
@@ -93,6 +92,7 @@ namespace Vow_win_ski.MemoryModule
             //Poszukiwanie tablicy stron do danego procesu
             var process = ProcessPages.Select(x => x).SingleOrDefault(x => x.Id == id);
             //sprawdzenie czy dana strona znajduje sie w pamieci
+            // ReSharper disable once PossibleNullReferenceException
             if (process.IsPageInMemory(pages))
             {
                 //Zwrocenie danego bajtu
@@ -167,11 +167,11 @@ namespace Vow_win_ski.MemoryModule
             processData.MaxMemory = program.Length-1;
 
             //uzupelnienie stron
-            var frames = new List<Frame>();
+            var frames = new List<AllocationUnit>();
             for (int i = 0; i < pages; i++)
             {
-                frames.Add(new Frame(FramesSize));
-                frames[i].WriteFrame(program.Select(x => x)
+                frames.Add(new AllocationUnit(FramesSize));
+                frames[i].WriteAllocationUnit(program.Select(x => x)
                     .Skip(FramesSize*i)
                     .Take((program.Length - FramesSize*i < FramesSize) ? program.Length - FramesSize*i : FramesSize)
                     .ToArray());
@@ -197,7 +197,7 @@ namespace Vow_win_ski.MemoryModule
                     Id = processData.PID
                 });
                 //wprowadzenie 0 strony do pamieci fizycznej
-                _physicalMemory.SetFrame(index, frames[0].ReadFrame());
+                _physicalMemory.SetFrame(index, frames[0].ReadAllocationUnit());
                 //wprowadzenie do tablicy stron ze strona 0 znajduje sie w danym miejscu
                 foreach (ProcessPages process in ProcessPages)
                 {
@@ -222,7 +222,7 @@ namespace Vow_win_ski.MemoryModule
                     Id = processData.PID
                 });
                 //wprowadzenie do pamieci fizycznej danej strony
-                _physicalMemory.SetFrame(index, frames[0].ReadFrame());
+                _physicalMemory.SetFrame(index, frames[0].ReadAllocationUnit());
                 //wpisanie do tablicy stron ze dana strona znajduje sie w pamieci
                 foreach (var processPage in ProcessPages)
                 {
@@ -271,6 +271,7 @@ namespace Vow_win_ski.MemoryModule
             //Poszukiwanie tablicy stron do danego procesu
             var process = ProcessPages.Select(x => x).SingleOrDefault(x => x.Id == id);
             //sprawdzenie czy dana strona znajduje sie w pamieci
+            // ReSharper disable once PossibleNullReferenceException
             if (process.IsPageInMemory(pages))
             {
                 //Zwrocenie danego bajtu
@@ -345,6 +346,7 @@ namespace Vow_win_ski.MemoryModule
             {
                 ProcessPages pages = ProcessPages.SingleOrDefault(x => x.Id == id);
 
+                // ReSharper disable once PossibleNullReferenceException
                 for (int i = 0; i < pages.PagesCount; i++)
                 {
                     if (pages.IsPageInMemory(i))
@@ -369,10 +371,12 @@ namespace Vow_win_ski.MemoryModule
             {
                 ProcessPages pages = ProcessPages.FirstOrDefault(x => x.Id == id);
 
+                // ReSharper disable once PossibleNullReferenceException
                 if (pages.IsPageInMemory(number))
                 {
-                    Console.WriteLine("Zawarość ramki nr: "+number);
-                    _physicalMemory.GetFrame(pages.ReadFrameNumber(number)).ShowFrame();
+                    Console.WriteLine("Zawarość ramki nr "+number+": ");
+                    Console.WriteLine();
+                    _physicalMemory.GetFrame(pages.ReadFrameNumber(number)).ShowAllocationUnit();
                 }
                 else
                 {
@@ -404,7 +408,7 @@ namespace Vow_win_ski.MemoryModule
             Console.WriteLine("Wyświetlenie całej pamięci.");
             for (int i = 0; i < FramesCount; i++)
             {
-                Console.Write("Ramka nr "+i+": ");
+                Console.Write("Ramka nr "+(i+": ").PadRight(5));
                 _physicalMemory.ShowFrame(i);
             }
         }
@@ -452,7 +456,7 @@ namespace Vow_win_ski.MemoryModule
                 foreach (var frame in frames)
                 {
                     _freeFramesList.AddToList(frame);
-                    _physicalMemory.GetFrame(frame).ClearFrame();
+                    _physicalMemory.GetFrame(frame).ClearAllocationUnit();
                     _fifoQueue.RemoveChoosenProcess(ProcessPages[i].Id);
                     _exchangeFile.RemoveFromMemory(ProcessPages[i].Id);
                 }
@@ -477,7 +481,7 @@ namespace Vow_win_ski.MemoryModule
             {
                 _physicalMemory.SetFrame(FramesCount - 2,
                     message.Take(_messageLength).ToArray());
-                _physicalMemory.GetFrame(FramesCount-1).ClearFrame();
+                _physicalMemory.GetFrame(FramesCount-1).ClearAllocationUnit();
                // Console.WriteLine(message.Take(_messageLength).ToArray());
 
             }
@@ -497,8 +501,8 @@ namespace Vow_win_ski.MemoryModule
         {
             if (_messageLength > 0)
             {
-                string temp = new string(_physicalMemory.GetFrame(FramesCount - 2).ReadFrame());
-                string temp1 = new string(_physicalMemory.GetFrame(FramesCount - 1).ReadFrame());
+                string temp = new string(_physicalMemory.GetFrame(FramesCount - 2).ReadAllocationUnit());
+                string temp1 = new string(_physicalMemory.GetFrame(FramesCount - 1).ReadAllocationUnit());
 
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.Append(temp);

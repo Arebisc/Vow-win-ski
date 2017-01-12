@@ -3,20 +3,20 @@ using System.Linq;
 
 namespace Vow_win_ski.MemoryModule
 {
-    public class Frame
+    public class AllocationUnit
     {
-        private int _frameSize;
+        private int _size;
         private readonly char[] _fields;
         public int Offset;
 
-        public Frame(int frameSize)
+        public AllocationUnit(int frameSize)
         {
-            _frameSize = frameSize;
-            _fields = new char[_frameSize];
-            ClearFrame();
+            _size = frameSize;
+            _fields = new char[_size];
+            ClearAllocationUnit();
             Offset = 0;
         }
-        public void WriteFrame(char[] data)
+        public void WriteAllocationUnit(char[] data)
         {
             Offset = data.Length;
             for (int i = 0; i < data.Length; i++)
@@ -24,11 +24,11 @@ namespace Vow_win_ski.MemoryModule
                 _fields[i] = data[i];
             }
         }
-        public char[] ReadFrame()
+        public char[] ReadAllocationUnit()
         {
             return _fields.Take(Offset).ToArray();
         }
-        public void ClearFrame()
+        public void ClearAllocationUnit()
         {
             Offset = 0;
             for (int i = 0; i < _fields.Length; i++)
@@ -37,21 +37,21 @@ namespace Vow_win_ski.MemoryModule
             }
         }
 
-        public void ShowFrame()
+        public void ShowAllocationUnit()
         {
             for(int i=0;i<_fields.Length;i++)
             {
                 if (_fields[i] == '\r')
                 {
-                    Console.Write("\\r ");
+                    Console.Write("\\r ".PadRight(4));
                 }
                 else if (_fields[i] == '\n')
                 {
-                    Console.Write("\\n ");
+                    Console.Write("\\n ".PadRight(4));
                 }
                 else
                 {
-                    Console.Write(_fields[i]+" ");
+                    Console.Write(_fields[i]+" ".PadRight(3));
                 }
             }
             Console.WriteLine("");
