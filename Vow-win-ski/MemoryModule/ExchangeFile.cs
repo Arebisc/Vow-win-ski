@@ -28,7 +28,7 @@ namespace Vow_win_ski.MemoryModule
         public char[] ReadFromExchangeFile(int id,int pageNumber)
         {
             var data = _takenProcesses.Select(x => x).SingleOrDefault(x => x.TakenProcessPages.Id == id);
-            return data?.TakenFrames[pageNumber].ReadFrame();
+            return data?.TakenFrames[pageNumber].ReadAllocationUnit();
         }
 
         public void UpdateData(int processId, int pageNumber, char[] data)
@@ -37,7 +37,7 @@ namespace Vow_win_ski.MemoryModule
             {
                 if (exchangeFileProcess.TakenProcessPages.Id == processId)
                 {
-                    exchangeFileProcess.TakenFrames[pageNumber].WriteFrame(data);
+                    exchangeFileProcess.TakenFrames[pageNumber].WriteAllocationUnit(data);
                 }
             }
         }
