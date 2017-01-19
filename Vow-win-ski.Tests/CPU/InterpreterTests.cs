@@ -164,7 +164,7 @@ namespace Vow_win_ski.Tests.CPU
                 Interpreter.GetInstance.InterpretOrder();
             }
             Scheduler.GetInstance.RemoveProcess(pcb);
-            Assert.AreEqual(CentralProcessingUnit.GetInstance.Register.A, 16);
+            Assert.AreEqual(CentralProcessingUnit.GetInstance.Register.A, 8);
         }
 
         [Test]
