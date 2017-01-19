@@ -43,9 +43,9 @@ namespace Vow_win_ski.Processes
             {
                 if (waiting.Count() > 0)
                 {
-                    if (Check(name))
+                    if (!Check(name))
                     {
-                        foreach(var i in waiting)
+                        foreach (var i in waiting)
                         {
                             if (name == i.Name)
                             {
@@ -54,6 +54,13 @@ namespace Vow_win_ski.Processes
                                 break;
                             }
                         }
+                    }
+                    else
+                    {
+                        proces.StopWaiting();
+                        proces = waiting[0];
+                        waiting.Remove(proces);
+                        this.Name = proces.Name;
                     }
                 }
                 else if (waiting.Count() == 0)
