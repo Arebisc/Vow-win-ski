@@ -19,11 +19,11 @@ namespace Vow_win_ski.Tests.MemoryModule
         public void Can_Write_Read_From_Frame(char[] input)
         {
             //prepare
-            Frame frame = new Frame(16);
+            AllocationUnit frame = new AllocationUnit(16);
 
             //action
-            frame.WriteFrame(input);
-            var output = frame.ReadFrame();
+            frame.WriteAllocationUnit(input);
+            var output = frame.ReadAllocationUnit();
 
             Assert.AreEqual(input,output);
         }
@@ -32,11 +32,11 @@ namespace Vow_win_ski.Tests.MemoryModule
         public void Can_Clear_Frame()
         {
             //prepare
-            var frame = new Frame(16);
-            frame.WriteFrame(new char[]{'a','b','c'});
+            var frame = new AllocationUnit(16);
+            frame.WriteAllocationUnit(new char[]{'a','b','c'});
 
             //action
-            frame.ClearFrame();
+            frame.ClearAllocationUnit();
 
             //assertion
             Assert.AreEqual(frame.Offset,0);
@@ -50,8 +50,8 @@ namespace Vow_win_ski.Tests.MemoryModule
         public void Can_Get_Byte(char[] input, int index)
         {
             //prepare
-            var frame = new Frame(16);
-            frame.WriteFrame(input);
+            var frame = new AllocationUnit(16);
+            frame.WriteAllocationUnit(input);
 
             //action
             var output = frame.GetByte(index);
@@ -68,8 +68,8 @@ namespace Vow_win_ski.Tests.MemoryModule
         public void Can_Change_Byte(char[] input, int index, char data)
         {
             //prepare
-            var frame = new Frame(16);
-            frame.WriteFrame(input);
+            var frame = new AllocationUnit(16);
+            frame.WriteAllocationUnit(input);
 
             //action
             frame.ChangeByte(index,data);

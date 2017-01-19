@@ -7,20 +7,20 @@ namespace Vow_win_ski.MemoryModule
    {
        private int _framesCount;
        private int _framesSize;
-       private readonly List<Frame> _memory;
+       private readonly List<AllocationUnit> _memory;
 
        public PhysicalMemory(int framesCount,int framesSize)
        {
            _framesCount = framesCount;
            _framesSize = framesSize;
-            _memory=new List<Frame>();
+            _memory=new List<AllocationUnit>();
            for (int i = 0; i < _framesCount; i++)
            {
-               _memory.Add(new Frame(_framesSize));
+               _memory.Add(new AllocationUnit(_framesSize));
            }
        }
 
-       public Frame GetFrame(int index)
+       public AllocationUnit GetFrame(int index)
        {
            return _memory[index];
        }
@@ -30,19 +30,19 @@ namespace Vow_win_ski.MemoryModule
             Console.WriteLine("Tutaj");
            foreach (var frame in _memory)
            {
-               frame.ShowFrame();
+               frame.ShowAllocationUnit();
            }
        }
 
        public void ShowFrame(int number)
        {
-           _memory[number].ShowFrame();
+           _memory[number].ShowAllocationUnit();
        }
 
        public void SetFrame(int index, char[] data)
        {    
-           _memory[index].ClearFrame();
-           _memory[index].WriteFrame(data);
+           _memory[index].ClearAllocationUnit();
+           _memory[index].WriteAllocationUnit(data);
        }
    }
 }
