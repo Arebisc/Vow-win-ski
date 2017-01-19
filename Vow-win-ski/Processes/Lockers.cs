@@ -32,7 +32,7 @@ namespace Vow_win_ski.Processes
             else
             {
                 waiting.Add(Proces);
-                proces.WaitForSomething();
+                Proces.WaitForSomething();
                 Proces.InstructionCounter--;
             }
         }
@@ -43,8 +43,8 @@ namespace Vow_win_ski.Processes
             {
                 if (waiting.Count() > 0)
                 {
-                    if (Check(name))
-                    {
+                    //if (Check(name))
+                    //{
                         foreach(var i in waiting)
                         {
                             if (name == i.Name)
@@ -55,12 +55,12 @@ namespace Vow_win_ski.Processes
                         }
                         proces.StopWaiting();
                         this.Name = proces.Name;
-                    }
+                    //}
                 }
                 else if (waiting.Count() == 0)
                 {
-                    if (Check(name))
-                    {
+                   // if (Check(name))
+                    //{
                         foreach (var i in waiting)
                         {
                             if (name == i.Name)
@@ -71,7 +71,7 @@ namespace Vow_win_ski.Processes
                         }
                         proces.StopWaiting();
                         open = 0;
-                    }
+                    //}
                 }
             }
         }
