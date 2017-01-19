@@ -173,7 +173,7 @@ namespace Vow_win_ski.CPU
             CPU.GetInstance.OrderTime = 1;
             RevriteRegistersFromCPU();
             GetInstance.GetRunningPCB().WaitForScheduling();
-            GetInstance.PriorityAlgorithm().RunReadyProcess();
+            while (GetInstance.PriorityAlgorithm().RunReadyProcess() == 2);
             GetRunningPCB().WaitingForProcessorTime = 1;
             RevriteRegistersToCPU();
         }
